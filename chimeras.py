@@ -109,22 +109,25 @@ class kmer_filter:
         self.reads = dinopy.FastaReader(otu_file)
         self.de_bruijn_dict = self.make_de_bruijn_file(self.reads, k)
         self.high_divergence = self.high_divergence_dict(self.de_bruijn_dict)
-        self.query_list = self.query_list(self.reads, self.high_divergence)
         #self.reads_containing_query = self.reads_contianing_query(query_node)
-    
+        
     def make_de_bruijn_file(self, reads, k):
         bru_dict = col.defaultdict()
+        nodes = []
         for f in reads.entries():
             seq = f.sequence.decode()
+            name = f.name.decode()
             for i in range(len(seq)-k+1):
                 node = seq[i:i+k-1]
-                edge = (seq[i:i+k-1], seq[i+1:i+k])
+                nodes.append(node)
                 if not node in bru_dict.keys():
                     bru_dict[node] = {}
-                if not edge in bru_dict[node].keys():
-                    bru_dict[node][edge] = 1
+                    bru_dict[node]['name'] = []
+                    bru_dict[node]['abu'] = 1
                 else:
-                    bru_dict[node][edge] += 1
+                    bru_dict[node]['abu'] += 1
+                if not name in bru_dict[node]['name']:
+                    bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
         return bru_dict
     
     def reads_contianing_query(self, query_node):
@@ -137,30 +140,18 @@ class kmer_filter:
     def high_divergence_dict(self, de_bruijn_dict, cutoff=2):
         high_divergence = {}
         for key in de_bruijn_dict.keys():
-            if len(de_bruijn_dict[key]) >= cutoff:
+            if len(de_bruijn_dict[key]['name']) >= cutoff:
                 high_divergence[key] = de_bruijn_dict[key]
         return high_divergence
     
-    def query_list(self, reads, high_divergence):
-        branching_nodes = set()
-        for f in reads.entries():
-            seq = f.sequence.decode()
-            node_list = []
-            for key in high_divergence.keys():
-                if key in seq:
-                    node_list.append(key)
-                if len(node_list) >= 2:
-                    branching_nodes.update(node_list)
-        rm_list = []
-        for node in high_divergence.keys():
-            t = 0
-            for edge in high_divergence[node]:
-                t += high_divergence[node][edge]
-            if t > 200:
-                rm_list.append(node)
-        bru_list = [node for node in branching_nodes if node not in rm_list]
-        return bru_list
-
+    def abundance_filter(self, reads, high_div):
+        num_reads = sum(1 for read in reads.entries())
+        low_abu = []
+        for kmer in high_div:
+            if high_div[kmer]['abu'] < num_reads/100:
+                low_abu.append(kmer)
+        return low_abu
+    
 class unitig_creator:
     def __init__(self, graph):
         self.unitig_graph = self.maximal_non_branching_paths(graph)
@@ -312,16 +303,15 @@ class chim_checker:
                     already_searched)
         return potential_chimera_dict
     
-    def run(self):
+    def run(self, kmer_length=30):
         counter = 1
-        #high_divergence = kmer_filter(otus, 100).high_divergence
-        query_list = kmer_filter(otus, 100).query_list
-        for node in query_list: #high_divergence.keys():
-            read_list = kmer_filter(otus, 100).reads_contianing_query(node)
-            d = DeBruijnGraph(read_list, 100)
+        high_divergence = kmer_filter(otus, kmer_length).high_divergence
+        for node in high_divergence.keys():
+            read_list = kmer_filter(otus, kmer_length).reads_contianing_query(node)
+            d = DeBruijnGraph(read_list, kmer_length)
             unitig_graph = unitig_creator(d.G).unitig_graph
             self.chim_search(unitig_graph, potential_chimera_dict)
-            print(str(counter/len(query_list)*100) + '% done')#len(high_divergence.keys())*100) 
+            print(str(counter/len(high_divergence.keys())*100) + '% done')
             counter += 1
         return potential_chimera_dict
 
