@@ -201,13 +201,13 @@ class chimera_search:
         return node_list
     
     def draw_subgraphs(self):
-        for i in range(len(self.subgraphs)):
-            pos = nx.spring_layout(self.subgraphs[i])
-            nx.draw(self.subgraphs[i], pos)
+        for i in range(len(self.chimeric_subgraphs)):
+            pos = nx.spring_layout(self.chimeric_subgraphs[i])
+            nx.draw(self.chimeric_subgraphs[i], pos)
             #node_labels = nx.get_node_attributes(subgraph_list[i], 'abundance')
             #nx.draw_networkx_labels(subgraph_list[i], pos,labels=node_labels)
-            edge_labels = nx.get_edge_attributes(self.subgraphs[i],'length')
-            nx.draw_networkx_edge_labels(self.subgraphs[i], pos, edge_labels=edge_labels)
+            edge_labels = nx.get_edge_attributes(self.chimeric_subgraphs[i],'length')
+            nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels)
             plt.show()
             
     def write_fasta(self, filename):
