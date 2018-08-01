@@ -1,6 +1,18 @@
+import dinopy
+import collections as col
+import networkx as nx
+from functools import reduce
+import numpy as np
+import matplotlib.pyplot as plt
+import pygraphviz
+from networkx.drawing.nx_agraph import graphviz_layout
+import math
+import os
+import yaml
+
 # dict with seqs -> kmers
 class kmer_filter:
-    def __init__(self, otu_file, k, cutoff=500):
+    def __init__(self, otu_file, k, cutoff=21):
         self.reads = dinopy.FastaReader(otu_file)
         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
@@ -33,7 +45,7 @@ class kmer_filter:
         return high_abu
     
     def softmask(self, reads, kmer_abundance_sorting):
-        with dinopy.FastaWriter("masked_reads.fasta", line_width=1000) as faw:
+        with dinopy.FastaWriter("masked_reads_chims7.fasta", line_width=1000) as faw:
             for entry in reads.entries():
                 seq = entry.sequence.decode()
                 for kmer in kmer_abundance_sorting:
@@ -46,7 +58,8 @@ class chimera_search:
     def __init__(self, masked_reads, k):
         self._seq_dict = self._seq_dict(masked_reads, k)
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
-        self._intersection_list = self._intersection_list(self._abu_kmer_zip[0], self._abu_kmer_zip[1], self._abu_kmer_zip[2])
+        self._intersection_list = self._intersection_list(self._abu_kmer_zip[0], self._abu_kmer_zip[1], 
+                                                          self._abu_kmer_zip[2], self._abu_kmer_zip[3])
         self._overlap_graph = self._overlap_graph(self._intersection_list)
         self._high_indegree_graph = self._remove_low_indegree_edges(self._overlap_graph)
         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)
@@ -80,6 +93,7 @@ class chimera_search:
             seq_dict[seq] = {}
             seq_dict[seq]['kmers'] = []
             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
+            seq_dict[seq]['name'] = f.name.decode().split(';')[0]
             for i in range(len(seq)-k+1):
                 node = seq[i:i+k-1]
                 if node.isupper():
@@ -92,19 +106,21 @@ class chimera_search:
         keys, values = zip(*seq_dict.items())
         abus = []
         kmers = []
+        names = []
         for i in range(len(values)):
             abus.append(values[i]['abu'])
             kmers.append(values[i]['kmers'])
+            names.append(values[i]['name'])
         
-        return (abus, kmers, keys)
+        return (abus, kmers, keys, names)
     
-    def _intersection_list(self, abus, kmers, keys):
+    def _intersection_list(self, abus, kmers, keys, names):
         intersec_list = []
         for i in range(len(kmers)):
             for j in range(len(kmers)):
                 intersec = set(kmers[i]).intersection(kmers[j])
                 if i != j and intersec:
-                    intersec_list.append(((keys[i], abus[i]), (keys[j], abus[j]), intersec))
+                    intersec_list.append(((keys[i], abus[i], names[i]), (keys[j], abus[j], names[j]), intersec))
         
         return intersec_list
 
@@ -126,22 +142,32 @@ class chimera_search:
                         elif long_com_subs == edge[2]['seq']:
                             if int(intersec_list[i][0][1]) > int(edge[2]['abu1']):
                                 remove_edge.append(edge)
-                            elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
-                                add_edge.append((intersec_list[i][0][0], intersec_list[i][1][0], len(long_com_subs), long_com_subs, intersec_list[i][0][1], intersec_list[i][1][1]))
+                            #elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
+                                #add_edge.append((intersec_list[i][0][0], intersec_list[i][1][0], len(long_com_subs), long_com_subs, intersec_list[i][0][1], intersec_list[i][1][1]))
                             else:
                                 flag = 1
                                 break
                     if remove_edge:
                         for edge in remove_edge:
                             t_g.remove_edge(edge[0], edge[1])
-                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1])
+                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
+                                     length=len(long_com_subs), seq = long_com_subs, 
+                                     abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
+                                    name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
                     if add_edge:
                         for edge in add_edge:
-                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5])
+                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5],
+                                        name1 = edge[6], name2 = edge[7])
                     if flag == 0:
-                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1])
+                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
+                                     length=len(long_com_subs), seq = long_com_subs, 
+                                     abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
+                                    name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
                 else:
-                    t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1])
+                    t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
+                                 length=len(long_com_subs), seq = long_com_subs, 
+                                 abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
+                                name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
             else:
                 if t_g.in_edges(intersec_list[i][0][0]):
                     remove_edge = []
@@ -156,22 +182,32 @@ class chimera_search:
                         elif long_com_subs == edge[2]['seq']:
                             if int(intersec_list[i][0][1]) > int(edge[2]['abu1']):
                                 remove_edge.append(edge)
-                            elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
-                                add_edge.append((intersec_list[i][1][0], intersec_list[i][0][0], len(long_com_subs), long_com_subs, intersec_list[i][1][1], intersec_list[i][0][1]))
+                            #elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
+                                #add_edge.append((intersec_list[i][1][0], intersec_list[i][0][0], len(long_com_subs), long_com_subs, intersec_list[i][1][1], intersec_list[i][0][1]))
                             else:
                                 flag = 1
                                 break
                     if remove_edge:
                         for edge in remove_edge:
                             t_g.remove_edge(edge[0], edge[1])
-                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1])
+                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
+                                     length=len(long_com_subs), seq = long_com_subs, 
+                                     abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
+                                    name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
                     if add_edge:
                         for edge in add_edge:
-                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5])
+                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5],
+                                        name1=edge[6], name2=edge[7])
                     if flag == 0:
-                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1])
+                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
+                                     length=len(long_com_subs), seq = long_com_subs, 
+                                     abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
+                                    name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
                 else:
-                    t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], length=len(long_com_subs), seq = long_com_subs, abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1])
+                    t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
+                                 length=len(long_com_subs), seq = long_com_subs, 
+                                 abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
+                                name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
     
         return t_g
     
@@ -196,18 +232,20 @@ class chimera_search:
         for subgraph in subgraphs:
             for node in subgraph.nodes():
                 if subgraph.in_degree(node) > 1:
-                    node_list.append(node)
+                    node_list.append((node, list(subgraph.in_edges(node, data='name2'))[0][2]))
         
         return node_list
     
     def draw_subgraphs(self):
         for i in range(len(self.chimeric_subgraphs)):
-            pos = nx.spring_layout(self.chimeric_subgraphs[i])
+            pos = nx.spring_layout(self.chimeric_subgraphs[i], weight='length', k=5/math.sqrt(self.chimeric_subgraphs[i].order()))
             nx.draw(self.chimeric_subgraphs[i], pos)
             #node_labels = nx.get_node_attributes(subgraph_list[i], 'abundance')
             #nx.draw_networkx_labels(subgraph_list[i], pos,labels=node_labels)
-            edge_labels = nx.get_edge_attributes(self.chimeric_subgraphs[i],'length')
-            nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels)
+            edge_labels1 = nx.get_edge_attributes(self.chimeric_subgraphs[i],'name2')
+            #edge_labels2 = nx.get_edge_attributes(self.chimeric_subgraphs[i],'name1')
+            nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels1)
+            #nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels2)
             plt.show()
             
     def write_fasta(self, filename):
