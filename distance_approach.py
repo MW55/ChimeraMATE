@@ -58,27 +58,6 @@ class chimera_search:
         self._high_indegree_graph = self._remove_low_indegree_edges(self._overlap_graph)
         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)
         self.potential_chimeras = self.potential_chimeras(self.chimeric_subgraphs)
-     
-    @staticmethod
-    def _lcs(S,T):
-        m = len(S)
-        n = len(T)
-        counter = [[0]*(n+1) for x in range(m+1)]
-        longest = 0
-        lcs_set = set()
-        for i in range(m):
-            for j in range(n):
-                if S[i] == T[j] and not S[i].islower() and not T[j].islower():
-                    c = counter[i][j] + 1
-                    counter[i+1][j+1] = c
-                    if c > longest:
-                        lcs_set = set()
-                        longest = c
-                        lcs_set.add(S[i-c+1:i+1])
-                    elif c == longest:
-                        lcs_set.add(S[i-c+1:i+1])
-
-        return list(lcs_set)
 
     def _seq_dict(self, masked_reads, k):
         seq_dict = col.defaultdict()
@@ -93,10 +72,6 @@ class chimera_search:
                 node2 = seq[i+1:i+1+k-1]
                 if node1.isupper() and node2.isupper():
                     seq_dict[seq]['kmers'].append((node1, node2))
-            #for i in range(len(seq)-k+1):
-             #   node = seq[i:i+k-1]
-              #  if node.isupper():
-               #     seq_dict[seq]['kmers'].append(node)
         seq_dict2 = {key:value for key, value in seq_dict.items() if seq_dict[key]['kmers']}
         
         return seq_dict2
@@ -130,92 +105,46 @@ class chimera_search:
                                           self._shortest_common_superstring(intersec)))
         
         return intersec_list
-
+    
+    def _compare_sequences(self, intersec_list, graph, i, direction,scs):
+        if graph.in_edges(intersec_list[i][direction[1]][0]):
+            remove_edge = []
+            flag = 0
+            for edge in graph.in_edges(intersec_list[i][direction[1]][0], data=True):
+                if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
+                    flag = 1
+                    break
+                elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
+                    remove_edge.append(edge)
+                elif scs == edge[2]['seq']:
+                    if int(intersec_list[i][direction[0]][1]) > int(edge[2]['abu1']):
+                        remove_edge.append(edge)
+                    else:
+                        flag = 1
+                        break
+            if remove_edge:
+                for edge in remove_edge:
+                    graph.remove_edge(edge[0], edge[1])
+                self._add_edge(intersec_list, graph, i, direction, scs)
+            if flag == 0:
+                self._add_edge(intersec_list, graph, i, direction, scs)
+        else:
+            self._add_edge(intersec_list, graph, i, direction, scs)
+            
+    def _add_edge(self, intersec_list, graph, i, direction, scs):
+        graph.add_edge(intersec_list[i][direction[0]][0], intersec_list[i][direction[1]][0], 
+                                 length=len(scs), seq = scs, 
+                                 abu1 = intersec_list[i][direction[0]][1], abu2 = intersec_list[i][direction[1]][1],
+                                name1 = intersec_list[i][direction[0]][2], name2 = intersec_list[i][direction[1]][2])
+    
     def _overlap_graph(self, intersec_list):
         t_g = nx.DiGraph()
         for i in range(len(intersec_list)):
-            #long_com_subs = self._lcs(intersec_list[i][0][0], intersec_list[i][1][0])[0]
             scs = intersec_list[i][2]
             if int(intersec_list[i][0][1]) > int(intersec_list[i][1][1]):
-                if t_g.in_edges(intersec_list[i][1][0]):
-                    remove_edge = []
-                    add_edge = []
-                    flag = 0
-                    for edge in t_g.in_edges(intersec_list[i][1][0], data=True):
-                        if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
-                            flag = 1
-                            break
-                        elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
-                            remove_edge.append(edge)
-                        elif scs == edge[2]['seq']:
-                            if int(intersec_list[i][0][1]) > int(edge[2]['abu1']):
-                                remove_edge.append(edge)
-                            #elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
-                                #add_edge.append((intersec_list[i][0][0], intersec_list[i][1][0], len(long_com_subs), long_com_subs, intersec_list[i][0][1], intersec_list[i][1][1]))
-                            else:
-                                flag = 1
-                                break
-                    if remove_edge:
-                        for edge in remove_edge:
-                            t_g.remove_edge(edge[0], edge[1])
-                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
-                                     length=len(scs), seq = scs, 
-                                     abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
-                                    name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
-                    if add_edge:
-                        for edge in add_edge:
-                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5],
-                                        name1 = edge[6], name2 = edge[7])
-                    if flag == 0:
-                        t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
-                                     length=len(scs), seq = scs, 
-                                     abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
-                                    name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
-                else:
-                    t_g.add_edge(intersec_list[i][0][0], intersec_list[i][1][0], 
-                                 length=len(scs), seq = scs, 
-                                 abu1 = intersec_list[i][0][1], abu2 = intersec_list[i][1][1],
-                                name1 = intersec_list[i][0][2], name2 = intersec_list[i][1][2])
+                self._compare_sequences(intersec_list, t_g, i, (0, 1), scs)
             else:
-                if t_g.in_edges(intersec_list[i][0][0]):
-                    remove_edge = []
-                    add_edge = []
-                    flag = 0
-                    for edge in t_g.in_edges(intersec_list[i][0][0], data=True):
-                        if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
-                            flag = 1
-                            break
-                        elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
-                            remove_edge.append(edge)
-                        elif scs == edge[2]['seq']:
-                            if int(intersec_list[i][0][1]) > int(edge[2]['abu1']):
-                                remove_edge.append(edge)
-                            #elif int(intersec_list[i][0][1]) == int(edge[2]['abu1']):
-                                #add_edge.append((intersec_list[i][1][0], intersec_list[i][0][0], len(long_com_subs), long_com_subs, intersec_list[i][1][1], intersec_list[i][0][1]))
-                            else:
-                                flag = 1
-                                break
-                    if remove_edge:
-                        for edge in remove_edge:
-                            t_g.remove_edge(edge[0], edge[1])
-                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
-                                     length=len(scs), seq = scs, 
-                                     abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
-                                    name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
-                    if add_edge:
-                        for edge in add_edge:
-                            t_g.add_edge(edge[0], edge[1], length=edge[2], seq=edge[3],abu1=edge[4],abu2=edge[5],
-                                        name1=edge[6], name2=edge[7])
-                    if flag == 0:
-                        t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
-                                     length=len(scs), seq = scs, 
-                                     abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
-                                    name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
-                else:
-                    t_g.add_edge(intersec_list[i][1][0], intersec_list[i][0][0], 
-                                 length=len(scs), seq = scs, 
-                                 abu1 = intersec_list[i][1][1], abu2 = intersec_list[i][0][1],
-                                name1 = intersec_list[i][1][2], name2 = intersec_list[i][0][2])
+                self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)
     
         return t_g
     
@@ -248,12 +177,8 @@ class chimera_search:
         for i in range(len(self.chimeric_subgraphs)):
             pos = nx.spring_layout(self.chimeric_subgraphs[i], weight='length', k=5/math.sqrt(self.chimeric_subgraphs[i].order()))
             nx.draw(self.chimeric_subgraphs[i], pos)
-            #node_labels = nx.get_node_attributes(subgraph_list[i], 'abundance')
-            #nx.draw_networkx_labels(subgraph_list[i], pos,labels=node_labels)
             edge_labels1 = nx.get_edge_attributes(self.chimeric_subgraphs[i],'name2')
-            #edge_labels2 = nx.get_edge_attributes(self.chimeric_subgraphs[i],'name1')
             nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels1)
-            #nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels2)
             plt.show()
             
     def write_fasta(self, filename):
