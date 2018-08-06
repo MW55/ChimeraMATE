@@ -10,7 +10,8 @@ class kmer_filter:
     def __init__(self, otu_file, k, cutoff=10):
         self.reads = dinopy.FastaReader(otu_file)
         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
-        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads,
+                self.de_bruijn_dict, cutoff)
         
     def _make_de_bruijn_file(self, reads, k):
         bru_dict = col.defaultdict()
@@ -40,7 +41,8 @@ class kmer_filter:
         return high_abu
     
     def softmask(self, reads, kmer_abundance_sorting):
-        with dinopy.FastaWriter("masked_reads_chims8.fasta", line_width=1000) as faw:
+        with dinopy.FastaWriter("masked_reads_chims8.fasta",
+                line_width=1000) as faw:
             for entry in reads.entries():
                 seq = entry.sequence.decode()
                 for kmer in kmer_abundance_sorting:
@@ -52,12 +54,15 @@ class chimera_search:
     def __init__(self, masked_reads, k):
         self._seq_dict = self._seq_dict(masked_reads, k)
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
-        self._intersection_list = self._intersection_list(self._abu_kmer_zip[0], self._abu_kmer_zip[1], 
-                                                          self._abu_kmer_zip[2], self._abu_kmer_zip[3])
+        self._intersection_list = self._intersection_list(self._abu_kmer_zip[0],
+                self._abu_kmer_zip[1], self._abu_kmer_zip[2],
+                self._abu_kmer_zip[3])
         self._overlap_graph = self._overlap_graph(self._intersection_list)
-        self._high_indegree_graph = self._remove_low_indegree_edges(self._overlap_graph)
+        self._high_indegree_graph = self._remove_low_indegree_edges(
+                self._overlap_graph)
         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)
-        self.potential_chimeras = self.potential_chimeras(self.chimeric_subgraphs)
+        self.potential_chimeras = self.potential_chimeras(
+                self.chimeric_subgraphs)
 
     def _seq_dict(self, masked_reads, k):
         seq_dict = col.defaultdict()
@@ -72,7 +77,8 @@ class chimera_search:
                 node2 = seq[i+1:i+1+k-1]
                 if node1.isupper() and node2.isupper():
                     seq_dict[seq]['kmers'].append((node1, node2))
-        seq_dict2 = {key:value for key, value in seq_dict.items() if seq_dict[key]['kmers']}
+        seq_dict2 = {key:value for key, value in seq_dict.items()
+                if seq_dict[key]['kmers']}
         
         return seq_dict2
         
@@ -90,9 +96,11 @@ class chimera_search:
     
     def _shortest_common_superstring(self, intersection):
         gu = nx.DiGraph(list(intersection))
-        longest_subgraph = [subgraph for subgraph in nx.weakly_connected_component_subgraphs(gu)][0]
+        longest_subgraph = [subgraph for subgraph
+                in nx.weakly_connected_component_subgraphs(gu)][0]
         
-        return reduce(lambda x,y: x+y[-1], list(nx.topological_sort(longest_subgraph)))
+        return reduce(lambda x,y: x+y[-1], list(nx.topological_sort(
+            longest_subgraph)))
     
     def _intersection_list(self, abus, kmers, keys, names):
         intersec_list = []
@@ -102,7 +110,8 @@ class chimera_search:
                 if i != j and intersec:
                     intersec_list.append(((keys[i], abus[i], names[i]),
                                           (keys[j], abus[j], names[j]),
-                                          self._shortest_common_superstring(intersec)))
+                                          self._shortest_common_superstring(
+                                              intersec)))
         
         return intersec_list
     
@@ -110,15 +119,16 @@ class chimera_search:
         if graph.in_edges(intersec_list[i][direction[1]][0]):
             remove_edge = []
             flag = 0
-            for edge in graph.in_edges(intersec_list[i][direction[1]][0], data=True):
+            for edge in graph.in_edges(intersec_list[i][direction[1]][0],
+                    data=True):
                 if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
                     flag = 1
                     break
                 elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
                     remove_edge.append(edge)
                 elif scs == edge[2]['seq']:
-                    if int(intersec_list[i][direction[0]][1]) > int(edge[2]['abu1']):
-                        remove_edge.append(edge)
+                    if int(intersec_list[i][direction[0]][1])
+                    > int(edge[2]['abu1']): remove_edge.append(edge)
                     else:
                         flag = 1
                         break
@@ -132,10 +142,12 @@ class chimera_search:
             self._add_edge(intersec_list, graph, i, direction, scs)
             
     def _add_edge(self, intersec_list, graph, i, direction, scs):
-        graph.add_edge(intersec_list[i][direction[0]][0], intersec_list[i][direction[1]][0], 
-                                 length=len(scs), seq = scs, 
-                                 abu1 = intersec_list[i][direction[0]][1], abu2 = intersec_list[i][direction[1]][1],
-                                name1 = intersec_list[i][direction[0]][2], name2 = intersec_list[i][direction[1]][2])
+        graph.add_edge(intersec_list[i][direction[0]][0], intersec_list[i][
+            direction[1]][0], length=len(scs), seq = scs,
+            abu1 = intersec_list[i][direction[0]][1],
+            abu2 = intersec_list[i][direction[1]][1],
+            name1 = intersec_list[i][direction[0]][2],
+            name2 = intersec_list[i][direction[1]][2])
     
     def _overlap_graph(self, intersec_list):
         t_g = nx.DiGraph()
@@ -159,8 +171,11 @@ class chimera_search:
         return overlap_graph
     
     def subgraphs(self,overlap_graph):
-        subgraph_list = [overlap_graph.subgraph(subg) for subg in nx.weakly_connected_component_subgraphs(overlap_graph)]
-        high_indegree_subgraphs = [subgraph for subgraph in subgraph_list if any(x > 1 for x in dict(subgraph.in_degree()).values())]
+        subgraph_list = [overlap_graph.subgraph(subg) for subg 
+                in nx.weakly_connected_component_subgraphs(overlap_graph)]
+        high_indegree_subgraphs = [subgraph for subgraph
+                in subgraph_list if any(x > 1 for x
+                    in dict(subgraph.in_degree()).values())]
         
         return high_indegree_subgraphs
     
@@ -169,16 +184,20 @@ class chimera_search:
         for subgraph in subgraphs:
             for node in subgraph.nodes():
                 if subgraph.in_degree(node) > 1:
-                    node_list.append((node, list(subgraph.in_edges(node, data='name2'))[0][2]))
+                    node_list.append((node,
+                        list(subgraph.in_edges(node, data='name2'))[0][2]))
         
         return node_list
     
     def draw_subgraphs(self):
         for i in range(len(self.chimeric_subgraphs)):
-            pos = nx.spring_layout(self.chimeric_subgraphs[i], weight='length', k=5/math.sqrt(self.chimeric_subgraphs[i].order()))
+            pos = nx.spring_layout(self.chimeric_subgraphs[i], weight='length',
+                    k=5/math.sqrt(self.chimeric_subgraphs[i].order()))
             nx.draw(self.chimeric_subgraphs[i], pos)
-            edge_labels1 = nx.get_edge_attributes(self.chimeric_subgraphs[i],'name2')
-            nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos, edge_labels=edge_labels1)
+            edge_labels1 = nx.get_edge_attributes(self.chimeric_subgraphs[i],
+                    'name2')
+            nx.draw_networkx_edge_labels(self.chimeric_subgraphs[i], pos,
+                    edge_labels=edge_labels1)
             plt.show()
             
     def write_fasta(self, filename):
