@@ -22,7 +22,7 @@ cdef class kmer_filter:
         cdef str node
         cdef dict bru_dict
         cdef list nodes
-        bru_dict = col.defaultdict()
+        bru_dict = dict()
         nodes = []
         for f in reads.entries():
             seq = f.sequence.decode()
@@ -51,7 +51,7 @@ cdef class kmer_filter:
                 high_abu.append(kmer)
         return high_abu
     
-    def softmask(self, reads, list kmer_abundance_sorting, output_file):
+    def softmask(self, reads, list kmer_abundance_sorting, str output_file):
         cdef FastaEntryC entry
         cdef str seq
         cdef str kmer
