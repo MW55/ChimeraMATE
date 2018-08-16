@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from functools import reduce
 import math
+import itertools as it
 
 cdef class kmer_filter:
     cdef dict __dict__
@@ -70,15 +71,18 @@ cdef class chimera_search:
         self._seq_dict = self._seq_dict(masked_reads, k)
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
         self._intersection_list = self._intersection_list(self._abu_kmer_zip[0],
-                self._abu_kmer_zip[1], self._abu_kmer_zip[2], self._abu_kmer_zip[3])
+                self._abu_kmer_zip[1], self._abu_kmer_zip[2],
+                self._abu_kmer_zip[3])
         self._overlap_graph = self._overlap_graph(self._intersection_list)
-        self._high_indegree_graph = self._remove_low_indegree_edges(self._overlap_graph)
+        self._high_indegree_graph = self._remove_low_indegree_edges(
+                self._overlap_graph)
         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)
-        self.potential_chimeras = self.potential_chimeras(self.chimeric_subgraphs)
+        self.potential_chimeras = self.potential_chimeras(
+                self.chimeric_subgraphs)
 
 
     def _seq_dict(self, str masked_reads, int k):
-            cdef dict seq_dict = {} #col.defaultdict()
+            cdef dict seq_dict = {}
             cdef FastaEntryC f
             cdef str seq
             cdef str node1
@@ -122,30 +126,32 @@ cdef class chimera_search:
         cdef str x
         cdef str y
         gu = nx.DiGraph(list(intersection))
-        #longest_subgraph = max(nx.weakly_connected_component_subgraphs(gu), key=len)
-        longest_subgraph = [subgraph for subgraph
-                in nx.weakly_connected_component_subgraphs(gu)][0]
+        longest_subgraph = max(nx.weakly_connected_component_subgraphs(gu),
+                key=len)
 
-        return reduce(lambda x,y: x+y[-1], list(nx.topological_sort(
-            longest_subgraph)))
+        return reduce(lambda x,y: x+y[-1],
+                list(nx.topological_sort(longest_subgraph)))
 
     def _intersection_list(self, list abus, list kmers, tuple keys, list names):
         cdef list intersec_list
+        cdef list kmer_sets
+        cdef tuple nums
+        cdef tuple seqs
         cdef int i
-        cdef int j
-        cdef set intersec
         intersec_list = []
-        for i in range(len(kmers)):
-            for j in range(len(kmers)):
-                intersec = set(kmers[i]).intersection(kmers[j])
-                if i != j and intersec:
-                    intersec_list.append(((keys[i], abus[i], names[i]),
-                                          (keys[j], abus[j], names[j]),
-                                          self._shortest_common_superstring(
-                                              intersec)))
+        kmer_sets = [set(kmer_l) for kmer_l in kmers]
+        pairs = it.combinations(range(len(kmer_sets)), 2)
+        intersec = lambda a, b: kmer_sets[a].intersection(kmer_sets[b])
+        res = ((tup, intersec(*tup)) for tup in pairs
+                if intersec(*tup) != set())
+        nums, seqs = zip(*res)
+        intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
+            names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
+                names[nums[i][1]]), self._shortest_common_superstring(seqs[i]))
+            for i in range(len(seqs))]
 
         return intersec_list
-    
+
     def _compare_sequences(self, list intersec_list, graph, int i,
             tuple direction, str scs):
             cdef list remove_edge
@@ -180,8 +186,7 @@ cdef class chimera_search:
     def _add_edge(self, list intersec_list, graph, int i,tuple direction,
             str scs):
         graph.add_edge(intersec_list[i][direction[0]][0],
-                intersec_list[i][direction[1]][0], 
-                length=len(scs), seq = scs, 
+                intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
                 abu1 = intersec_list[i][direction[0]][1],
                 abu2 = intersec_list[i][direction[1]][1],
                 name1 = intersec_list[i][direction[0]][2],
@@ -198,8 +203,8 @@ cdef class chimera_search:
             else:
                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)
 
-        return t_g     
- 
+        return t_g
+
     def _remove_low_indegree_edges(self, overlap_graph):
         cdef list remove_edges
         remove_edges = []
@@ -208,30 +213,30 @@ cdef class chimera_search:
                 remove_edges.append(edge)
         for redge in remove_edges:
             overlap_graph.remove_edge(redge[0], redge[1])
-        
+
         return overlap_graph
-    
+
     def subgraphs(self,overlap_graph):
         cdef list subgraph_list
         cdef list high_indegree_subgraphs
         subgraph_list = [overlap_graph.subgraph(subg) for subg
                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
-        high_indegree_subgraphs = [subgraph for subgraph in subgraph_list 
+        high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
-        
+
         return high_indegree_subgraphs
-    
+
     def potential_chimeras(self, list subgraphs):
         cdef list node_list
         node_list = []
         for subgraph in subgraphs:
             for node in subgraph.nodes():
                 if subgraph.in_degree(node) > 1:
-                    node_list.append((node, list(subgraph.in_edges(node,
-                        data='name2'))[0][2]))
-        
+                    node_list.append((node,
+                        list(subgraph.in_edges(node, data='name2'))[0][2]))
+
         return node_list
-    
+
     def draw_subgraphs(self, list chimeric_subgraphs):
         cdef int i
         cdef str weight
@@ -244,7 +249,7 @@ cdef class chimera_search:
             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
                     edge_labels=edge_labels1)
             plt.show()
-            
+
     def write_fasta(self, str filename):
         with dinopy.FastaWriter(filename, 'w') as faw:
             for node in enumerate(self.potential_chimeras):
