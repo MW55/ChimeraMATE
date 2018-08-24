@@ -49,7 +49,7 @@ cdef class kmer_filter:
         num_reads = sum(1 for read in reads.entries())
         high_abu = []
         for kmer in bru_dict:
-            if bru_dict[kmer]['abu'] > num_reads/cutoff:
+            if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
                 high_abu.append(kmer)
         return high_abu
     

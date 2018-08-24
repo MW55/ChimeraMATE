@@ -3097,11 +3097,7 @@ static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t
                                               PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
 
 /* None.proto */
-static CYTHON_INLINE int __Pyx_div_int(int, int);
-
-/* UnaryNegOverflows.proto */
-#define UNARY_NEG_WOULD_OVERFLOW(x)\
-        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
+static CYTHON_INLINE long __Pyx_div_long(long, long);
 
 /* PyObjectLookupSpecial.proto */
 #if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
@@ -3312,6 +3308,10 @@ static CYTHON_INLINE int __Pyx_HasAttr(PyObject *, PyObject *);
 /* None.proto */
 static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t, Py_ssize_t);
 
+/* UnaryNegOverflows.proto */
+#define UNARY_NEG_WOULD_OVERFLOW(x)\
+        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
+
 static CYTHON_UNUSED int __pyx_array_getbuffer(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /*proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *); /*proto*/
 /* decode_c_string.proto */
@@ -3341,9 +3341,6 @@ static CYTHON_INLINE int __Pyx_PyList_Extend(PyObject* L, PyObject* v) {
     return PyList_SetSlice(L, PY_SSIZE_T_MAX, PY_SSIZE_T_MAX, v);
 #endif
 }
-
-/* None.proto */
-static CYTHON_INLINE long __Pyx_div_long(long, long);
 
 /* WriteUnraisableException.proto */
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
@@ -5855,7 +5852,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
  *         num_reads = sum(1 for read in reads.entries())
  *         high_abu = []             # <<<<<<<<<<<<<<
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
  */
   __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5866,7 +5863,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
  *         num_reads = sum(1 for read in reads.entries())
  *         high_abu = []
  *         for kmer in bru_dict:             # <<<<<<<<<<<<<<
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
  *                 high_abu.append(kmer)
  */
   __pyx_t_4 = 0;
@@ -5891,7 +5888,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
     /* "chimeramate_cy.pyx":52
  *         high_abu = []
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:             # <<<<<<<<<<<<<<
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:             # <<<<<<<<<<<<<<
  *                 high_abu.append(kmer)
  *         return high_abu
  */
@@ -5904,15 +5901,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
     __pyx_t_7 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_abu); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(__pyx_v_cutoff == 0)) {
-      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-      __PYX_ERR(0, 52, __pyx_L1_error)
-    }
-    else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_cutoff == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_num_reads))) {
-      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-      __PYX_ERR(0, 52, __pyx_L1_error)
-    }
-    __pyx_t_2 = __Pyx_PyInt_From_int(__Pyx_div_int(__pyx_v_num_reads, __pyx_v_cutoff)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_long((__Pyx_div_long(__pyx_v_cutoff, 0x64) * __pyx_v_num_reads)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_8 = PyObject_RichCompare(__pyx_t_7, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5923,7 +5912,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
 
       /* "chimeramate_cy.pyx":53
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
  *                 high_abu.append(kmer)             # <<<<<<<<<<<<<<
  *         return high_abu
  * 
@@ -5933,7 +5922,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
       /* "chimeramate_cy.pyx":52
  *         high_abu = []
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:             # <<<<<<<<<<<<<<
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:             # <<<<<<<<<<<<<<
  *                 high_abu.append(kmer)
  *         return high_abu
  */
@@ -5942,7 +5931,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "chimeramate_cy.pyx":54
- *             if bru_dict[kmer]['abu'] > num_reads/cutoff:
+ *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
  *                 high_abu.append(kmer)
  *         return high_abu             # <<<<<<<<<<<<<<
  * 
@@ -36343,9 +36332,9 @@ static CYTHON_INLINE int __Pyx_dict_iter_next(
 }
 
 /* None */
-  static CYTHON_INLINE int __Pyx_div_int(int a, int b) {
-    int q = a / b;
-    int r = a - q*b;
+  static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
+    long q = a / b;
+    long r = a - q*b;
     q -= ((r != 0) & ((r ^ b) < 0));
     return q;
 }
@@ -37675,14 +37664,6 @@ static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value,
     *tb = tmp_tb;
 }
 #endif
-
-/* None */
-          static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
-    long q = a / b;
-    long r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
-}
 
 /* WriteUnraisableException */
           static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
