@@ -8,15 +8,18 @@ from functools import reduce
 import math
 import itertools as it
 import multiprocessing as mp
+import networkx as nx
+import os
+import yaml
 
 cdef class kmer_filter:
     cdef dict __dict__
-    def __init__(self, str otu_file, int k, int cutoff=10):
+    def __init__(self, str otu_file, int k, int cutoff):
         self.reads = dinopy.FastaReader(otu_file)
         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
-        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads,
-                self.de_bruijn_dict, cutoff)
-        
+        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+    
+    # The prior abundance of the otu should also go in the kmer abundance
     def _make_de_bruijn_file(self, reads, int k):
         cdef FastaEntryC f
         cdef str name
@@ -24,7 +27,7 @@ cdef class kmer_filter:
         cdef str node
         cdef dict bru_dict
         cdef list nodes
-        bru_dict = dict()
+        bru_dict = {}
         nodes = []
         for f in reads.entries():
             seq = f.sequence.decode()
@@ -42,12 +45,14 @@ cdef class kmer_filter:
                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
         return bru_dict
     
-    def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):
-        cdef int num_reads
+    def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):
+        cdef float num_reads
         cdef list high_abu
         cdef str kmer
+        cdef float threshold
         num_reads = sum(1 for read in reads.entries())
         high_abu = []
+        threshold = ((cutoff/100) * num_reads)
         for kmer in bru_dict:
             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
                 high_abu.append(kmer)
@@ -57,7 +62,7 @@ cdef class kmer_filter:
         cdef FastaEntryC entry
         cdef str seq
         cdef str kmer
-        with dinopy.FastaWriter(str(output_file), line_width=1000) as faw:
+        with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:
             for entry in reads.entries():
                 seq = entry.sequence.decode()
                 for kmer in kmer_abundance_sorting:
@@ -80,7 +85,7 @@ cdef class chimera_search:
         self.potential_chimeras = self.potential_chimeras(
                 self.chimeric_subgraphs)
 
-
+    #switch it up so that it only creates the seq_dict entry if both nodes a uppercase
     def _seq_dict(self, str masked_reads, int k):
             cdef dict seq_dict = {}
             cdef FastaEntryC f
@@ -99,7 +104,7 @@ cdef class chimera_search:
                     node1 = seq[i:i+k-1]
                     node2 = seq[i+1:i+k]
                     if node1.isupper() and node2.isupper():
-                        seq_dict[seq]['kmers'].append((node1, node2))
+                        seq_dict[seq]['kmers'].append((node1, node2)) #here should come the declarations of seq, kmers,abu,name
             seq_dict2 = {key:value for key, value in seq_dict.items()
                     if seq_dict[key]['kmers']}
 
@@ -132,12 +137,16 @@ cdef class chimera_search:
         return reduce(lambda x,y: x+y[-1],
                 list(nx.topological_sort(longest_subgraph)))
     
+    #add static typisation
     def _intersection_list(self, list kmers):
         kmer_sets = [set(kmer_l) for kmer_l in kmers]
         pairs = it.combinations(range(len(kmer_sets)), 2)
-        intersec = lambda a, b: kmer_sets[a].intersection(kmer_sets[b])
-        res = ((tup, intersec(*tup)) for tup in pairs
-                if intersec(*tup) != set())
+        #intersec = lambda a, b: kmer_sets[a].intersection(kmer_sets[b])
+        res = []
+        for tup in pairs:
+            set_intersec = kmer_sets[tup[0]].intersection(kmer_sets[tup[1]])
+            if set_intersec:
+                res.append((tup, set_intersec))
         nums, seqs = zip(*res)
         return nums, seqs
 
@@ -151,7 +160,7 @@ cdef class chimera_search:
     
     def _calc_ranges(self, seqs, threads):
         seq_count = len(seqs)
-        threads = 4
+        #threads = 4
         spread = seq_count / threads
         length_of_range = int(spread)
         list_of_ranges = []
@@ -297,8 +306,63 @@ cdef class chimera_search:
                     edge_labels=edge_labels1)
             plt.show()
     
+    # still have to write out the sequences that are NOT chimeras, thats the whole point you imbecile
     def write_fasta(self, str filename):
         with dinopy.FastaWriter(filename, 'w') as faw:
             for node in enumerate(self.potential_chimeras):
                 faw.write_entry((node[1][0].encode(),
                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
+
+
+def try_config(mask_kmers_range, otus, softmask_file, output_file):
+    results_dict = {}
+    for mask_kmers in mask_kmers_range: #range(12, 36)
+            print('masked_kmer number {}'.format(mask_kmers))
+            results_dict['mask_kmers_{}'.format(mask_kmers)] = {}
+            for cutoff in range(1):
+                print('cutoff {} of 50'.format(cutoff))
+                results_dict['mask_kmers_{}'.format(mask_kmers)]['cutoff_{}'.format(cutoff)] = {}
+                g = kmer_filter(otus, mask_kmers, cutoff)
+                g.softmask(g.reads, g.kmer_abundance_sorting, softmask_file)
+                for chim_kmers in [38]:
+                    print('chim_kmer number {} of 36'.format(chim_kmers))
+                    results_dict['mask_kmers_{}'.format(mask_kmers)][
+                        'cutoff_{}'.format(cutoff)]['chim_kmers_{}'.format(chim_kmers)] = {}
+                    for abskew in [0.1]:
+                        print('abskew {}'.format(abskew))
+                        results_dict['mask_kmers_{}'.format(mask_kmers)][
+                        'cutoff_{}'.format(cutoff)]['chim_kmers_{}'.format(chim_kmers)]['abskew_{}'.format(abskew)] = {}
+                        try:
+                            c = chimera_search(softmask_file, chim_kmers, 4, abskew)
+                        except:
+                            print('Error')
+                            #os.remove(softmask_file)
+                            continue
+                        try:
+                            seq, names = zip(*c.potential_chimeras)
+                            co = 0
+                            for name in names:
+                                if 'ch' in name:
+                                    co += 1   
+                            results_dict['mask_kmers_{}'.format(mask_kmers)][
+                                'cutoff_{}'.format(cutoff)]['chim_kmers_{}'.format(chim_kmers)][
+                                'abskew_{}'.format(abskew)][
+                                'num_pot_chims'] = len(c.potential_chimeras)
+                            results_dict['mask_kmers_{}'.format(mask_kmers)][
+                                'cutoff_{}'.format(cutoff)]['chim_kmers_{}'.format(chim_kmers)][
+                                'abskew_{}'.format(abskew)][
+                                'num_real_chims'] = co
+                            results_dict['mask_kmers_{}'.format(mask_kmers)][
+                                'cutoff_{}'.format(cutoff)]['chim_kmers_{}'.format(chim_kmers)][
+                                'abskew_{}'.format(abskew)][
+                                'false_pos'] = len(c.potential_chimeras) - co
+                            with open(str(output_file), 'w') as yaml_file:
+                                yaml.dump(results_dict, yaml_file, default_flow_style=False)
+                        except:
+                            print('Error writing output')
+                            continue
+                os.remove(softmask_file)
+
+def run():
+    otus = 'shuff.fasta'
+    try_config(38, otus, 'masked.fasta', 'test.yaml')
