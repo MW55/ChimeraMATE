@@ -1,22 +1,20 @@
 cimport dinopy
 import dinopy
-import collections as col
 from dinopy.definitions cimport FastaEntryC
 import matplotlib.pyplot as plt
 import networkx as nx
 from functools import reduce
 import math
 import itertools as it
-import multiprocessing as mp
 
 cdef class kmer_filter:
     cdef dict __dict__
-    def __init__(self, str otu_file, int k, int cutoff=10):
+    def __init__(self, str otu_file, int k, int cutoff):
         self.reads = dinopy.FastaReader(otu_file)
         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
-        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads,
-                self.de_bruijn_dict, cutoff)
-        
+        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+    
+    # The prior abundance of the otu should also go in the kmer abundance
     def _make_de_bruijn_file(self, reads, int k):
         cdef FastaEntryC f
         cdef str name
@@ -24,7 +22,7 @@ cdef class kmer_filter:
         cdef str node
         cdef dict bru_dict
         cdef list nodes
-        bru_dict = dict()
+        bru_dict = {}
         nodes = []
         for f in reads.entries():
             seq = f.sequence.decode()
@@ -57,14 +55,13 @@ cdef class kmer_filter:
         cdef FastaEntryC entry
         cdef str seq
         cdef str kmer
-        with dinopy.FastaWriter(str(output_file), line_width=1000) as faw:
+        with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:
             for entry in reads.entries():
                 seq = entry.sequence.decode()
                 for kmer in kmer_abundance_sorting:
                     if kmer in seq:
                         seq = seq.replace(kmer, kmer.lower())
                 faw.write_entry((seq.encode(), entry.name))
-
 
 cdef class chimera_search:
     cdef dict __dict__
@@ -73,13 +70,16 @@ cdef class chimera_search:
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
         self._intersection_list = self._intersection_list(
                 self._abu_kmer_zip[1])
-        self._overlap_graph = self._overlap_graph(self.run_mp(threads))
+        self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
+                                      self._abu_kmer_zip[2],
+                                      self._abu_kmer_zip[3],
+                                      self._intersection_list[0],
+                                      self._intersection_list[1]))
         self._high_indegree_graph = self._remove_low_indegree_edges(
                 self._overlap_graph, abskew)
-        self.chimeric_subgraphs = self.subgraphs(self._overlap_graph)
+        self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
         self.potential_chimeras = self.potential_chimeras(
                 self.chimeric_subgraphs)
-
 
     def _seq_dict(self, str masked_reads, int k):
             cdef dict seq_dict = {}
@@ -87,23 +87,19 @@ cdef class chimera_search:
             cdef str seq
             cdef str node1
             cdef str node2
-            cdef dict seq_dict2
             cdef int i
             for f in dinopy.FastaReader(masked_reads).entries():
                 seq = f.sequence.decode()
-                seq_dict[seq] = {}
-                seq_dict[seq]['kmers'] = []
-                seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
-                seq_dict[seq]['name'] = f.name.decode().split(';')[0]
                 for i in range(len(seq)-k+1):
-                    node1 = seq[i:i+k-1]
-                    node2 = seq[i+1:i+k]
-                    if node1.isupper() and node2.isupper():
-                        seq_dict[seq]['kmers'].append((node1, node2))
-            seq_dict2 = {key:value for key, value in seq_dict.items()
-                    if seq_dict[key]['kmers']}
-
-            return seq_dict2
+                    node = seq[i:i+k]
+                    if node.isupper():
+                        if seq not in seq_dict.keys():
+                            seq_dict[seq] = {}
+                            seq_dict[seq]['kmers'] = []
+                            seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
+                            seq_dict[seq]['name'] = f.name.decode().split(';')[0]
+                        seq_dict[seq]['kmers'].append(node)
+            return seq_dict
     
     def _abu_kmer_zip(self, dict seq_dict):
         cdef tuple keys, values
@@ -121,78 +117,65 @@ cdef class chimera_search:
 
         return (abus, kmers, keys, names)
     
-
-    def _shortest_common_superstring(self, intersection):
-        cdef str x
-        cdef str y
-        gu = nx.DiGraph(list(intersection))
-        longest_subgraph = max(nx.weakly_connected_component_subgraphs(gu),
-                key=len)
-
-        return reduce(lambda x,y: x+y[-1],
-                list(nx.topological_sort(longest_subgraph)))
+        
+    ## this works, but keep in mind that the resulting longest common substring does not neccessarily exists 
+    # in the reduced form in any of the target sequences, as there could be a situation in which
+    # both sequences share an overlap and then a softmasked region, followed by another overlap
+    # the reduce function ignores this "gap" and concatenates the kmers anyway
+    def _longest_common_substring(self, tuple pair, list kmers, list kmer_sets):
+        cdef list tranverse
+        cdef list search
+        cdef list s_search
+        cdef list longest_entry
+        cdef list buffer
+        cdef int i
+        cdef int j
+        if len(kmers[pair[0]]) > len(kmers[pair[1]]):
+            tranverse = self._abu_kmer_zip[1][pair[0]]
+            search = self._abu_kmer_zip[1][pair[1]]
+            s_search = sorted(self._abu_kmer_zip[1][pair[1]])
+            k_set = kmer_sets[pair[1]]
+        else:
+            tranverse = self._abu_kmer_zip[1][pair[1]]
+            search = self._abu_kmer_zip[1][pair[0]]
+            s_search = sorted(self._abu_kmer_zip[1][pair[0]])
+            k_set = kmer_sets[pair[0]]
+        longest_entry = []
+        buffer = []
+        for i in range(len(tranverse)):
+            if not buffer:
+                if tranverse[i] in k_set:
+                    buffer.append(tranverse[i])
+                    j = search.index(tranverse[i])
+            elif len(search) >= j+2 and tranverse[i] == search[j+1]:
+                buffer.append(tranverse[i])
+                j += 1
+            else:
+                if len(buffer) > len(longest_entry):
+                    longest_entry = buffer.copy()
+                    buffer = []
+        if len(buffer) > len(longest_entry):
+            longest_entry = buffer.copy()
+        return reduce(lambda x,y: x+y[-1], longest_entry)
     
+    #add static typisation
     def _intersection_list(self, list kmers):
         kmer_sets = [set(kmer_l) for kmer_l in kmers]
-        pairs = it.combinations(range(len(kmer_sets)), 2)
-        intersec = lambda a, b: kmer_sets[a].intersection(kmer_sets[b])
-        res = ((tup, intersec(*tup)) for tup in pairs
-                if intersec(*tup) != set())
-        nums, seqs = zip(*res)
-        return nums, seqs
+        pairs = it.combinations(range(len(kmers)), 2)
+        res = []
+        for tup in pairs:
+            if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
+                res.append(tup)
+        return res, kmer_sets
 
-    def create_scs_lists(self, abus, keys, names, nums, seqs, output, seqrange):
+    def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+        cdef list intersec_list
         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
-                names[nums[i][1]]), self._shortest_common_superstring(seqs[i]))
-            for i in seqrange]
+                names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
+            for i in range(len(nums))]
     
-        output.put(intersec_list)
-    
-    def _calc_ranges(self, seqs, threads):
-        seq_count = len(seqs)
-        threads = 4
-        spread = seq_count / threads
-        length_of_range = int(spread)
-        list_of_ranges = []
-        for i in range(0, seq_count+1, length_of_range):
-            if i > 0:
-                list_of_ranges.append(range(last_i, i))
-                #if type(spread) == float:
-                 #   i += 2
-                  #  list_of_ranges.append(range(last_i, i))
-                #else:
-                 #   list_of_ranges.append(range(last_i, i))
-            last_i = i
-        return list_of_ranges
-    
-    def run_mp(self, threads):
-        nums, seqs = self._intersection_list
-        mananger = mp.Manager()
-        output = mananger.Queue()
-        #output = mp.Queue()
-
-        # Setup a list of processes that we want to run
-        #processes = [mp.Process(target=rand_string, args=(5, output)) for x in range(4)]
-        processes = [mp.Process(target=self.create_scs_lists, 
-                                args=(self._abu_kmer_zip[0],
-                                      self._abu_kmer_zip[2],
-                                      self._abu_kmer_zip[3], 
-                                      nums, seqs, output, 
-                                      self._calc_ranges(seqs, threads)[x]))
-                     for x in range(4)]
-
-
-        # Run processes
-        for p in processes:
-            p.start()
-
-        # Exit the completed processes
-        for p in processes:
-            p.join()
-
-        # Get process results from the output queue
-        return [item for sublist in [output.get() for p in processes] for item in sublist]
+        return intersec_list
 
     def _compare_sequences(self, list intersec_list, graph, int i,
             tuple direction, str scs):
@@ -247,7 +230,7 @@ cdef class chimera_search:
 
         return t_g
 
-    def _remove_low_indegree_edges(self, overlap_graph, abskew):
+    def _remove_low_indegree_edges(self, overlap_graph, float abskew):
         cdef list remove_edges
         remove_edges = list()
         for edge in overlap_graph.edges(data=True):
