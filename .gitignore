@@ -2,5 +2,7 @@ build/*
 build
 *.so
 *.swp
-*.c
+chimeramate_cy.c
 chimeramate_cy.html
+*.fasta
+*.txt

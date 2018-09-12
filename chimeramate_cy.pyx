@@ -6,6 +6,7 @@ import networkx as nx
 from functools import reduce
 import math
 import itertools as it
+import sys
 
 cdef class kmer_filter:
     cdef dict __dict__
@@ -40,14 +41,16 @@ cdef class kmer_filter:
                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
         return bru_dict
     
-    def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):
-        cdef int num_reads
+    def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):
+        cdef float num_reads
         cdef list high_abu
         cdef str kmer
+        cdef float threshold
         num_reads = sum(1 for read in reads.entries())
         high_abu = []
+        threshold = ((cutoff/100) * num_reads)
         for kmer in bru_dict:
-            if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
+             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
                 high_abu.append(kmer)
         return high_abu
     
@@ -63,9 +66,10 @@ cdef class kmer_filter:
                         seq = seq.replace(kmer, kmer.lower())
                 faw.write_entry((seq.encode(), entry.name))
 
+
 cdef class chimera_search:
     cdef dict __dict__
-    def __init__(self, str masked_reads, int k, int threads, float abskew):
+    def __init__(self, str masked_reads, int k, float abskew):
         self._seq_dict = self._seq_dict(masked_reads, k)
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
         self._intersection_list = self._intersection_list(
@@ -80,6 +84,7 @@ cdef class chimera_search:
         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
         self.potential_chimeras = self.potential_chimeras(
                 self.chimeric_subgraphs)
+        self.write_nonchims = self.write_nonchims(masked_reads, filename = 'nonchims.fasta')
 
     def _seq_dict(self, str masked_reads, int k):
             cdef dict seq_dict = {}
@@ -280,8 +285,16 @@ cdef class chimera_search:
                     edge_labels=edge_labels1)
             plt.show()
     
-    def write_fasta(self, str filename):
+    def write_chims(self, str filename):
         with dinopy.FastaWriter(filename, 'w') as faw:
             for node in enumerate(self.potential_chimeras):
                 faw.write_entry((node[1][0].encode(),
                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
+    
+    def write_nonchims(self, masked_reads, str filename):
+        with dinopy.FastaWriter(filename, 'w', force_overwrite=True) as faw: 
+            msk = dinopy.FastaReader(masked_reads, 'r')
+            for read in msk.entries():
+                seq = read.sequence.decode()
+                if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
+                    faw.write_entry((seq.upper().encode(), read.name))
