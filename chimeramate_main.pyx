@@ -1,22 +1,25 @@
 cimport dinopy
 import dinopy
+import collections as col
 from dinopy.definitions cimport FastaEntryC
 import matplotlib.pyplot as plt
 import networkx as nx
 from functools import reduce
 import math
 import itertools as it
-import sys
+import multiprocessing as mp
+import networkx as nx
+import os
+import yaml
 
 cdef class kmer_filter:
     cdef dict __dict__
-    def __init__(self, str otu_file, int k, int cutoff):
+    def __init__(self, str otu_file, int soft_k, int cutoff):
         self.reads = dinopy.FastaReader(otu_file)
-        self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
-        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+        self.kmer_dict = self._k_mer_counting(self.reads, soft_k)
+        self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)
     
-    # The prior abundance of the otu should also go in the kmer abundance
-    def _make_de_bruijn_file(self, reads, int k):
+    def _k_mer_counting(self, reads, int k):
         cdef FastaEntryC f
         cdef str name
         cdef int i
@@ -50,10 +53,10 @@ cdef class kmer_filter:
         high_abu = []
         threshold = ((cutoff/100) * num_reads)
         for kmer in bru_dict:
-             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
+             if bru_dict[kmer]['abu'] > threshold: 
                 high_abu.append(kmer)
         return high_abu
-    
+
     def softmask(self, reads, list kmer_abundance_sorting, str output_file):
         cdef FastaEntryC entry
         cdef str seq
@@ -66,25 +69,23 @@ cdef class kmer_filter:
                         seq = seq.replace(kmer, kmer.lower())
                 faw.write_entry((seq.encode(), entry.name))
 
-
 cdef class chimera_search:
     cdef dict __dict__
-    def __init__(self, str masked_reads, int k, float abskew):
-        self._seq_dict = self._seq_dict(masked_reads, k)
+    def __init__(self, str masked_reads, int chim_k, float abskew):
+        self._seq_dict = self._seq_dict(masked_reads, chim_k)
         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
+        self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
         self._intersection_list = self._intersection_list(
-                self._abu_kmer_zip[1])
+                self._kmer_sets)
         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
                                       self._abu_kmer_zip[2],
                                       self._abu_kmer_zip[3],
-                                      self._intersection_list[0],
-                                      self._intersection_list[1]))
-        self._high_indegree_graph = self._remove_low_indegree_edges(
+                                      self._intersection_list,
+                                      self._kmer_sets))
+        self._high_indegree_graph = self._graph_filter(
                 self._overlap_graph, abskew)
-        self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
-        self.potential_chimeras = self.potential_chimeras(
-                self.chimeric_subgraphs)
-        self.write_nonchims = self.write_nonchims(masked_reads, filename = 'nonchims.fasta')
+        self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)
+        self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')
 
     def _seq_dict(self, str masked_reads, int k):
             cdef dict seq_dict = {}
@@ -123,57 +124,58 @@ cdef class chimera_search:
         return (abus, kmers, keys, names)
     
         
-    ## this works, but keep in mind that the resulting longest common substring does not neccessarily exists 
+    # this works, but keep in mind that the resulting longest common substring does not neccessarily exists 
     # in the reduced form in any of the target sequences, as there could be a situation in which
     # both sequences share an overlap and then a softmasked region, followed by another overlap
     # the reduce function ignores this "gap" and concatenates the kmers anyway
     def _longest_common_substring(self, tuple pair, list kmers, list kmer_sets):
-        cdef list tranverse
+        cdef list traverse
         cdef list search
-        cdef list s_search
         cdef list longest_entry
         cdef list buffer
         cdef int i
         cdef int j
         if len(kmers[pair[0]]) > len(kmers[pair[1]]):
-            tranverse = self._abu_kmer_zip[1][pair[0]]
+            traverse = self._abu_kmer_zip[1][pair[0]]
             search = self._abu_kmer_zip[1][pair[1]]
-            s_search = sorted(self._abu_kmer_zip[1][pair[1]])
             k_set = kmer_sets[pair[1]]
         else:
-            tranverse = self._abu_kmer_zip[1][pair[1]]
+            traverse = self._abu_kmer_zip[1][pair[1]]
             search = self._abu_kmer_zip[1][pair[0]]
-            s_search = sorted(self._abu_kmer_zip[1][pair[0]])
             k_set = kmer_sets[pair[0]]
         longest_entry = []
         buffer = []
-        for i in range(len(tranverse)):
+        for i in range(len(traverse)):
             if not buffer:
-                if tranverse[i] in k_set:
-                    buffer.append(tranverse[i])
-                    j = search.index(tranverse[i])
-            elif len(search) >= j+2 and tranverse[i] == search[j+1]:
-                buffer.append(tranverse[i])
+                if traverse[i] in k_set:
+                    buffer.append(traverse[i])
+                    j = search.index(traverse[i])
+            elif len(search) >= j+2 and traverse[i] == search[j+1]:
+                buffer.append(traverse[i])
                 j += 1
             else:
                 if len(buffer) > len(longest_entry):
                     longest_entry = buffer.copy()
-                    buffer = []
+                buffer = []
         if len(buffer) > len(longest_entry):
             longest_entry = buffer.copy()
         return reduce(lambda x,y: x+y[-1], longest_entry)
     
-    #add static typisation
-    def _intersection_list(self, list kmers):
+    def _kmer_sets(self, list kmers):
+        cdef list kmer_sets
         kmer_sets = [set(kmer_l) for kmer_l in kmers]
-        pairs = it.combinations(range(len(kmers)), 2)
+        return kmer_sets
+    
+    def _intersection_list(self, list kmer_sets):
+        cdef list res
+        pairs = it.combinations(range(len(kmer_sets)), 2)
         res = []
         for tup in pairs:
             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
                 res.append(tup)
-        return res, kmer_sets
+        return res
 
-    def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+    def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
         cdef list intersec_list
         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
@@ -235,12 +237,10 @@ cdef class chimera_search:
 
         return t_g
 
-    def _remove_low_indegree_edges(self, overlap_graph, float abskew):
+    def _graph_filter(self, overlap_graph, float abskew):
         cdef list remove_edges
         remove_edges = list()
         for edge in overlap_graph.edges(data=True):
-            if overlap_graph.in_degree(edge[1]) < 2:
-                remove_edges.append(edge)
             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
                 remove_edges.append(edge)
         for redge in list(remove_edges):
@@ -251,50 +251,29 @@ cdef class chimera_search:
         
         return overlap_graph
 
-    def subgraphs(self,overlap_graph):
-        cdef list subgraph_list
-        cdef list high_indegree_subgraphs
-        subgraph_list = [overlap_graph.subgraph(subg) for subg
-                in nx.weakly_connected_component_subgraphs(overlap_graph)]
-        high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
-                if any(x > 1 for x in dict(subgraph.in_degree()).values())]
-
-        return high_indegree_subgraphs
-
-    def potential_chimeras(self, list subgraphs):
+    def potential_chimeras(self, graph):
         cdef list node_list
         node_list = []
-        for subgraph in subgraphs:
-            for node in subgraph.nodes():
-                if subgraph.in_degree(node) > 1:
-                    node_list.append((node,
-                        list(subgraph.in_edges(node, data='name2'))[0][2]))
+        for node in graph.nodes():
+            if graph.in_degree(node) > 1:
+                node_list.append((node,
+                    list(graph.in_edges(node, data='name2'))[0][2]))
 
         return node_list
 
-    def draw_subgraphs(self, list chimeric_subgraphs):
-        cdef int i
-        cdef str weight
-        cdef int k
-        for i in range(len(chimeric_subgraphs)):
-            pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',
-                    k=5/math.sqrt(chimeric_subgraphs[i].order()))
-            nx.draw(chimeric_subgraphs[i], pos)
-            edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
-            nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
-                    edge_labels=edge_labels1)
-            plt.show()
-    
-    def write_chims(self, str filename):
-        with dinopy.FastaWriter(filename, 'w') as faw:
-            for node in enumerate(self.potential_chimeras):
-                faw.write_entry((node[1][0].encode(),
-                    '{};{}'.format(str(node[0]), node[1][1]).encode()))
-    
-    def write_nonchims(self, masked_reads, str filename):
-        with dinopy.FastaWriter(filename, 'w', force_overwrite=True) as faw: 
+    def write(self, masked_reads, str chimname, str nonchimname):
+        with dinopy.FastaWriter(chimname, 'w', force_overwrite=True, 
+                                line_width=1000) as c_faw, dinopy.FastaWriter(
+            nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw: 
             msk = dinopy.FastaReader(masked_reads, 'r')
             for read in msk.entries():
                 seq = read.sequence.decode()
                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
-                    faw.write_entry((seq.upper().encode(), read.name))
+                    n_faw.write_entry((seq.upper().encode(), read.name))
+                else:
+                    c_faw.write_entry((seq.upper().encode(), read.name))
+
+def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):
+    d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+    d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+    chimera_search(softmask_file, chim_k = 29, abskew = 0.03)

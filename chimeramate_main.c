@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "chimeramate_cy",
+        "name": "chimeramate_main",
         "sources": [
-            "chimeramate_cy.pyx"
+            "chimeramate_main.pyx"
         ]
     },
-    "module_name": "chimeramate_cy"
+    "module_name": "chimeramate_main"
 }
 END: Cython Metadata */
 
@@ -531,8 +531,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__chimeramate_cy
-#define __PYX_HAVE_API__chimeramate_cy
+#define __PYX_HAVE__chimeramate_main
+#define __PYX_HAVE_API__chimeramate_main
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
@@ -766,7 +766,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "chimeramate_cy.pyx",
+  "chimeramate_main.pyx",
   "stringsource",
   "__init__.pxd",
   "array.pxd",
@@ -1170,12 +1170,10 @@ struct __pyx_obj_6dinopy_15nameline_parser_NamelineParser;
 struct __pyx_obj_6dinopy_6sambam_AlignmentRecord;
 struct __pyx_obj_6dinopy_10sam_reader_SamReader;
 struct __pyx_obj_6dinopy_10sam_writer_SamWriter;
-struct __pyx_obj_14chimeramate_cy_kmer_filter;
-struct __pyx_obj_14chimeramate_cy_chimera_search;
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting;
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr;
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs;
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr;
+struct __pyx_obj_16chimeramate_main_kmer_filter;
+struct __pyx_obj_16chimeramate_main_chimera_search;
+struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting;
+struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr;
 struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
@@ -2189,86 +2187,59 @@ struct __pyx_obj_6dinopy_10sam_writer_SamWriter {
 };
 
 
-/* "chimeramate_cy.pyx":10
- * import itertools as it
+/* "chimeramate_main.pyx":15
+ * import yaml
  * 
  * cdef class kmer_filter:             # <<<<<<<<<<<<<<
  *     cdef dict __dict__
- *     def __init__(self, str otu_file, int k, int cutoff):
+ *     def __init__(self, str otu_file, int soft_k, int cutoff):
  */
-struct __pyx_obj_14chimeramate_cy_kmer_filter {
+struct __pyx_obj_16chimeramate_main_kmer_filter {
   PyObject_HEAD
   PyObject *__dict__;
 };
 
 
-/* "chimeramate_cy.pyx":66
+/* "chimeramate_main.pyx":72
  *                 faw.write_entry((seq.encode(), entry.name))
  * 
  * cdef class chimera_search:             # <<<<<<<<<<<<<<
  *     cdef dict __dict__
- *     def __init__(self, str masked_reads, int k, int threads, float abskew):
+ *     def __init__(self, str masked_reads, int chim_k, float abskew):
  */
-struct __pyx_obj_14chimeramate_cy_chimera_search {
+struct __pyx_obj_16chimeramate_main_chimera_search {
   PyObject_HEAD
   PyObject *__dict__;
 };
 
 
-/* "chimeramate_cy.pyx":43
+/* "chimeramate_main.pyx":47
  *         return bru_dict
  * 
- *     def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):             # <<<<<<<<<<<<<<
- *         cdef int num_reads
+ *     def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):             # <<<<<<<<<<<<<<
+ *         cdef float num_reads
  *         cdef list high_abu
  */
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting {
+struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting {
   PyObject_HEAD
   PyObject *__pyx_v_reads;
 };
 
 
-/* "chimeramate_cy.pyx":47
- *         cdef list high_abu
+/* "chimeramate_main.pyx":52
  *         cdef str kmer
+ *         cdef float threshold
  *         num_reads = sum(1 for read in reads.entries())             # <<<<<<<<<<<<<<
  *         high_abu = []
- *         for kmer in bru_dict:
+ *         threshold = ((cutoff/100) * num_reads)
  */
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr {
+struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr {
   PyObject_HEAD
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *__pyx_outer_scope;
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *__pyx_outer_scope;
   PyObject *__pyx_v_read;
   PyObject *__pyx_t_0;
   Py_ssize_t __pyx_t_1;
   PyObject *(*__pyx_t_2)(PyObject *);
-};
-
-
-/* "chimeramate_cy.pyx":249
- *         return overlap_graph
- * 
- *     def subgraphs(self,overlap_graph):             # <<<<<<<<<<<<<<
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
- */
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs {
-  PyObject_HEAD
-  PyObject *__pyx_v_subgraph;
-};
-
-
-/* "chimeramate_cy.pyx":255
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]             # <<<<<<<<<<<<<<
- * 
- *         return high_indegree_subgraphs
- */
-struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr {
-  PyObject_HEAD
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *__pyx_outer_scope;
-  PyObject *__pyx_v_x;
 };
 
 
@@ -3062,9 +3033,6 @@ static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* dict, int is_dict, 
 static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t orig_length, Py_ssize_t* ppos,
                                               PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
 
-/* None.proto */
-static CYTHON_INLINE long __Pyx_div_long(long, long);
-
 /* PyObjectLookupSpecial.proto */
 #if CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
 static CYTHON_INLINE PyObject* __Pyx_PyObject_LookupSpecial(PyObject* obj, PyObject* attr_name) {
@@ -3307,6 +3275,9 @@ static CYTHON_INLINE int __Pyx_PyList_Extend(PyObject* L, PyObject* v) {
 
 /* None.proto */
 static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
+
+/* None.proto */
+static CYTHON_INLINE long __Pyx_div_long(long, long);
 
 /* WriteUnraisableException.proto */
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
@@ -4067,13 +4038,11 @@ static PyTypeObject *__pyx_ptype_6dinopy_10sam_writer_SamWriter = 0;
 
 /* Module declarations from 'dinopy' */
 
-/* Module declarations from 'chimeramate_cy' */
-static PyTypeObject *__pyx_ptype_14chimeramate_cy_kmer_filter = 0;
-static PyTypeObject *__pyx_ptype_14chimeramate_cy_chimera_search = 0;
-static PyTypeObject *__pyx_ptype_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting = 0;
-static PyTypeObject *__pyx_ptype_14chimeramate_cy___pyx_scope_struct_1_genexpr = 0;
-static PyTypeObject *__pyx_ptype_14chimeramate_cy___pyx_scope_struct_2_subgraphs = 0;
-static PyTypeObject *__pyx_ptype_14chimeramate_cy___pyx_scope_struct_3_genexpr = 0;
+/* Module declarations from 'chimeramate_main' */
+static PyTypeObject *__pyx_ptype_16chimeramate_main_kmer_filter = 0;
+static PyTypeObject *__pyx_ptype_16chimeramate_main_chimera_search = 0;
+static PyTypeObject *__pyx_ptype_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting = 0;
+static PyTypeObject *__pyx_ptype_16chimeramate_main___pyx_scope_struct_1_genexpr = 0;
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -4085,8 +4054,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(struct __pyx_obj_14chimeramate_cy_kmer_filter *, PyObject *); /*proto*/
-static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_chimera_search__set_state(struct __pyx_obj_14chimeramate_cy_chimera_search *, PyObject *); /*proto*/
+static PyObject *__pyx_f_16chimeramate_main___pyx_unpickle_kmer_filter__set_state(struct __pyx_obj_16chimeramate_main_kmer_filter *, PyObject *); /*proto*/
+static PyObject *__pyx_f_16chimeramate_main___pyx_unpickle_chimera_search__set_state(struct __pyx_obj_16chimeramate_main_chimera_search *, PyObject *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -4120,19 +4089,19 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "chimeramate_cy"
-extern int __pyx_module_is_main_chimeramate_cy;
-int __pyx_module_is_main_chimeramate_cy = 0;
+#define __Pyx_MODULE_NAME "chimeramate_main"
+extern int __pyx_module_is_main_chimeramate_main;
+int __pyx_module_is_main_chimeramate_main = 0;
 
-/* Implementation of 'chimeramate_cy' */
+/* Implementation of 'chimeramate_main' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_sum;
 static PyObject *__pyx_builtin_zip;
-static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
 static PyObject *__pyx_builtin_MemoryError;
+static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_Ellipsis;
 static PyObject *__pyx_builtin_id;
@@ -4140,21 +4109,26 @@ static PyObject *__pyx_builtin_IndexError;
 static const char __pyx_k_[] = "=";
 static const char __pyx_k_O[] = "O";
 static const char __pyx_k_c[] = "c";
+static const char __pyx_k_d[] = "d";
 static const char __pyx_k_i[] = "i";
 static const char __pyx_k_k[] = "k";
+static const char __pyx_k_r[] = "r";
 static const char __pyx_k_w[] = "w";
 static const char __pyx_k_x[] = "x";
 static const char __pyx_k_y[] = "y";
 static const char __pyx_k__6[] = ";";
-static const char __pyx_k__9[] = "{};{}";
 static const char __pyx_k_id[] = "id";
 static const char __pyx_k_it[] = "it";
+static const char __pyx_k_mp[] = "mp";
 static const char __pyx_k_nx[] = "nx";
-static const char __pyx_k__39[] = "*";
+static const char __pyx_k_os[] = "os";
+static const char __pyx_k__40[] = "*";
 static const char __pyx_k_abu[] = "abu";
+static const char __pyx_k_col[] = "col";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
 static const char __pyx_k_plt[] = "plt";
+static const char __pyx_k_run[] = "run";
 static const char __pyx_k_scs[] = "scs";
 static const char __pyx_k_seq[] = "seq";
 static const char __pyx_k_sum[] = "sum";
@@ -4167,7 +4141,6 @@ static const char __pyx_k_base[] = "base";
 static const char __pyx_k_copy[] = "copy";
 static const char __pyx_k_data[] = "data";
 static const char __pyx_k_dict[] = "__dict__";
-static const char __pyx_k_draw[] = "draw";
 static const char __pyx_k_exit[] = "__exit__";
 static const char __pyx_k_keys[] = "keys";
 static const char __pyx_k_main[] = "__main__";
@@ -4176,15 +4149,15 @@ static const char __pyx_k_mode[] = "mode";
 static const char __pyx_k_name[] = "name";
 static const char __pyx_k_ndim[] = "ndim";
 static const char __pyx_k_nums[] = "nums";
+static const char __pyx_k_otus[] = "otus";
 static const char __pyx_k_pack[] = "pack";
 static const char __pyx_k_pair[] = "pair";
 static const char __pyx_k_send[] = "send";
-static const char __pyx_k_show[] = "show";
 static const char __pyx_k_size[] = "size";
-static const char __pyx_k_sqrt[] = "sqrt";
 static const char __pyx_k_step[] = "step";
 static const char __pyx_k_stop[] = "stop";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_yaml[] = "yaml";
 static const char __pyx_k_ASCII[] = "ASCII";
 static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_close[] = "close";
@@ -4200,15 +4173,17 @@ static const char __pyx_k_name1[] = "name1";
 static const char __pyx_k_name2[] = "name2";
 static const char __pyx_k_names[] = "names";
 static const char __pyx_k_nodes[] = "nodes";
-static const char __pyx_k_order[] = "order";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_reads[] = "reads";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_split[] = "split";
 static const char __pyx_k_start[] = "start";
 static const char __pyx_k_throw[] = "throw";
+static const char __pyx_k_upper[] = "upper";
+static const char __pyx_k_write[] = "write";
 static const char __pyx_k_abskew[] = "abskew";
 static const char __pyx_k_append[] = "append";
+static const char __pyx_k_chim_k[] = "chim_k";
 static const char __pyx_k_cutoff[] = "cutoff";
 static const char __pyx_k_decode[] = "decode";
 static const char __pyx_k_dinopy[] = "dinopy";
@@ -4219,11 +4194,10 @@ static const char __pyx_k_length[] = "length";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "reduce";
+static const char __pyx_k_soft_k[] = "soft_k";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
-static const char __pyx_k_values[] = "values";
-static const char __pyx_k_weight[] = "weight";
 static const char __pyx_k_DiGraph[] = "DiGraph";
 static const char __pyx_k_entries[] = "entries";
 static const char __pyx_k_fortran[] = "fortran";
@@ -4231,10 +4205,10 @@ static const char __pyx_k_genexpr[] = "genexpr";
 static const char __pyx_k_isupper[] = "isupper";
 static const char __pyx_k_memview[] = "memview";
 static const char __pyx_k_replace[] = "replace";
-static const char __pyx_k_threads[] = "threads";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_add_edge[] = "_add_edge";
 static const char __pyx_k_bru_dict[] = "bru_dict";
+static const char __pyx_k_chimname[] = "chimname";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_in_edges[] = "in_edges";
 static const char __pyx_k_itemsize[] = "itemsize";
@@ -4243,18 +4217,19 @@ static const char __pyx_k_otu_file[] = "otu_file";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
 static const char __pyx_k_reduce_2[] = "__reduce__";
 static const char __pyx_k_seq_dict[] = "_seq_dict";
+static const char __pyx_k_sequence[] = "sequence";
 static const char __pyx_k_setstate[] = "__setstate__";
-static const char __pyx_k_subgraph[] = "subgraph";
+static const char __pyx_k_softmask[] = "softmask";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_direction[] = "direction";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_functools[] = "functools";
 static const char __pyx_k_in_degree[] = "in_degree";
 static const char __pyx_k_itertools[] = "itertools";
-static const char __pyx_k_kmer_sets[] = "kmer_sets";
+static const char __pyx_k_kmer_dict[] = "kmer_dict";
+static const char __pyx_k_kmer_sets[] = "_kmer_sets";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
-static const char __pyx_k_subgraphs[] = "subgraphs";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_add_edge_2[] = "add_edge";
@@ -4265,13 +4240,17 @@ static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
-static const char __pyx_k_edge_labels[] = "edge_labels";
+static const char __pyx_k_chims_fasta[] = "chims.fasta";
+static const char __pyx_k_collections[] = "collections";
+static const char __pyx_k_kmer_sets_2[] = "kmer_sets";
+static const char __pyx_k_nonchimname[] = "nonchimname";
 static const char __pyx_k_output_file[] = "output_file";
 static const char __pyx_k_remove_edge[] = "remove_edge";
 static const char __pyx_k_write_entry[] = "write_entry";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_abu_kmer_zip[] = "_abu_kmer_zip";
 static const char __pyx_k_combinations[] = "combinations";
+static const char __pyx_k_graph_filter[] = "_graph_filter";
 static const char __pyx_k_masked_reads[] = "masked_reads";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
@@ -4279,28 +4258,29 @@ static const char __pyx_k_intersec_list[] = "intersec_list";
 static const char __pyx_k_overlap_graph[] = "_overlap_graph";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
-static const char __pyx_k_spring_layout[] = "spring_layout";
-static const char __pyx_k_chimeramate_cy[] = "chimeramate_cy";
-static const char __pyx_k_de_bruijn_dict[] = "de_bruijn_dict";
+static const char __pyx_k_softmask_file[] = "softmask_file";
+static const char __pyx_k_k_mer_counting[] = "_k_mer_counting";
+static const char __pyx_k_nonchims_fasta[] = "nonchims.fasta";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static const char __pyx_k_force_overwrite[] = "force_overwrite";
+static const char __pyx_k_multiprocessing[] = "multiprocessing";
 static const char __pyx_k_overlap_graph_2[] = "overlap_graph";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_chimeramate_main[] = "chimeramate_main";
 static const char __pyx_k_create_scs_lists[] = "create_scs_lists";
+static const char __pyx_k_softmasked_fasta[] = "softmasked.fasta";
 static const char __pyx_k_compare_sequences[] = "_compare_sequences";
 static const char __pyx_k_intersection_list[] = "_intersection_list";
 static const char __pyx_k_matplotlib_pyplot[] = "matplotlib.pyplot";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
-static const char __pyx_k_chimeric_subgraphs[] = "chimeric_subgraphs";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_potential_chimeras[] = "potential_chimeras";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
-static const char __pyx_k_get_edge_attributes[] = "get_edge_attributes";
 static const char __pyx_k_high_indegree_graph[] = "_high_indegree_graph";
-static const char __pyx_k_make_de_bruijn_file[] = "_make_de_bruijn_file";
+static const char __pyx_k_chimeramate_main_pyx[] = "chimeramate_main.pyx";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
@@ -4310,10 +4290,7 @@ static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
 static const char __pyx_k_longest_common_substring[] = "_longest_common_substring";
 static const char __pyx_k_pyx_unpickle_kmer_filter[] = "__pyx_unpickle_kmer_filter";
-static const char __pyx_k_subgraphs_locals_genexpr[] = "subgraphs.<locals>.genexpr";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
-static const char __pyx_k_draw_networkx_edge_labels[] = "draw_networkx_edge_labels";
-static const char __pyx_k_remove_low_indegree_edges[] = "_remove_low_indegree_edges";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_pyx_unpickle_chimera_search[] = "__pyx_unpickle_chimera_search";
@@ -4339,7 +4316,6 @@ static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not F
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
-static const char __pyx_k_weakly_connected_component_subgr[] = "weakly_connected_component_subgraphs";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_ASCII;
@@ -4370,9 +4346,8 @@ static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_View_MemoryView;
-static PyObject *__pyx_n_s__39;
+static PyObject *__pyx_n_s__40;
 static PyObject *__pyx_kp_s__6;
-static PyObject *__pyx_kp_s__9;
 static PyObject *__pyx_n_s_abskew;
 static PyObject *__pyx_n_s_abu;
 static PyObject *__pyx_n_s_abu1;
@@ -4388,11 +4363,16 @@ static PyObject *__pyx_n_s_base;
 static PyObject *__pyx_n_s_bru_dict;
 static PyObject *__pyx_n_s_c;
 static PyObject *__pyx_n_u_c;
-static PyObject *__pyx_n_s_chimeramate_cy;
-static PyObject *__pyx_n_s_chimeric_subgraphs;
+static PyObject *__pyx_n_s_chim_k;
+static PyObject *__pyx_n_s_chimeramate_main;
+static PyObject *__pyx_kp_s_chimeramate_main_pyx;
+static PyObject *__pyx_n_s_chimname;
+static PyObject *__pyx_kp_s_chims_fasta;
 static PyObject *__pyx_n_s_class;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
+static PyObject *__pyx_n_s_col;
+static PyObject *__pyx_n_s_collections;
 static PyObject *__pyx_n_s_combinations;
 static PyObject *__pyx_n_s_compare_sequences;
 static PyObject *__pyx_kp_s_contiguous_and_direct;
@@ -4400,16 +4380,13 @@ static PyObject *__pyx_kp_s_contiguous_and_indirect;
 static PyObject *__pyx_n_s_copy;
 static PyObject *__pyx_n_s_create_scs_lists;
 static PyObject *__pyx_n_s_cutoff;
+static PyObject *__pyx_n_s_d;
 static PyObject *__pyx_n_s_data;
-static PyObject *__pyx_n_s_de_bruijn_dict;
 static PyObject *__pyx_n_s_decode;
 static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_dinopy;
 static PyObject *__pyx_n_s_direction;
-static PyObject *__pyx_n_s_draw;
-static PyObject *__pyx_n_s_draw_networkx_edge_labels;
 static PyObject *__pyx_n_s_dtype_is_object;
-static PyObject *__pyx_n_s_edge_labels;
 static PyObject *__pyx_n_s_edges;
 static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_entries;
@@ -4423,10 +4400,10 @@ static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_n_s_functools;
 static PyObject *__pyx_n_s_genexpr;
-static PyObject *__pyx_n_s_get_edge_attributes;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_graph;
+static PyObject *__pyx_n_s_graph_filter;
 static PyObject *__pyx_n_s_high_indegree_graph;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_id;
@@ -4444,10 +4421,13 @@ static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_itertools;
 static PyObject *__pyx_n_s_k;
+static PyObject *__pyx_n_s_k_mer_counting;
 static PyObject *__pyx_n_s_keys;
 static PyObject *__pyx_n_s_kmer_abundance_sorting;
 static PyObject *__pyx_n_s_kmer_abundance_sorting_locals_ge;
+static PyObject *__pyx_n_s_kmer_dict;
 static PyObject *__pyx_n_s_kmer_sets;
+static PyObject *__pyx_n_s_kmer_sets_2;
 static PyObject *__pyx_n_s_kmers;
 static PyObject *__pyx_n_s_length;
 static PyObject *__pyx_n_s_line_width;
@@ -4455,12 +4435,13 @@ static PyObject *__pyx_n_s_longest_common_substring;
 static PyObject *__pyx_n_s_longest_common_substring_locals;
 static PyObject *__pyx_n_s_lower;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_make_de_bruijn_file;
 static PyObject *__pyx_n_s_masked_reads;
 static PyObject *__pyx_n_s_math;
 static PyObject *__pyx_n_s_matplotlib_pyplot;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mode;
+static PyObject *__pyx_n_s_mp;
+static PyObject *__pyx_n_s_multiprocessing;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_name1;
 static PyObject *__pyx_n_s_name2;
@@ -4473,13 +4454,16 @@ static PyObject *__pyx_n_s_networkx;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_nodes;
+static PyObject *__pyx_n_s_nonchimname;
+static PyObject *__pyx_kp_s_nonchims_fasta;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_nums;
 static PyObject *__pyx_n_s_nx;
 static PyObject *__pyx_n_s_obj;
-static PyObject *__pyx_n_s_order;
+static PyObject *__pyx_n_s_os;
 static PyObject *__pyx_n_s_otu_file;
+static PyObject *__pyx_n_s_otus;
 static PyObject *__pyx_n_s_output_file;
 static PyObject *__pyx_n_s_overlap_graph;
 static PyObject *__pyx_n_s_overlap_graph_2;
@@ -4498,6 +4482,7 @@ static PyObject *__pyx_n_s_pyx_unpickle_Enum;
 static PyObject *__pyx_n_s_pyx_unpickle_chimera_search;
 static PyObject *__pyx_n_s_pyx_unpickle_kmer_filter;
 static PyObject *__pyx_n_s_pyx_vtable;
+static PyObject *__pyx_n_s_r;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reads;
 static PyObject *__pyx_n_s_reduce;
@@ -4505,20 +4490,22 @@ static PyObject *__pyx_n_s_reduce_2;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
 static PyObject *__pyx_n_s_remove_edge;
-static PyObject *__pyx_n_s_remove_low_indegree_edges;
 static PyObject *__pyx_n_s_replace;
+static PyObject *__pyx_n_s_run;
 static PyObject *__pyx_n_s_scs;
 static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_seq;
 static PyObject *__pyx_n_s_seq_dict;
+static PyObject *__pyx_n_s_sequence;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_shape;
-static PyObject *__pyx_n_s_show;
 static PyObject *__pyx_n_s_size;
+static PyObject *__pyx_n_s_soft_k;
+static PyObject *__pyx_n_s_softmask;
+static PyObject *__pyx_n_s_softmask_file;
+static PyObject *__pyx_kp_s_softmasked_fasta;
 static PyObject *__pyx_n_s_split;
-static PyObject *__pyx_n_s_spring_layout;
-static PyObject *__pyx_n_s_sqrt;
 static PyObject *__pyx_n_s_start;
 static PyObject *__pyx_n_s_step;
 static PyObject *__pyx_n_s_stop;
@@ -4527,53 +4514,48 @@ static PyObject *__pyx_kp_s_strided_and_direct_or_indirect;
 static PyObject *__pyx_kp_s_strided_and_indirect;
 static PyObject *__pyx_kp_s_stringsource;
 static PyObject *__pyx_n_s_struct;
-static PyObject *__pyx_n_s_subgraph;
-static PyObject *__pyx_n_s_subgraphs;
-static PyObject *__pyx_n_s_subgraphs_locals_genexpr;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_threads;
 static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
-static PyObject *__pyx_n_s_values;
+static PyObject *__pyx_n_s_upper;
 static PyObject *__pyx_n_s_w;
-static PyObject *__pyx_n_s_weakly_connected_component_subgr;
-static PyObject *__pyx_n_s_weight;
+static PyObject *__pyx_n_s_write;
 static PyObject *__pyx_n_s_write_entry;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_y;
+static PyObject *__pyx_n_s_yaml;
 static PyObject *__pyx_n_s_zip;
-static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_otu_file, int __pyx_v_k, int __pyx_v_cutoff); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, int __pyx_v_k); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_genexpr(PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_bru_dict, int __pyx_v_cutoff); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_kmer_abundance_sorting, PyObject *__pyx_v_output_file); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_8__reduce_cython__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k, CYTHON_UNUSED int __pyx_v_threads, float __pyx_v_abskew); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_seq_dict); /* proto */
+static int __pyx_pf_16chimeramate_main_11kmer_filter___init__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_otu_file, int __pyx_v_soft_k, int __pyx_v_cutoff); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_2_k_mer_counting(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, int __pyx_v_k); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_genexpr(PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_4kmer_abundance_sorting(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_bru_dict, float __pyx_v_cutoff); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_6softmask(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_kmer_abundance_sorting, PyObject *__pyx_v_output_file); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_8__reduce_cython__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_10__setstate_cython__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_16chimeramate_main_14chimera_search___init__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_chim_k, float __pyx_v_abskew); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_2_seq_dict(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_4_abu_kmer_zip(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_seq_dict); /* proto */
 static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_y); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_substring(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_pair, PyObject *__pyx_v_kmers, PyObject *__pyx_v_kmer_sets); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmers); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_abus, PyObject *__pyx_v_keys, PyObject *__pyx_v_names, PyObject *__pyx_v_nums, PyObject *__pyx_v_kmer_sets); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegree_edges(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph, float __pyx_v_abskew); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_9subgraphs_genexpr(PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_20subgraphs(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_22potential_chimeras(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_subgraphs); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_24draw_subgraphs(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_chimeric_subgraphs); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_filename); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_28__reduce_cython__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_6_longest_common_substring(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_pair, PyObject *__pyx_v_kmers, PyObject *__pyx_v_kmer_sets); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_8_kmer_sets(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmers); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_10_intersection_list(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmer_sets); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_12create_scs_lists(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_abus, PyObject *__pyx_v_keys, PyObject *__pyx_v_names, PyObject *__pyx_v_nums, PyObject *__pyx_v_kmer_sets); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_14_compare_sequences(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_16_add_edge(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_18_overlap_graph(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_20_graph_filter(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph, float __pyx_v_abskew); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_22potential_chimeras(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_graph); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_24write(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, PyObject *__pyx_v_chimname, PyObject *__pyx_v_nonchimname); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_26__reduce_cython__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_28__setstate_cython__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_run(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_otus, CYTHON_UNUSED PyObject *__pyx_v_soft_k, CYTHON_UNUSED PyObject *__pyx_v_cutoff, PyObject *__pyx_v_softmask_file, CYTHON_UNUSED PyObject *__pyx_v_chim_k, CYTHON_UNUSED PyObject *__pyx_v_abskew); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_2__pyx_unpickle_kmer_filter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16chimeramate_main_4__pyx_unpickle_chimera_search(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_pf_7cpython_5array_5array___getbuffer__(arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info, CYTHON_UNUSED int __pyx_v_flags); /* proto */
@@ -4620,22 +4602,23 @@ static PyObject *__pyx_pf_15View_dot_MemoryView_16_memoryviewslice_4base___get__
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_14chimeramate_cy_kmer_filter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_14chimeramate_cy_chimera_search(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_2_subgraphs(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_3_genexpr(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16chimeramate_main_kmer_filter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16chimeramate_main_chimera_search(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16chimeramate_main___pyx_scope_struct_1_genexpr(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new__memoryviewslice(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_items = {0, &__pyx_n_s_items, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_keys = {0, &__pyx_n_s_keys, 0, 0, 0};
+static PyObject *__pyx_float_0_03;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
-static PyObject *__pyx_int_5;
+static PyObject *__pyx_int_10;
+static PyObject *__pyx_int_24;
+static PyObject *__pyx_int_29;
 static PyObject *__pyx_int_1000;
 static PyObject *__pyx_int_184977713;
 static PyObject *__pyx_int_222419149;
@@ -4646,9 +4629,10 @@ static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
-static PyObject *__pyx_slice__33;
+static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_slice__34;
 static PyObject *__pyx_slice__35;
+static PyObject *__pyx_slice__36;
 static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__12;
@@ -4672,40 +4656,43 @@ static PyObject *__pyx_tuple__29;
 static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_tuple__31;
 static PyObject *__pyx_tuple__32;
-static PyObject *__pyx_tuple__36;
+static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__37;
 static PyObject *__pyx_tuple__38;
-static PyObject *__pyx_tuple__40;
-static PyObject *__pyx_tuple__42;
-static PyObject *__pyx_tuple__44;
+static PyObject *__pyx_tuple__39;
+static PyObject *__pyx_tuple__41;
+static PyObject *__pyx_tuple__43;
 static PyObject *__pyx_tuple__45;
-static PyObject *__pyx_tuple__46;
 static PyObject *__pyx_tuple__47;
 static PyObject *__pyx_tuple__48;
 static PyObject *__pyx_tuple__49;
-static PyObject *__pyx_codeobj__41;
-static PyObject *__pyx_codeobj__43;
-static PyObject *__pyx_codeobj__50;
+static PyObject *__pyx_tuple__50;
+static PyObject *__pyx_tuple__51;
+static PyObject *__pyx_tuple__52;
+static PyObject *__pyx_codeobj__42;
+static PyObject *__pyx_codeobj__44;
+static PyObject *__pyx_codeobj__46;
+static PyObject *__pyx_codeobj__53;
 
-/* "chimeramate_cy.pyx":12
+/* "chimeramate_main.pyx":17
  * cdef class kmer_filter:
  *     cdef dict __dict__
- *     def __init__(self, str otu_file, int k, int cutoff):             # <<<<<<<<<<<<<<
+ *     def __init__(self, str otu_file, int soft_k, int cutoff):             # <<<<<<<<<<<<<<
  *         self.reads = dinopy.FastaReader(otu_file)
- *         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
+ *         self.kmer_dict = self._k_mer_counting(self.reads, soft_k)
  */
 
 /* Python wrapper */
-static int __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_16chimeramate_main_11kmer_filter_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_16chimeramate_main_11kmer_filter_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_otu_file = 0;
-  int __pyx_v_k;
+  int __pyx_v_soft_k;
   int __pyx_v_cutoff;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_otu_file,&__pyx_n_s_k,&__pyx_n_s_cutoff,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_otu_file,&__pyx_n_s_soft_k,&__pyx_n_s_cutoff,0};
     PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -4727,19 +4714,19 @@ static int __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__(PyObject *__pyx_v_s
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_k)) != 0)) kw_args--;
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_soft_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 1); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 1); __PYX_ERR(0, 17, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 2); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 2); __PYX_ERR(0, 17, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 17, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -4749,19 +4736,19 @@ static int __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__(PyObject *__pyx_v_s
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_otu_file = ((PyObject*)values[0]);
-    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
-    __pyx_v_cutoff = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_soft_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_soft_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L3_error)
+    __pyx_v_cutoff = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 17, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_otu_file), (&PyString_Type), 1, "otu_file", 1))) __PYX_ERR(0, 12, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter___init__(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self), __pyx_v_otu_file, __pyx_v_k, __pyx_v_cutoff);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_otu_file), (&PyString_Type), 1, "otu_file", 1))) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter___init__(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self), __pyx_v_otu_file, __pyx_v_soft_k, __pyx_v_cutoff);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4772,7 +4759,7 @@ static int __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__(PyObject *__pyx_v_s
   return __pyx_r;
 }
 
-static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_otu_file, int __pyx_v_k, int __pyx_v_cutoff) {
+static int __pyx_pf_16chimeramate_main_11kmer_filter___init__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_otu_file, int __pyx_v_soft_k, int __pyx_v_cutoff) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4785,36 +4772,36 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "chimeramate_cy.pyx":13
+  /* "chimeramate_main.pyx":18
  *     cdef dict __dict__
- *     def __init__(self, str otu_file, int k, int cutoff):
+ *     def __init__(self, str otu_file, int soft_k, int cutoff):
  *         self.reads = dinopy.FastaReader(otu_file)             # <<<<<<<<<<<<<<
- *         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
- *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+ *         self.kmer_dict = self._k_mer_counting(self.reads, soft_k)
+ *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_otu_file);
   __Pyx_GIVEREF(__pyx_v_otu_file);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_otu_file);
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_reader_FastaReader), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_reader_FastaReader), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads, __pyx_t_2) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":14
- *     def __init__(self, str otu_file, int k, int cutoff):
+  /* "chimeramate_main.pyx":19
+ *     def __init__(self, str otu_file, int soft_k, int cutoff):
  *         self.reads = dinopy.FastaReader(otu_file)
- *         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)             # <<<<<<<<<<<<<<
- *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)
+ *         self.kmer_dict = self._k_mer_counting(self.reads, soft_k)             # <<<<<<<<<<<<<<
+ *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_make_de_bruijn_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_k_mer_counting); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_k); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_soft_k); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -4831,7 +4818,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4841,7 +4828,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4849,7 +4836,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4860,28 +4847,28 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_de_bruijn_dict, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_dict, __pyx_t_2) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":15
+  /* "chimeramate_main.pyx":20
  *         self.reads = dinopy.FastaReader(otu_file)
- *         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
- *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.de_bruijn_dict, cutoff)             # <<<<<<<<<<<<<<
+ *         self.kmer_dict = self._k_mer_counting(self.reads, soft_k)
+ *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)             # <<<<<<<<<<<<<<
  * 
- *     # The prior abundance of the otu should also go in the kmer abundance
+ *     def _k_mer_counting(self, reads, int k):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_abundance_sorting); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_abundance_sorting); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reads); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_de_bruijn_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_cutoff); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_cutoff); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -4898,7 +4885,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_7, __pyx_t_4, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -4909,7 +4896,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_7, __pyx_t_4, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -4918,7 +4905,7 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   } else
   #endif
   {
-    __pyx_t_8 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4932,20 +4919,20 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
     __pyx_t_7 = 0;
     __pyx_t_4 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_abundance_sorting, __pyx_t_2) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_abundance_sorting, __pyx_t_2) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":12
+  /* "chimeramate_main.pyx":17
  * cdef class kmer_filter:
  *     cdef dict __dict__
- *     def __init__(self, str otu_file, int k, int cutoff):             # <<<<<<<<<<<<<<
+ *     def __init__(self, str otu_file, int soft_k, int cutoff):             # <<<<<<<<<<<<<<
  *         self.reads = dinopy.FastaReader(otu_file)
- *         self.de_bruijn_dict = self._make_de_bruijn_file(self.reads, k)
+ *         self.kmer_dict = self._k_mer_counting(self.reads, soft_k)
  */
 
   /* function exit code */
@@ -4959,29 +4946,29 @@ static int __pyx_pf_14chimeramate_cy_11kmer_filter___init__(struct __pyx_obj_14c
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":18
+/* "chimeramate_main.pyx":22
+ *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)
  * 
- *     # The prior abundance of the otu should also go in the kmer abundance
- *     def _make_de_bruijn_file(self, reads, int k):             # <<<<<<<<<<<<<<
+ *     def _k_mer_counting(self, reads, int k):             # <<<<<<<<<<<<<<
  *         cdef FastaEntryC f
  *         cdef str name
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_3_make_de_bruijn_file(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_3_make_de_bruijn_file(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_3_k_mer_counting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_3_k_mer_counting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_reads = 0;
   int __pyx_v_k;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_make_de_bruijn_file (wrapper)", 0);
+  __Pyx_RefNannySetupContext("_k_mer_counting (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_reads,&__pyx_n_s_k,0};
     PyObject* values[2] = {0,0};
@@ -5005,11 +4992,11 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_3_make_de_bruijn_file(P
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_make_de_bruijn_file", 1, 2, 2, 1); __PYX_ERR(0, 18, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_k_mer_counting", 1, 2, 2, 1); __PYX_ERR(0, 22, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_make_de_bruijn_file") < 0)) __PYX_ERR(0, 18, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_k_mer_counting") < 0)) __PYX_ERR(0, 22, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5018,24 +5005,24 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_3_make_de_bruijn_file(P
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_reads = values[0];
-    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L3_error)
+    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_make_de_bruijn_file", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 18, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_k_mer_counting", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 22, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter._make_de_bruijn_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter._k_mer_counting", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_k);
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter_2_k_mer_counting(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_k);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, int __pyx_v_k) {
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_2_k_mer_counting(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, int __pyx_v_k) {
   struct __pyx_obj_6dinopy_11definitions_FastaEntryC *__pyx_v_f = 0;
   PyObject *__pyx_v_name = 0;
   int __pyx_v_i;
@@ -5058,40 +5045,40 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
   int __pyx_t_11;
   int __pyx_t_12;
   PyObject *__pyx_t_13 = NULL;
-  __Pyx_RefNannySetupContext("_make_de_bruijn_file", 0);
+  __Pyx_RefNannySetupContext("_k_mer_counting", 0);
 
-  /* "chimeramate_cy.pyx":25
+  /* "chimeramate_main.pyx":29
  *         cdef dict bru_dict
  *         cdef list nodes
  *         bru_dict = {}             # <<<<<<<<<<<<<<
  *         nodes = []
  *         for f in reads.entries():
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_bru_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":26
+  /* "chimeramate_main.pyx":30
  *         cdef list nodes
  *         bru_dict = {}
  *         nodes = []             # <<<<<<<<<<<<<<
  *         for f in reads.entries():
  *             seq = f.sequence.decode()
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_nodes = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":27
+  /* "chimeramate_main.pyx":31
  *         bru_dict = {}
  *         nodes = []
  *         for f in reads.entries():             # <<<<<<<<<<<<<<
  *             seq = f.sequence.decode()
  *             name = f.name.decode()
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5104,10 +5091,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5115,9 +5102,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -5125,17 +5112,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 27, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 27, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -5145,24 +5132,24 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 27, __pyx_L1_error)
+          else __PYX_ERR(0, 31, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_1);
     }
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 27, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 31, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_f, ((struct __pyx_obj_6dinopy_11definitions_FastaEntryC *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":28
+    /* "chimeramate_main.pyx":32
  *         nodes = []
  *         for f in reads.entries():
  *             seq = f.sequence.decode()             # <<<<<<<<<<<<<<
  *             name = f.name.decode()
  *             for i in range(len(seq)-k+1):
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_f->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_f->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -5175,17 +5162,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
       }
     }
     if (__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_XDECREF_SET(__pyx_v_seq, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":29
+    /* "chimeramate_main.pyx":33
  *         for f in reads.entries():
  *             seq = f.sequence.decode()
  *             name = f.name.decode()             # <<<<<<<<<<<<<<
@@ -5194,102 +5181,102 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
  */
     if (unlikely(__pyx_v_f->name == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-      __PYX_ERR(0, 29, __pyx_L1_error)
+      __PYX_ERR(0, 33, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(PyString_CheckExact(__pyx_t_1))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 29, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_1))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_name, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":30
+    /* "chimeramate_main.pyx":34
  *             seq = f.sequence.decode()
  *             name = f.name.decode()
  *             for i in range(len(seq)-k+1):             # <<<<<<<<<<<<<<
  *                 node = seq[i:i+k]
  *                 nodes.append(node)
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 30, __pyx_L1_error)
+    __pyx_t_7 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 34, __pyx_L1_error)
     __pyx_t_8 = ((__pyx_t_7 - __pyx_v_k) + 1);
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_i = __pyx_t_9;
 
-      /* "chimeramate_cy.pyx":31
+      /* "chimeramate_main.pyx":35
  *             name = f.name.decode()
  *             for i in range(len(seq)-k+1):
  *                 node = seq[i:i+k]             # <<<<<<<<<<<<<<
  *                 nodes.append(node)
  *                 if not node in bru_dict.keys():
  */
-      __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_seq, __pyx_v_i, (__pyx_v_i + __pyx_v_k), NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_seq, __pyx_v_i, (__pyx_v_i + __pyx_v_k), NULL, NULL, NULL, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 31, __pyx_L1_error)
+      if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 35, __pyx_L1_error)
       __Pyx_XDECREF_SET(__pyx_v_node, ((PyObject*)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "chimeramate_cy.pyx":32
+      /* "chimeramate_main.pyx":36
  *             for i in range(len(seq)-k+1):
  *                 node = seq[i:i+k]
  *                 nodes.append(node)             # <<<<<<<<<<<<<<
  *                 if not node in bru_dict.keys():
  *                     bru_dict[node] = {}
  */
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_nodes, __pyx_v_node); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_nodes, __pyx_v_node); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 36, __pyx_L1_error)
 
-      /* "chimeramate_cy.pyx":33
+      /* "chimeramate_main.pyx":37
  *                 node = seq[i:i+k]
  *                 nodes.append(node)
  *                 if not node in bru_dict.keys():             # <<<<<<<<<<<<<<
  *                     bru_dict[node] = {}
  *                     bru_dict[node]['name'] = []
  */
-      __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_bru_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_bru_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_v_node, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_v_node, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_12 = (__pyx_t_11 != 0);
       if (__pyx_t_12) {
 
-        /* "chimeramate_cy.pyx":34
+        /* "chimeramate_main.pyx":38
  *                 nodes.append(node)
  *                 if not node in bru_dict.keys():
  *                     bru_dict[node] = {}             # <<<<<<<<<<<<<<
  *                     bru_dict[node]['name'] = []
  *                     bru_dict[node]['abu'] = 1
  */
-        __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        if (unlikely(PyDict_SetItem(__pyx_v_bru_dict, __pyx_v_node, __pyx_t_1) < 0)) __PYX_ERR(0, 34, __pyx_L1_error)
+        if (unlikely(PyDict_SetItem(__pyx_v_bru_dict, __pyx_v_node, __pyx_t_1) < 0)) __PYX_ERR(0, 38, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "chimeramate_cy.pyx":35
+        /* "chimeramate_main.pyx":39
  *                 if not node in bru_dict.keys():
  *                     bru_dict[node] = {}
  *                     bru_dict[node]['name'] = []             # <<<<<<<<<<<<<<
  *                     bru_dict[node]['abu'] = 1
  *                 else:
  */
-        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_n_s_name, __pyx_t_1) < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_n_s_name, __pyx_t_1) < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "chimeramate_cy.pyx":36
+        /* "chimeramate_main.pyx":40
  *                     bru_dict[node] = {}
  *                     bru_dict[node]['name'] = []
  *                     bru_dict[node]['abu'] = 1             # <<<<<<<<<<<<<<
  *                 else:
  *                     bru_dict[node]['abu'] += 1
  */
-        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_abu, __pyx_int_1) < 0)) __PYX_ERR(0, 36, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_abu, __pyx_int_1) < 0)) __PYX_ERR(0, 40, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "chimeramate_cy.pyx":33
+        /* "chimeramate_main.pyx":37
  *                 node = seq[i:i+k]
  *                 nodes.append(node)
  *                 if not node in bru_dict.keys():             # <<<<<<<<<<<<<<
@@ -5299,7 +5286,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
         goto __pyx_L7;
       }
 
-      /* "chimeramate_cy.pyx":38
+      /* "chimeramate_main.pyx":42
  *                     bru_dict[node]['abu'] = 1
  *                 else:
  *                     bru_dict[node]['abu'] += 1             # <<<<<<<<<<<<<<
@@ -5307,70 +5294,70 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
  *                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
  */
       /*else*/ {
-        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_n_s_abu);
         __pyx_t_13 = __pyx_n_s_abu;
-        __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_t_13, __pyx_t_6) < 0)) __PYX_ERR(0, 38, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_t_13, __pyx_t_6) < 0)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
       __pyx_L7:;
 
-      /* "chimeramate_cy.pyx":39
+      /* "chimeramate_main.pyx":43
  *                 else:
  *                     bru_dict[node]['abu'] += 1
  *                 if not name in bru_dict[node]['name']:             # <<<<<<<<<<<<<<
  *                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
  *         return bru_dict
  */
-      __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 39, __pyx_L1_error)
+      __pyx_t_6 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 43, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_name, __pyx_t_6, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
+      __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_name, __pyx_t_6, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 43, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_11 = (__pyx_t_12 != 0);
       if (__pyx_t_11) {
 
-        /* "chimeramate_cy.pyx":40
+        /* "chimeramate_main.pyx":44
  *                     bru_dict[node]['abu'] += 1
  *                 if not name in bru_dict[node]['name']:
  *                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))             # <<<<<<<<<<<<<<
  *         return bru_dict
  * 
  */
-        __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_node); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_1 = PyObject_GetItem(__pyx_t_6, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_1 = PyObject_GetItem(__pyx_t_6, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_split); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_name, __pyx_n_s_split); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_6, 0, -1L, NULL, NULL, &__pyx_slice__3, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_6, 0, -1L, NULL, NULL, &__pyx_slice__3, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_6); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 40, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_6); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-        /* "chimeramate_cy.pyx":39
+        /* "chimeramate_main.pyx":43
  *                 else:
  *                     bru_dict[node]['abu'] += 1
  *                 if not name in bru_dict[node]['name']:             # <<<<<<<<<<<<<<
@@ -5380,7 +5367,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
       }
     }
 
-    /* "chimeramate_cy.pyx":27
+    /* "chimeramate_main.pyx":31
  *         bru_dict = {}
  *         nodes = []
  *         for f in reads.entries():             # <<<<<<<<<<<<<<
@@ -5390,22 +5377,22 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":41
+  /* "chimeramate_main.pyx":45
  *                 if not name in bru_dict[node]['name']:
  *                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))
  *         return bru_dict             # <<<<<<<<<<<<<<
  * 
- *     def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):
+ *     def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_bru_dict);
   __pyx_r = __pyx_v_bru_dict;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":18
+  /* "chimeramate_main.pyx":22
+ *         self.kmer_abundance_sorting = self.kmer_abundance_sorting(self.reads, self.kmer_dict, cutoff)
  * 
- *     # The prior abundance of the otu should also go in the kmer abundance
- *     def _make_de_bruijn_file(self, reads, int k):             # <<<<<<<<<<<<<<
+ *     def _k_mer_counting(self, reads, int k):             # <<<<<<<<<<<<<<
  *         cdef FastaEntryC f
  *         cdef str name
  */
@@ -5417,7 +5404,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter._make_de_bruijn_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter._k_mer_counting", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_f);
@@ -5431,20 +5418,20 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_2_make_de_bruijn_file(C
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":43
+/* "chimeramate_main.pyx":47
  *         return bru_dict
  * 
- *     def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):             # <<<<<<<<<<<<<<
- *         cdef int num_reads
+ *     def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):             # <<<<<<<<<<<<<<
+ *         cdef float num_reads
  *         cdef list high_abu
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_5kmer_abundance_sorting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_5kmer_abundance_sorting(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_reads = 0;
   PyObject *__pyx_v_bru_dict = 0;
-  int __pyx_v_cutoff;
+  float __pyx_v_cutoff;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("kmer_abundance_sorting (wrapper)", 0);
@@ -5473,17 +5460,17 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_bru_dict)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, 1); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, 1); __PYX_ERR(0, 47, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, 2); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, 2); __PYX_ERR(0, 47, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "kmer_abundance_sorting") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "kmer_abundance_sorting") < 0)) __PYX_ERR(0, 47, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -5494,18 +5481,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting
     }
     __pyx_v_reads = values[0];
     __pyx_v_bru_dict = ((PyObject*)values[1]);
-    __pyx_v_cutoff = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
+    __pyx_v_cutoff = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_cutoff == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("kmer_abundance_sorting", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 47, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.kmer_abundance_sorting", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.kmer_abundance_sorting", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_bru_dict), (&PyDict_Type), 1, "bru_dict", 1))) __PYX_ERR(0, 43, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_bru_dict, __pyx_v_cutoff);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_bru_dict), (&PyDict_Type), 1, "bru_dict", 1))) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter_4kmer_abundance_sorting(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_bru_dict, __pyx_v_cutoff);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5515,34 +5502,34 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
+static PyObject *__pyx_gb_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "chimeramate_cy.pyx":47
- *         cdef list high_abu
+/* "chimeramate_main.pyx":52
  *         cdef str kmer
+ *         cdef float threshold
  *         num_reads = sum(1 for read in reads.entries())             # <<<<<<<<<<<<<<
  *         high_abu = []
- *         for kmer in bru_dict:
+ *         threshold = ((cutoff/100) * num_reads)
  */
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_genexpr(PyObject *__pyx_self) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *__pyx_cur_scope;
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_genexpr(PyObject *__pyx_self) {
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *__pyx_cur_scope;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("genexpr", 0);
-  __pyx_cur_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_1_genexpr(__pyx_ptype_14chimeramate_cy___pyx_scope_struct_1_genexpr, __pyx_empty_tuple, NULL);
+  __pyx_cur_scope = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)__pyx_tp_new_16chimeramate_main___pyx_scope_struct_1_genexpr(__pyx_ptype_16chimeramate_main___pyx_scope_struct_1_genexpr, __pyx_empty_tuple, NULL);
   if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)Py_None);
+    __pyx_cur_scope = ((struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 47, __pyx_L1_error)
+    __PYX_ERR(0, 52, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
-  __pyx_cur_scope->__pyx_outer_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *) __pyx_self;
+  __pyx_cur_scope->__pyx_outer_scope = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *) __pyx_self;
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_kmer_abundance_sorting_locals_ge, __pyx_n_s_chimeramate_cy); if (unlikely(!gen)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_kmer_abundance_sorting_locals_ge, __pyx_n_s_chimeramate_main); if (unlikely(!gen)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -5550,7 +5537,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.kmer_abundance_sorting.genexpr", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.kmer_abundance_sorting.genexpr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
@@ -5558,9 +5545,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
   return __pyx_r;
 }
 
-static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value) /* generator body */
+static PyObject *__pyx_gb_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value) /* generator body */
 {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *__pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)__pyx_generator->closure);
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *__pyx_cur_scope = ((struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)__pyx_generator->closure);
   PyObject *__pyx_r = NULL;
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -5577,9 +5564,9 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 47, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_reads)) { __Pyx_RaiseClosureNameError("reads"); __PYX_ERR(0, 47, __pyx_L1_error) }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_reads)) { __Pyx_RaiseClosureNameError("reads"); __PYX_ERR(0, 52, __pyx_L1_error) }
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5592,10 +5579,10 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5603,9 +5590,9 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -5613,17 +5600,17 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -5633,7 +5620,7 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 47, __pyx_L1_error)
+          else __PYX_ERR(0, 52, __pyx_L1_error)
         }
         break;
       }
@@ -5661,7 +5648,7 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
     __Pyx_XGOTREF(__pyx_t_2);
     __pyx_t_4 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_5 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 47, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 52, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
@@ -5683,37 +5670,39 @@ static PyObject *__pyx_gb_14chimeramate_cy_11kmer_filter_22kmer_abundance_sortin
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":43
+/* "chimeramate_main.pyx":47
  *         return bru_dict
  * 
- *     def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):             # <<<<<<<<<<<<<<
- *         cdef int num_reads
+ *     def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):             # <<<<<<<<<<<<<<
+ *         cdef float num_reads
  *         cdef list high_abu
  */
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_bru_dict, int __pyx_v_cutoff) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *__pyx_cur_scope;
-  int __pyx_v_num_reads;
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_4kmer_abundance_sorting(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_bru_dict, float __pyx_v_cutoff) {
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *__pyx_cur_scope;
+  float __pyx_v_num_reads;
   PyObject *__pyx_v_high_abu = 0;
   PyObject *__pyx_v_kmer = 0;
+  float __pyx_v_threshold;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
+  float __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
+  PyObject *__pyx_t_9 = NULL;
   int __pyx_t_10;
+  int __pyx_t_11;
   __Pyx_RefNannySetupContext("kmer_abundance_sorting", 0);
-  __pyx_cur_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)__pyx_tp_new_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(__pyx_ptype_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting, __pyx_empty_tuple, NULL);
+  __pyx_cur_scope = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)__pyx_tp_new_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(__pyx_ptype_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting, __pyx_empty_tuple, NULL);
   if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)Py_None);
+    __pyx_cur_scope = ((struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 43, __pyx_L1_error)
+    __PYX_ERR(0, 47, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -5721,103 +5710,112 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_reads);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_reads);
 
-  /* "chimeramate_cy.pyx":47
- *         cdef list high_abu
+  /* "chimeramate_main.pyx":52
  *         cdef str kmer
+ *         cdef float threshold
  *         num_reads = sum(1 for read in reads.entries())             # <<<<<<<<<<<<<<
  *         high_abu = []
- *         for kmer in bru_dict:
+ *         threshold = ((cutoff/100) * num_reads)
  */
-  __pyx_t_1 = __pyx_pf_14chimeramate_cy_11kmer_filter_22kmer_abundance_sorting_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_16chimeramate_main_11kmer_filter_22kmer_abundance_sorting_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_3 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_num_reads = __pyx_t_3;
 
-  /* "chimeramate_cy.pyx":48
- *         cdef str kmer
+  /* "chimeramate_main.pyx":53
+ *         cdef float threshold
  *         num_reads = sum(1 for read in reads.entries())
  *         high_abu = []             # <<<<<<<<<<<<<<
+ *         threshold = ((cutoff/100) * num_reads)
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_high_abu = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":49
+  /* "chimeramate_main.pyx":54
  *         num_reads = sum(1 for read in reads.entries())
  *         high_abu = []
+ *         threshold = ((cutoff/100) * num_reads)             # <<<<<<<<<<<<<<
+ *         for kmer in bru_dict:
+ *              if bru_dict[kmer]['abu'] > threshold:
+ */
+  __pyx_v_threshold = ((__pyx_v_cutoff / 100.0) * __pyx_v_num_reads);
+
+  /* "chimeramate_main.pyx":55
+ *         high_abu = []
+ *         threshold = ((cutoff/100) * num_reads)
  *         for kmer in bru_dict:             # <<<<<<<<<<<<<<
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
+ *              if bru_dict[kmer]['abu'] > threshold:
  *                 high_abu.append(kmer)
  */
   __pyx_t_4 = 0;
   if (unlikely(__pyx_v_bru_dict == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 49, __pyx_L1_error)
+    __PYX_ERR(0, 55, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_bru_dict, 1, ((PyObject *)NULL), (&__pyx_t_5), (&__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_bru_dict, 1, ((PyObject *)NULL), (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_1);
   __pyx_t_1 = __pyx_t_2;
   __pyx_t_2 = 0;
   while (1) {
-    __pyx_t_6 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_5, &__pyx_t_4, &__pyx_t_2, NULL, NULL, __pyx_t_3);
-    if (unlikely(__pyx_t_6 == 0)) break;
-    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_5, &__pyx_t_4, &__pyx_t_2, NULL, NULL, __pyx_t_6);
+    if (unlikely(__pyx_t_7 == 0)) break;
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 49, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_kmer, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "chimeramate_cy.pyx":50
- *         high_abu = []
+    /* "chimeramate_main.pyx":56
+ *         threshold = ((cutoff/100) * num_reads)
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:             # <<<<<<<<<<<<<<
+ *              if bru_dict[kmer]['abu'] > threshold:             # <<<<<<<<<<<<<<
  *                 high_abu.append(kmer)
  *         return high_abu
  */
     if (unlikely(__pyx_v_bru_dict == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 50, __pyx_L1_error)
+      __PYX_ERR(0, 56, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_kmer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_bru_dict, __pyx_v_kmer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_abu); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 50, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_abu); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyInt_From_long((__Pyx_div_long(__pyx_v_cutoff, 0x64) * __pyx_v_num_reads)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_threshold); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = PyObject_RichCompare(__pyx_t_7, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 50, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __pyx_t_9 = PyObject_RichCompare(__pyx_t_8, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (__pyx_t_9) {
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (__pyx_t_10) {
 
-      /* "chimeramate_cy.pyx":51
+      /* "chimeramate_main.pyx":57
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
+ *              if bru_dict[kmer]['abu'] > threshold:
  *                 high_abu.append(kmer)             # <<<<<<<<<<<<<<
  *         return high_abu
  * 
  */
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_high_abu, __pyx_v_kmer); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_high_abu, __pyx_v_kmer); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 57, __pyx_L1_error)
 
-      /* "chimeramate_cy.pyx":50
- *         high_abu = []
+      /* "chimeramate_main.pyx":56
+ *         threshold = ((cutoff/100) * num_reads)
  *         for kmer in bru_dict:
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:             # <<<<<<<<<<<<<<
+ *              if bru_dict[kmer]['abu'] > threshold:             # <<<<<<<<<<<<<<
  *                 high_abu.append(kmer)
  *         return high_abu
  */
@@ -5825,8 +5823,8 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":52
- *             if bru_dict[kmer]['abu'] > ((cutoff/100) * num_reads): #num_reads/cutoff:
+  /* "chimeramate_main.pyx":58
+ *              if bru_dict[kmer]['abu'] > threshold:
  *                 high_abu.append(kmer)
  *         return high_abu             # <<<<<<<<<<<<<<
  * 
@@ -5837,11 +5835,11 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   __pyx_r = __pyx_v_high_abu;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":43
+  /* "chimeramate_main.pyx":47
  *         return bru_dict
  * 
- *     def kmer_abundance_sorting(self, reads, dict bru_dict, int cutoff):             # <<<<<<<<<<<<<<
- *         cdef int num_reads
+ *     def kmer_abundance_sorting(self, reads, dict bru_dict, float cutoff):             # <<<<<<<<<<<<<<
+ *         cdef float num_reads
  *         cdef list high_abu
  */
 
@@ -5849,9 +5847,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.kmer_abundance_sorting", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.kmer_abundance_sorting", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_high_abu);
@@ -5862,7 +5860,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":54
+/* "chimeramate_main.pyx":60
  *         return high_abu
  * 
  *     def softmask(self, reads, list kmer_abundance_sorting, str output_file):             # <<<<<<<<<<<<<<
@@ -5871,8 +5869,8 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_4kmer_abundance_sorting
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_7softmask(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_7softmask(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_reads = 0;
   PyObject *__pyx_v_kmer_abundance_sorting = 0;
   PyObject *__pyx_v_output_file = 0;
@@ -5904,17 +5902,17 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask(PyObject *__p
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmer_abundance_sorting)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, 1); __PYX_ERR(0, 54, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, 1); __PYX_ERR(0, 60, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_output_file)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, 2); __PYX_ERR(0, 54, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, 2); __PYX_ERR(0, 60, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "softmask") < 0)) __PYX_ERR(0, 54, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "softmask") < 0)) __PYX_ERR(0, 60, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -5929,15 +5927,15 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask(PyObject *__p
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 54, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("softmask", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_abundance_sorting), (&PyList_Type), 1, "kmer_abundance_sorting", 1))) __PYX_ERR(0, 54, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_file), (&PyString_Type), 1, "output_file", 1))) __PYX_ERR(0, 54, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_kmer_abundance_sorting, __pyx_v_output_file);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_abundance_sorting), (&PyList_Type), 1, "kmer_abundance_sorting", 1))) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output_file), (&PyString_Type), 1, "output_file", 1))) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter_6softmask(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self), __pyx_v_reads, __pyx_v_kmer_abundance_sorting, __pyx_v_output_file);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5948,7 +5946,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask(PyObject *__p
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_kmer_abundance_sorting, PyObject *__pyx_v_output_file) {
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_6softmask(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v_reads, PyObject *__pyx_v_kmer_abundance_sorting, PyObject *__pyx_v_output_file) {
   struct __pyx_obj_6dinopy_11definitions_FastaEntryC *__pyx_v_entry = 0;
   PyObject *__pyx_v_seq = 0;
   PyObject *__pyx_v_kmer = 0;
@@ -5975,7 +5973,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
   PyObject *__pyx_t_18 = NULL;
   __Pyx_RefNannySetupContext("softmask", 0);
 
-  /* "chimeramate_cy.pyx":58
+  /* "chimeramate_main.pyx":64
  *         cdef str seq
  *         cdef str kmer
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:             # <<<<<<<<<<<<<<
@@ -5983,30 +5981,30 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
  *                 seq = entry.sequence.decode()
  */
   /*with:*/ {
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_output_file);
     __Pyx_GIVEREF(__pyx_v_output_file);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_output_file);
-    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_line_width, __pyx_int_1000) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_force_overwrite, Py_True) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_writer_FastaWriter), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_line_width, __pyx_int_1000) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_force_overwrite, Py_True) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_writer_FastaWriter), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = __Pyx_PyObject_LookupSpecial(__pyx_t_3, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_LookupSpecial(__pyx_t_3, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = ((struct __pyx_vtabstruct_6dinopy_12fasta_writer_FastaWriter *)((struct __pyx_obj_6dinopy_12fasta_writer_FastaWriter *)__pyx_t_3)->__pyx_base.__pyx_vtab)->__pyx_base.__pyx___enter__(((struct __pyx_obj_6dinopy_13output_opener_OutputOpener *)__pyx_t_3), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L3_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_6dinopy_12fasta_writer_FastaWriter *)((struct __pyx_obj_6dinopy_12fasta_writer_FastaWriter *)__pyx_t_3)->__pyx_base.__pyx_vtab)->__pyx_base.__pyx___enter__(((struct __pyx_obj_6dinopy_13output_opener_OutputOpener *)__pyx_t_3), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L3_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -6023,14 +6021,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
           __pyx_v_faw = __pyx_t_1;
           __pyx_t_1 = 0;
 
-          /* "chimeramate_cy.pyx":59
+          /* "chimeramate_main.pyx":65
  *         cdef str kmer
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:
  *             for entry in reads.entries():             # <<<<<<<<<<<<<<
  *                 seq = entry.sequence.decode()
  *                 for kmer in kmer_abundance_sorting:
  */
-          __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L7_error)
+          __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_reads, __pyx_n_s_entries); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_3);
           __pyx_t_2 = NULL;
           if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -6043,10 +6041,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
             }
           }
           if (__pyx_t_2) {
-            __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L7_error)
+            __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L7_error)
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           } else {
-            __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L7_error)
+            __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L7_error)
           }
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6054,9 +6052,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
             __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_8 = 0;
             __pyx_t_9 = NULL;
           } else {
-            __pyx_t_8 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L7_error)
+            __pyx_t_8 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_3);
-            __pyx_t_9 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 59, __pyx_L7_error)
+            __pyx_t_9 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 65, __pyx_L7_error)
           }
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           for (;;) {
@@ -6064,17 +6062,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
               if (likely(PyList_CheckExact(__pyx_t_3))) {
                 if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_3)) break;
                 #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 59, __pyx_L7_error)
+                __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 65, __pyx_L7_error)
                 #else
-                __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L7_error)
+                __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 #endif
               } else {
                 if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
                 #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 59, __pyx_L7_error)
+                __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 65, __pyx_L7_error)
                 #else
-                __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L7_error)
+                __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 #endif
               }
@@ -6084,24 +6082,24 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
                 PyObject* exc_type = PyErr_Occurred();
                 if (exc_type) {
                   if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                  else __PYX_ERR(0, 59, __pyx_L7_error)
+                  else __PYX_ERR(0, 65, __pyx_L7_error)
                 }
                 break;
               }
               __Pyx_GOTREF(__pyx_t_1);
             }
-            if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 59, __pyx_L7_error)
+            if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 65, __pyx_L7_error)
             __Pyx_XDECREF_SET(__pyx_v_entry, ((struct __pyx_obj_6dinopy_11definitions_FastaEntryC *)__pyx_t_1));
             __pyx_t_1 = 0;
 
-            /* "chimeramate_cy.pyx":60
+            /* "chimeramate_main.pyx":66
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:
  *             for entry in reads.entries():
  *                 seq = entry.sequence.decode()             # <<<<<<<<<<<<<<
  *                 for kmer in kmer_abundance_sorting:
  *                     if kmer in seq:
  */
-            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_entry->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L7_error)
+            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_entry->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_2);
             __pyx_t_10 = NULL;
             if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6114,18 +6112,18 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
               }
             }
             if (__pyx_t_10) {
-              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L7_error)
+              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L7_error)
               __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
             } else {
-              __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L7_error)
+              __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L7_error)
             }
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 60, __pyx_L7_error)
+            if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 66, __pyx_L7_error)
             __Pyx_XDECREF_SET(__pyx_v_seq, ((PyObject*)__pyx_t_1));
             __pyx_t_1 = 0;
 
-            /* "chimeramate_cy.pyx":61
+            /* "chimeramate_main.pyx":67
  *             for entry in reads.entries():
  *                 seq = entry.sequence.decode()
  *                 for kmer in kmer_abundance_sorting:             # <<<<<<<<<<<<<<
@@ -6134,42 +6132,42 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
  */
             if (unlikely(__pyx_v_kmer_abundance_sorting == Py_None)) {
               PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-              __PYX_ERR(0, 61, __pyx_L7_error)
+              __PYX_ERR(0, 67, __pyx_L7_error)
             }
             __pyx_t_1 = __pyx_v_kmer_abundance_sorting; __Pyx_INCREF(__pyx_t_1); __pyx_t_11 = 0;
             for (;;) {
               if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_1)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L7_error)
+              __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 67, __pyx_L7_error)
               #else
-              __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L7_error)
+              __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_2);
               #endif
-              if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 61, __pyx_L7_error)
+              if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 67, __pyx_L7_error)
               __Pyx_XDECREF_SET(__pyx_v_kmer, ((PyObject*)__pyx_t_2));
               __pyx_t_2 = 0;
 
-              /* "chimeramate_cy.pyx":62
+              /* "chimeramate_main.pyx":68
  *                 seq = entry.sequence.decode()
  *                 for kmer in kmer_abundance_sorting:
  *                     if kmer in seq:             # <<<<<<<<<<<<<<
  *                         seq = seq.replace(kmer, kmer.lower())
  *                 faw.write_entry((seq.encode(), entry.name))
  */
-              __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_kmer, __pyx_v_seq, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 62, __pyx_L7_error)
+              __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_kmer, __pyx_v_seq, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 68, __pyx_L7_error)
               __pyx_t_13 = (__pyx_t_12 != 0);
               if (__pyx_t_13) {
 
-                /* "chimeramate_cy.pyx":63
+                /* "chimeramate_main.pyx":69
  *                 for kmer in kmer_abundance_sorting:
  *                     if kmer in seq:
  *                         seq = seq.replace(kmer, kmer.lower())             # <<<<<<<<<<<<<<
  *                 faw.write_entry((seq.encode(), entry.name))
  * 
  */
-                __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_replace); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 63, __pyx_L7_error)
+                __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_replace); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 69, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_10);
-                __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_kmer, __pyx_n_s_lower); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 63, __pyx_L7_error)
+                __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_kmer, __pyx_n_s_lower); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 69, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_15);
                 __pyx_t_16 = NULL;
                 if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_15))) {
@@ -6182,10 +6180,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
                   }
                 }
                 if (__pyx_t_16) {
-                  __pyx_t_14 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_16); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_14 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_16); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 69, __pyx_L7_error)
                   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
                 } else {
-                  __pyx_t_14 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_14 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 69, __pyx_L7_error)
                 }
                 __Pyx_GOTREF(__pyx_t_14);
                 __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
@@ -6204,7 +6202,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
                 #if CYTHON_FAST_PYCALL
                 if (PyFunction_Check(__pyx_t_10)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_15, __pyx_v_kmer, __pyx_t_14};
-                  __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L7_error)
                   __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
                   __Pyx_GOTREF(__pyx_t_2);
                   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -6213,14 +6211,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
                 #if CYTHON_FAST_PYCCALL
                 if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_15, __pyx_v_kmer, __pyx_t_14};
-                  __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L7_error)
                   __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
                   __Pyx_GOTREF(__pyx_t_2);
                   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
                 } else
                 #endif
                 {
-                  __pyx_t_16 = PyTuple_New(2+__pyx_t_17); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_16 = PyTuple_New(2+__pyx_t_17); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 69, __pyx_L7_error)
                   __Pyx_GOTREF(__pyx_t_16);
                   if (__pyx_t_15) {
                     __Pyx_GIVEREF(__pyx_t_15); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_15); __pyx_t_15 = NULL;
@@ -6231,16 +6229,16 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
                   __Pyx_GIVEREF(__pyx_t_14);
                   PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_17, __pyx_t_14);
                   __pyx_t_14 = 0;
-                  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_16, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L7_error)
+                  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_16, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L7_error)
                   __Pyx_GOTREF(__pyx_t_2);
                   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
                 }
                 __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-                if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 63, __pyx_L7_error)
+                if (!(likely(PyString_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 69, __pyx_L7_error)
                 __Pyx_DECREF_SET(__pyx_v_seq, ((PyObject*)__pyx_t_2));
                 __pyx_t_2 = 0;
 
-                /* "chimeramate_cy.pyx":62
+                /* "chimeramate_main.pyx":68
  *                 seq = entry.sequence.decode()
  *                 for kmer in kmer_abundance_sorting:
  *                     if kmer in seq:             # <<<<<<<<<<<<<<
@@ -6249,7 +6247,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
  */
               }
 
-              /* "chimeramate_cy.pyx":61
+              /* "chimeramate_main.pyx":67
  *             for entry in reads.entries():
  *                 seq = entry.sequence.decode()
  *                 for kmer in kmer_abundance_sorting:             # <<<<<<<<<<<<<<
@@ -6259,16 +6257,16 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
             }
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-            /* "chimeramate_cy.pyx":64
+            /* "chimeramate_main.pyx":70
  *                     if kmer in seq:
  *                         seq = seq.replace(kmer, kmer.lower())
  *                 faw.write_entry((seq.encode(), entry.name))             # <<<<<<<<<<<<<<
  * 
  * cdef class chimera_search:
  */
-            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_faw, __pyx_n_s_write_entry); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L7_error)
+            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_faw, __pyx_n_s_write_entry); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_encode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 64, __pyx_L7_error)
+            __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_encode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 70, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_16);
             __pyx_t_14 = NULL;
             if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_16))) {
@@ -6281,14 +6279,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
               }
             }
             if (__pyx_t_14) {
-              __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_14); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 64, __pyx_L7_error)
+              __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_14); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 70, __pyx_L7_error)
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
             } else {
-              __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_16); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 64, __pyx_L7_error)
+              __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_16); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 70, __pyx_L7_error)
             }
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            __pyx_t_16 = PyTuple_New(2); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 64, __pyx_L7_error)
+            __pyx_t_16 = PyTuple_New(2); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 70, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_16);
             __Pyx_GIVEREF(__pyx_t_10);
             PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_10);
@@ -6307,14 +6305,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
               }
             }
             if (!__pyx_t_10) {
-              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_16); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L7_error)
+              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_16); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L7_error)
               __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
               __Pyx_GOTREF(__pyx_t_1);
             } else {
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_2)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_16};
-                __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L7_error)
+                __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L7_error)
                 __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
@@ -6323,20 +6321,20 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_16};
-                __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L7_error)
+                __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L7_error)
                 __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
               } else
               #endif
               {
-                __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 64, __pyx_L7_error)
+                __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 70, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_14);
                 __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_10); __pyx_t_10 = NULL;
                 __Pyx_GIVEREF(__pyx_t_16);
                 PyTuple_SET_ITEM(__pyx_t_14, 0+1, __pyx_t_16);
                 __pyx_t_16 = 0;
-                __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L7_error)
+                __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L7_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
               }
@@ -6344,7 +6342,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-            /* "chimeramate_cy.pyx":59
+            /* "chimeramate_main.pyx":65
  *         cdef str kmer
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:
  *             for entry in reads.entries():             # <<<<<<<<<<<<<<
@@ -6354,7 +6352,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
           }
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-          /* "chimeramate_cy.pyx":58
+          /* "chimeramate_main.pyx":64
  *         cdef str seq
  *         cdef str kmer
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:             # <<<<<<<<<<<<<<
@@ -6375,21 +6373,21 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
         /*except:*/ {
-          __Pyx_AddTraceback("chimeramate_cy.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_1, &__pyx_t_2) < 0) __PYX_ERR(0, 58, __pyx_L9_except_error)
+          __Pyx_AddTraceback("chimeramate_main.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
+          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_1, &__pyx_t_2) < 0) __PYX_ERR(0, 64, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_14 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 58, __pyx_L9_except_error)
+          __pyx_t_14 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 64, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_14);
           __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_14, NULL);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-          if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 58, __pyx_L9_except_error)
+          if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 64, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_18);
           __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_18);
           __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-          if (__pyx_t_13 < 0) __PYX_ERR(0, 58, __pyx_L9_except_error)
+          if (__pyx_t_13 < 0) __PYX_ERR(0, 64, __pyx_L9_except_error)
           __pyx_t_12 = ((!(__pyx_t_13 != 0)) != 0);
           if (__pyx_t_12) {
             __Pyx_GIVEREF(__pyx_t_3);
@@ -6397,7 +6395,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
             __Pyx_XGIVEREF(__pyx_t_2);
             __Pyx_ErrRestoreWithState(__pyx_t_3, __pyx_t_1, __pyx_t_2);
             __pyx_t_3 = 0; __pyx_t_1 = 0; __pyx_t_2 = 0; 
-            __PYX_ERR(0, 58, __pyx_L9_except_error)
+            __PYX_ERR(0, 64, __pyx_L9_except_error)
           }
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6423,7 +6421,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
         if (__pyx_t_4) {
           __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__4, NULL);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 58, __pyx_L1_error)
+          if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 64, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         }
@@ -6438,7 +6436,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
     __pyx_L21:;
   }
 
-  /* "chimeramate_cy.pyx":54
+  /* "chimeramate_main.pyx":60
  *         return high_abu
  * 
  *     def softmask(self, reads, list kmer_abundance_sorting, str output_file):             # <<<<<<<<<<<<<<
@@ -6457,7 +6455,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
   __Pyx_XDECREF(__pyx_t_14);
   __Pyx_XDECREF(__pyx_t_15);
   __Pyx_XDECREF(__pyx_t_16);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.softmask", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_entry);
@@ -6476,19 +6474,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_6softmask(CYTHON_UNUSED
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter_8__reduce_cython__(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter_8__reduce_cython__(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_8__reduce_cython__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self) {
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_8__reduce_cython__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -6684,7 +6682,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_8__reduce_cython__(stru
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -6702,19 +6700,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_8__reduce_cython__(stru
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_11kmer_filter_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_11kmer_filter_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_16chimeramate_main_11kmer_filter_10__setstate_cython__(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16chimeramate_main_11kmer_filter_10__setstate_cython__(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6726,7 +6724,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(s
  *     __pyx_unpickle_kmer_filter__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 15, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16chimeramate_main___pyx_unpickle_kmer_filter__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -6742,7 +6740,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(s
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("chimeramate_cy.kmer_filter.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.kmer_filter.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6750,33 +6748,30 @@ static PyObject *__pyx_pf_14chimeramate_cy_11kmer_filter_10__setstate_cython__(s
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":68
+/* "chimeramate_main.pyx":74
  * cdef class chimera_search:
  *     cdef dict __dict__
- *     def __init__(self, str masked_reads, int k, int threads, float abskew):             # <<<<<<<<<<<<<<
- *         self._seq_dict = self._seq_dict(masked_reads, k)
+ *     def __init__(self, str masked_reads, int chim_k, float abskew):             # <<<<<<<<<<<<<<
+ *         self._seq_dict = self._seq_dict(masked_reads, chim_k)
  *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
  */
 
 /* Python wrapper */
-static int __pyx_pw_14chimeramate_cy_14chimera_search_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_14chimeramate_cy_14chimera_search_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_16chimeramate_main_14chimera_search_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_16chimeramate_main_14chimera_search_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_masked_reads = 0;
-  int __pyx_v_k;
-  CYTHON_UNUSED int __pyx_v_threads;
+  int __pyx_v_chim_k;
   float __pyx_v_abskew;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_masked_reads,&__pyx_n_s_k,&__pyx_n_s_threads,&__pyx_n_s_abskew,0};
-    PyObject* values[4] = {0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_masked_reads,&__pyx_n_s_chim_k,&__pyx_n_s_abskew,0};
+    PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -6793,49 +6788,41 @@ static int __pyx_pw_14chimeramate_cy_14chimera_search_1__init__(PyObject *__pyx_
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_k)) != 0)) kw_args--;
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_chim_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 1); __PYX_ERR(0, 68, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 1); __PYX_ERR(0, 74, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_threads)) != 0)) kw_args--;
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_abskew)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 2); __PYX_ERR(0, 68, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  3:
-        if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_abskew)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 3); __PYX_ERR(0, 68, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 2); __PYX_ERR(0, 74, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 68, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 74, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_masked_reads = ((PyObject*)values[0]);
-    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
-    __pyx_v_threads = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
-    __pyx_v_abskew = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_abskew == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
+    __pyx_v_chim_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_chim_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
+    __pyx_v_abskew = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_abskew == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 68, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 74, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_masked_reads), (&PyString_Type), 1, "masked_reads", 1))) __PYX_ERR(0, 68, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search___init__(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_masked_reads, __pyx_v_k, __pyx_v_threads, __pyx_v_abskew);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_masked_reads), (&PyString_Type), 1, "masked_reads", 1))) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search___init__(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_masked_reads, __pyx_v_chim_k, __pyx_v_abskew);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6846,7 +6833,7 @@ static int __pyx_pw_14chimeramate_cy_14chimera_search_1__init__(PyObject *__pyx_
   return __pyx_r;
 }
 
-static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k, CYTHON_UNUSED int __pyx_v_threads, float __pyx_v_abskew) {
+static int __pyx_pf_16chimeramate_main_14chimera_search___init__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_chim_k, float __pyx_v_abskew) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6863,16 +6850,16 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
   PyObject *__pyx_t_12 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "chimeramate_cy.pyx":69
+  /* "chimeramate_main.pyx":75
  *     cdef dict __dict__
- *     def __init__(self, str masked_reads, int k, int threads, float abskew):
- *         self._seq_dict = self._seq_dict(masked_reads, k)             # <<<<<<<<<<<<<<
+ *     def __init__(self, str masked_reads, int chim_k, float abskew):
+ *         self._seq_dict = self._seq_dict(masked_reads, chim_k)             # <<<<<<<<<<<<<<
  *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
- *         self._intersection_list = self._intersection_list(
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_chim_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -6889,7 +6876,7 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_masked_reads, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6898,14 +6885,14 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_v_masked_reads, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6916,24 +6903,24 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict, __pyx_t_1) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict, __pyx_t_1) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":70
- *     def __init__(self, str masked_reads, int k, int threads, float abskew):
- *         self._seq_dict = self._seq_dict(masked_reads, k)
+  /* "chimeramate_main.pyx":76
+ *     def __init__(self, str masked_reads, int chim_k, float abskew):
+ *         self._seq_dict = self._seq_dict(masked_reads, chim_k)
  *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)             # <<<<<<<<<<<<<<
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
  *         self._intersection_list = self._intersection_list(
- *                 self._abu_kmer_zip[1])
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq_dict); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6946,14 +6933,14 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -6962,48 +6949,40 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip, __pyx_t_1) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip, __pyx_t_1) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":71
- *         self._seq_dict = self._seq_dict(masked_reads, k)
+  /* "chimeramate_main.pyx":77
+ *         self._seq_dict = self._seq_dict(masked_reads, chim_k)
  *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
- *         self._intersection_list = self._intersection_list(             # <<<<<<<<<<<<<<
- *                 self._abu_kmer_zip[1])
- *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
- */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-
-  /* "chimeramate_cy.pyx":72
- *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])             # <<<<<<<<<<<<<<
  *         self._intersection_list = self._intersection_list(
- *                 self._abu_kmer_zip[1])             # <<<<<<<<<<<<<<
- *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
- *                                       self._abu_kmer_zip[2],
+ *                 self._kmer_sets)
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_sets); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -7017,14 +6996,14 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -7033,168 +7012,47 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "chimeramate_cy.pyx":71
- *         self._seq_dict = self._seq_dict(masked_reads, k)
- *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
- *         self._intersection_list = self._intersection_list(             # <<<<<<<<<<<<<<
- *                 self._abu_kmer_zip[1])
- *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
- */
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list, __pyx_t_1) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_sets, __pyx_t_1) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":73
- *         self._intersection_list = self._intersection_list(
- *                 self._abu_kmer_zip[1])
- *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],             # <<<<<<<<<<<<<<
- *                                       self._abu_kmer_zip[2],
- *                                       self._abu_kmer_zip[3],
+  /* "chimeramate_main.pyx":78
+ *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
+ *         self._intersection_list = self._intersection_list(             # <<<<<<<<<<<<<<
+ *                 self._kmer_sets)
+ *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_create_scs_lists); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":74
- *                 self._abu_kmer_zip[1])
- *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
- *                                       self._abu_kmer_zip[2],             # <<<<<<<<<<<<<<
- *                                       self._abu_kmer_zip[3],
- *                                       self._intersection_list[0],
- */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_4, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 74, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-  /* "chimeramate_cy.pyx":75
+  /* "chimeramate_main.pyx":79
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
+ *         self._intersection_list = self._intersection_list(
+ *                 self._kmer_sets)             # <<<<<<<<<<<<<<
  *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
  *                                       self._abu_kmer_zip[2],
- *                                       self._abu_kmer_zip[3],             # <<<<<<<<<<<<<<
- *                                       self._intersection_list[0],
- *                                       self._intersection_list[1]))
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_4, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-  /* "chimeramate_cy.pyx":76
- *                                       self._abu_kmer_zip[2],
- *                                       self._abu_kmer_zip[3],
- *                                       self._intersection_list[0],             # <<<<<<<<<<<<<<
- *                                       self._intersection_list[1]))
- *         self._high_indegree_graph = self._remove_low_indegree_edges(
- */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_10 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-  /* "chimeramate_cy.pyx":77
- *                                       self._abu_kmer_zip[3],
- *                                       self._intersection_list[0],
- *                                       self._intersection_list[1]))             # <<<<<<<<<<<<<<
- *         self._high_indegree_graph = self._remove_low_indegree_edges(
- *                 self._overlap_graph, abskew)
- */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_11 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  __pyx_t_5 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-      __pyx_t_5 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_4, __pyx_t_7, __pyx_t_8, __pyx_t_9, __pyx_t_10, __pyx_t_11};
-    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_4, __pyx_t_7, __pyx_t_8, __pyx_t_9, __pyx_t_10, __pyx_t_11};
-    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  } else
-  #endif
-  {
-    __pyx_t_12 = PyTuple_New(5+__pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 73, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    if (__pyx_t_4) {
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_4); __pyx_t_4 = NULL;
-    }
-    __Pyx_GIVEREF(__pyx_t_7);
-    PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_t_7);
-    __Pyx_GIVEREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_5, __pyx_t_8);
-    __Pyx_GIVEREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_5, __pyx_t_9);
-    __Pyx_GIVEREF(__pyx_t_10);
-    PyTuple_SET_ITEM(__pyx_t_12, 3+__pyx_t_5, __pyx_t_10);
-    __Pyx_GIVEREF(__pyx_t_11);
-    PyTuple_SET_ITEM(__pyx_t_12, 4+__pyx_t_5, __pyx_t_11);
-    __pyx_t_7 = 0;
-    __pyx_t_8 = 0;
-    __pyx_t_9 = 0;
-    __pyx_t_10 = 0;
-    __pyx_t_11 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_sets); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
     __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
@@ -7206,14 +7064,14 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7222,128 +7080,162 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 73, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_3);
+      PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":73
+  /* "chimeramate_main.pyx":78
+ *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
+ *         self._kmer_sets = self._kmer_sets(self._abu_kmer_zip[1])
+ *         self._intersection_list = self._intersection_list(             # <<<<<<<<<<<<<<
+ *                 self._kmer_sets)
+ *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
+ */
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list, __pyx_t_1) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "chimeramate_main.pyx":80
  *         self._intersection_list = self._intersection_list(
- *                 self._abu_kmer_zip[1])
+ *                 self._kmer_sets)
  *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],             # <<<<<<<<<<<<<<
  *                                       self._abu_kmer_zip[2],
  *                                       self._abu_kmer_zip[3],
  */
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph, __pyx_t_1) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "chimeramate_cy.pyx":78
- *                                       self._intersection_list[0],
- *                                       self._intersection_list[1]))
- *         self._high_indegree_graph = self._remove_low_indegree_edges(             # <<<<<<<<<<<<<<
- *                 self._overlap_graph, abskew)
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove_low_indegree_edges); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-
-  /* "chimeramate_cy.pyx":79
- *                                       self._intersection_list[1]))
- *         self._high_indegree_graph = self._remove_low_indegree_edges(
- *                 self._overlap_graph, abskew)             # <<<<<<<<<<<<<<
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- *         self.potential_chimeras = self.potential_chimeras(
- */
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 79, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_abskew); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_create_scs_lists); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = NULL;
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "chimeramate_main.pyx":81
+ *                 self._kmer_sets)
+ *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
+ *                                       self._abu_kmer_zip[2],             # <<<<<<<<<<<<<<
+ *                                       self._abu_kmer_zip[3],
+ *                                       self._intersection_list,
+ */
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_6, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "chimeramate_main.pyx":82
+ *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],
+ *                                       self._abu_kmer_zip[2],
+ *                                       self._abu_kmer_zip[3],             # <<<<<<<<<<<<<<
+ *                                       self._intersection_list,
+ *                                       self._kmer_sets))
+ */
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_6, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "chimeramate_main.pyx":83
+ *                                       self._abu_kmer_zip[2],
+ *                                       self._abu_kmer_zip[3],
+ *                                       self._intersection_list,             # <<<<<<<<<<<<<<
+ *                                       self._kmer_sets))
+ *         self._high_indegree_graph = self._graph_filter(
+ */
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_list); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+
+  /* "chimeramate_main.pyx":84
+ *                                       self._abu_kmer_zip[3],
+ *                                       self._intersection_list,
+ *                                       self._kmer_sets))             # <<<<<<<<<<<<<<
+ *         self._high_indegree_graph = self._graph_filter(
+ *                 self._overlap_graph, abskew)
+ */
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_kmer_sets); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = NULL;
   __pyx_t_5 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_6);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_11)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_11);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
       __pyx_t_5 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_12, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_t_7, __pyx_t_8, __pyx_t_9, __pyx_t_6, __pyx_t_10};
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_12, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_t_7, __pyx_t_8, __pyx_t_9, __pyx_t_6, __pyx_t_10};
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 5+__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else
   #endif
   {
-    __pyx_t_11 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    if (__pyx_t_6) {
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_6); __pyx_t_6 = NULL;
+    __pyx_t_12 = PyTuple_New(5+__pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    if (__pyx_t_11) {
+      __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11); __pyx_t_11 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_12);
-    PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_5, __pyx_t_12);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_5, __pyx_t_3);
-    __pyx_t_12 = 0;
-    __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_GIVEREF(__pyx_t_7);
+    PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_8);
+    PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_5, __pyx_t_8);
+    __Pyx_GIVEREF(__pyx_t_9);
+    PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_5, __pyx_t_9);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_12, 3+__pyx_t_5, __pyx_t_6);
+    __Pyx_GIVEREF(__pyx_t_10);
+    PyTuple_SET_ITEM(__pyx_t_12, 4+__pyx_t_5, __pyx_t_10);
+    __pyx_t_7 = 0;
+    __pyx_t_8 = 0;
+    __pyx_t_9 = 0;
+    __pyx_t_6 = 0;
+    __pyx_t_10 = 0;
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "chimeramate_cy.pyx":78
- *                                       self._intersection_list[0],
- *                                       self._intersection_list[1]))
- *         self._high_indegree_graph = self._remove_low_indegree_edges(             # <<<<<<<<<<<<<<
- *                 self._overlap_graph, abskew)
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- */
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_high_indegree_graph, __pyx_t_1) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "chimeramate_cy.pyx":80
- *         self._high_indegree_graph = self._remove_low_indegree_edges(
- *                 self._overlap_graph, abskew)
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph             # <<<<<<<<<<<<<<
- *         self.potential_chimeras = self.potential_chimeras(
- *                 self.chimeric_subgraphs)
- */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_subgraphs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_high_indegree_graph); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 80, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
     __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
@@ -7355,125 +7247,257 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_11};
+      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
       __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_11};
+      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_4};
       __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
       __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 80, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_GIVEREF(__pyx_t_11);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_11);
-      __pyx_t_11 = 0;
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_4);
+      __pyx_t_4 = 0;
       __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_chimeric_subgraphs, __pyx_t_1) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+
+  /* "chimeramate_main.pyx":80
+ *         self._intersection_list = self._intersection_list(
+ *                 self._kmer_sets)
+ *         self._overlap_graph = self._overlap_graph(self.create_scs_lists(self._abu_kmer_zip[0],             # <<<<<<<<<<<<<<
+ *                                       self._abu_kmer_zip[2],
+ *                                       self._abu_kmer_zip[3],
+ */
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph, __pyx_t_1) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":81
+  /* "chimeramate_main.pyx":85
+ *                                       self._intersection_list,
+ *                                       self._kmer_sets))
+ *         self._high_indegree_graph = self._graph_filter(             # <<<<<<<<<<<<<<
  *                 self._overlap_graph, abskew)
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- *         self.potential_chimeras = self.potential_chimeras(             # <<<<<<<<<<<<<<
- *                 self.chimeric_subgraphs)
- * 
+ *         self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_graph_filter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "chimeramate_cy.pyx":82
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- *         self.potential_chimeras = self.potential_chimeras(
- *                 self.chimeric_subgraphs)             # <<<<<<<<<<<<<<
- * 
- *     def _seq_dict(self, str masked_reads, int k):
+  /* "chimeramate_main.pyx":86
+ *                                       self._kmer_sets))
+ *         self._high_indegree_graph = self._graph_filter(
+ *                 self._overlap_graph, abskew)             # <<<<<<<<<<<<<<
+ *         self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)
+ *         self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')
  */
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_chimeric_subgraphs); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_overlap_graph); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_11 = NULL;
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_abskew); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_3 = NULL;
+  __pyx_t_5 = 0;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_11)) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_11);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_5 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_12, __pyx_t_4};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_12, __pyx_t_4};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_10 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    if (__pyx_t_3) {
+      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_12);
+    PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_5, __pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_5, __pyx_t_4);
+    __pyx_t_12 = 0;
+    __pyx_t_4 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "chimeramate_main.pyx":85
+ *                                       self._intersection_list,
+ *                                       self._kmer_sets))
+ *         self._high_indegree_graph = self._graph_filter(             # <<<<<<<<<<<<<<
+ *                 self._overlap_graph, abskew)
+ *         self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)
+ */
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_high_indegree_graph, __pyx_t_1) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "chimeramate_main.pyx":87
+ *         self._high_indegree_graph = self._graph_filter(
+ *                 self._overlap_graph, abskew)
+ *         self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)             # <<<<<<<<<<<<<<
+ *         self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_high_indegree_graph); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  if (!__pyx_t_11) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  if (!__pyx_t_4) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_12};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_10};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_12};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_10};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_11); __pyx_t_11 = NULL;
-      __Pyx_GIVEREF(__pyx_t_12);
-      PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_12);
-      __pyx_t_12 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_4); __pyx_t_4 = NULL;
+      __Pyx_GIVEREF(__pyx_t_10);
+      PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_10);
+      __pyx_t_10 = 0;
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "chimeramate_cy.pyx":81
- *                 self._overlap_graph, abskew)
- *         self.chimeric_subgraphs = self.subgraphs(self._high_indegree_graph)#_overlap_graph
- *         self.potential_chimeras = self.potential_chimeras(             # <<<<<<<<<<<<<<
- *                 self.chimeric_subgraphs)
- * 
- */
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras, __pyx_t_1) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras, __pyx_t_1) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":68
+  /* "chimeramate_main.pyx":88
+ *                 self._overlap_graph, abskew)
+ *         self.potential_chimeras = self.potential_chimeras(self._high_indegree_graph)
+ *         self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')             # <<<<<<<<<<<<<<
+ * 
+ *     def _seq_dict(self, str masked_reads, int k):
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_write); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_12 = NULL;
+  __pyx_t_5 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_12)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_12);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_5 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_12, __pyx_v_masked_reads, __pyx_kp_s_chims_fasta, __pyx_kp_s_nonchims_fasta};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_12, __pyx_v_masked_reads, __pyx_kp_s_chims_fasta, __pyx_kp_s_nonchims_fasta};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+  } else
+  #endif
+  {
+    __pyx_t_10 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    if (__pyx_t_12) {
+      __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_12); __pyx_t_12 = NULL;
+    }
+    __Pyx_INCREF(__pyx_v_masked_reads);
+    __Pyx_GIVEREF(__pyx_v_masked_reads);
+    PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_5, __pyx_v_masked_reads);
+    __Pyx_INCREF(__pyx_kp_s_chims_fasta);
+    __Pyx_GIVEREF(__pyx_kp_s_chims_fasta);
+    PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_5, __pyx_kp_s_chims_fasta);
+    __Pyx_INCREF(__pyx_kp_s_nonchims_fasta);
+    __Pyx_GIVEREF(__pyx_kp_s_nonchims_fasta);
+    PyTuple_SET_ITEM(__pyx_t_10, 2+__pyx_t_5, __pyx_kp_s_nonchims_fasta);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "chimeramate_main.pyx":74
  * cdef class chimera_search:
  *     cdef dict __dict__
- *     def __init__(self, str masked_reads, int k, int threads, float abskew):             # <<<<<<<<<<<<<<
- *         self._seq_dict = self._seq_dict(masked_reads, k)
+ *     def __init__(self, str masked_reads, int chim_k, float abskew):             # <<<<<<<<<<<<<<
+ *         self._seq_dict = self._seq_dict(masked_reads, chim_k)
  *         self._abu_kmer_zip = self._abu_kmer_zip(self._seq_dict)
  */
 
@@ -7492,15 +7516,15 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":84
- *                 self.chimeric_subgraphs)
+/* "chimeramate_main.pyx":90
+ *         self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')
  * 
  *     def _seq_dict(self, str masked_reads, int k):             # <<<<<<<<<<<<<<
  *             cdef dict seq_dict = {}
@@ -7508,8 +7532,8 @@ static int __pyx_pf_14chimeramate_cy_14chimera_search___init__(struct __pyx_obj_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_3_seq_dict(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_3_seq_dict(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_masked_reads = 0;
   int __pyx_v_k;
   PyObject *__pyx_r = 0;
@@ -7538,11 +7562,11 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict(PyObject 
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_seq_dict", 1, 2, 2, 1); __PYX_ERR(0, 84, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_seq_dict", 1, 2, 2, 1); __PYX_ERR(0, 90, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_seq_dict") < 0)) __PYX_ERR(0, 84, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_seq_dict") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7551,18 +7575,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict(PyObject 
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_masked_reads = ((PyObject*)values[0]);
-    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L3_error)
+    __pyx_v_k = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_seq_dict", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 84, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_seq_dict", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._seq_dict", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._seq_dict", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_masked_reads), (&PyString_Type), 1, "masked_reads", 1))) __PYX_ERR(0, 84, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_masked_reads, __pyx_v_k);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_masked_reads), (&PyString_Type), 1, "masked_reads", 1))) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_2_seq_dict(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_masked_reads, __pyx_v_k);
 
   /* function exit code */
   goto __pyx_L0;
@@ -7573,7 +7597,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict(PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_2_seq_dict(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, int __pyx_v_k) {
   PyObject *__pyx_v_seq_dict = 0;
   struct __pyx_obj_6dinopy_11definitions_FastaEntryC *__pyx_v_f = 0;
   PyObject *__pyx_v_seq = 0;
@@ -7595,34 +7619,34 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("_seq_dict", 0);
 
-  /* "chimeramate_cy.pyx":85
+  /* "chimeramate_main.pyx":91
  * 
  *     def _seq_dict(self, str masked_reads, int k):
  *             cdef dict seq_dict = {}             # <<<<<<<<<<<<<<
  *             cdef FastaEntryC f
  *             cdef str seq
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_seq_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":91
+  /* "chimeramate_main.pyx":97
  *             cdef str node2
  *             cdef int i
  *             for f in dinopy.FastaReader(masked_reads).entries():             # <<<<<<<<<<<<<<
  *                 seq = f.sequence.decode()
  *                 for i in range(len(seq)-k+1):
  */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_masked_reads);
   __Pyx_GIVEREF(__pyx_v_masked_reads);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_masked_reads);
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_reader_FastaReader), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_reader_FastaReader), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_entries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -7636,10 +7660,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -7647,9 +7671,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 97, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -7657,17 +7681,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -7677,24 +7701,24 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 91, __pyx_L1_error)
+          else __PYX_ERR(0, 97, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_1);
     }
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6dinopy_11definitions_FastaEntryC))))) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_f, ((struct __pyx_obj_6dinopy_11definitions_FastaEntryC *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":92
+    /* "chimeramate_main.pyx":98
  *             cdef int i
  *             for f in dinopy.FastaReader(masked_reads).entries():
  *                 seq = f.sequence.decode()             # <<<<<<<<<<<<<<
  *                 for i in range(len(seq)-k+1):
  *                     node = seq[i:i+k]
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_f->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_f->sequence, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -7707,30 +7731,30 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
       }
     }
     if (__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 92, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_seq, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":93
+    /* "chimeramate_main.pyx":99
  *             for f in dinopy.FastaReader(masked_reads).entries():
  *                 seq = f.sequence.decode()
  *                 for i in range(len(seq)-k+1):             # <<<<<<<<<<<<<<
  *                     node = seq[i:i+k]
  *                     if node.isupper():
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_7 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
     __pyx_t_8 = ((__pyx_t_7 - __pyx_v_k) + 1);
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_i = __pyx_t_9;
 
-      /* "chimeramate_cy.pyx":94
+      /* "chimeramate_main.pyx":100
  *                 seq = f.sequence.decode()
  *                 for i in range(len(seq)-k+1):
  *                     node = seq[i:i+k]             # <<<<<<<<<<<<<<
@@ -7739,21 +7763,21 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
  */
       if (unlikely(__pyx_v_seq == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 94, __pyx_L1_error)
+        __PYX_ERR(0, 100, __pyx_L1_error)
       }
-      __pyx_t_1 = PySequence_GetSlice(__pyx_v_seq, __pyx_v_i, (__pyx_v_i + __pyx_v_k)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+      __pyx_t_1 = PySequence_GetSlice(__pyx_v_seq, __pyx_v_i, (__pyx_v_i + __pyx_v_k)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "chimeramate_cy.pyx":95
+      /* "chimeramate_main.pyx":101
  *                 for i in range(len(seq)-k+1):
  *                     node = seq[i:i+k]
  *                     if node.isupper():             # <<<<<<<<<<<<<<
  *                         if seq not in seq_dict.keys():
  *                             seq_dict[seq] = {}
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_node, __pyx_n_s_isupper); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_node, __pyx_n_s_isupper); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_6 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -7766,59 +7790,59 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
         }
       }
       if (__pyx_t_6) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else {
-        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_10) {
 
-        /* "chimeramate_cy.pyx":96
+        /* "chimeramate_main.pyx":102
  *                     node = seq[i:i+k]
  *                     if node.isupper():
  *                         if seq not in seq_dict.keys():             # <<<<<<<<<<<<<<
  *                             seq_dict[seq] = {}
  *                             seq_dict[seq]['kmers'] = []
  */
-        __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_seq_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_seq_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_seq, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
+        __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_seq, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 102, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_t_11 = (__pyx_t_10 != 0);
         if (__pyx_t_11) {
 
-          /* "chimeramate_cy.pyx":97
+          /* "chimeramate_main.pyx":103
  *                     if node.isupper():
  *                         if seq not in seq_dict.keys():
  *                             seq_dict[seq] = {}             # <<<<<<<<<<<<<<
  *                             seq_dict[seq]['kmers'] = []
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
  */
-          __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          if (unlikely(PyDict_SetItem(__pyx_v_seq_dict, __pyx_v_seq, __pyx_t_1) < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+          if (unlikely(PyDict_SetItem(__pyx_v_seq_dict, __pyx_v_seq, __pyx_t_1) < 0)) __PYX_ERR(0, 103, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "chimeramate_cy.pyx":98
+          /* "chimeramate_main.pyx":104
  *                         if seq not in seq_dict.keys():
  *                             seq_dict[seq] = {}
  *                             seq_dict[seq]['kmers'] = []             # <<<<<<<<<<<<<<
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
  *                             seq_dict[seq]['name'] = f.name.decode().split(';')[0]
  */
-          __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 104, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_n_s_kmers, __pyx_t_1) < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+          if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_n_s_kmers, __pyx_t_1) < 0)) __PYX_ERR(0, 104, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "chimeramate_cy.pyx":99
+          /* "chimeramate_main.pyx":105
  *                             seq_dict[seq] = {}
  *                             seq_dict[seq]['kmers'] = []
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]             # <<<<<<<<<<<<<<
@@ -7827,26 +7851,26 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
  */
           if (unlikely(__pyx_v_f->name == Py_None)) {
             PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-            __PYX_ERR(0, 99, __pyx_L1_error)
+            __PYX_ERR(0, 105, __pyx_L1_error)
           }
-          __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_3 = PyUnicode_Split(((PyObject*)__pyx_t_1), __pyx_kp_s_, -1L); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+          __pyx_t_3 = PyUnicode_Split(((PyObject*)__pyx_t_1), __pyx_kp_s_, -1L); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, -1L, NULL, NULL, &__pyx_slice__5, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, -1L, NULL, NULL, &__pyx_slice__5, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_abu, __pyx_t_3) < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
+          if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_abu, __pyx_t_3) < 0)) __PYX_ERR(0, 105, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-          /* "chimeramate_cy.pyx":100
+          /* "chimeramate_main.pyx":106
  *                             seq_dict[seq]['kmers'] = []
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
  *                             seq_dict[seq]['name'] = f.name.decode().split(';')[0]             # <<<<<<<<<<<<<<
@@ -7855,23 +7879,23 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
  */
           if (unlikely(__pyx_v_f->name == Py_None)) {
             PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-            __PYX_ERR(0, 100, __pyx_L1_error)
+            __PYX_ERR(0, 106, __pyx_L1_error)
           }
-          __pyx_t_3 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_decode_bytes(__pyx_v_f->name, 0, PY_SSIZE_T_MAX, NULL, NULL, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_1 = PyUnicode_Split(((PyObject*)__pyx_t_3), __pyx_kp_s__6, -1L); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+          __pyx_t_1 = PyUnicode_Split(((PyObject*)__pyx_t_3), __pyx_kp_s__6, -1L); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_name, __pyx_t_3) < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+          if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_name, __pyx_t_3) < 0)) __PYX_ERR(0, 106, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-          /* "chimeramate_cy.pyx":96
+          /* "chimeramate_main.pyx":102
  *                     node = seq[i:i+k]
  *                     if node.isupper():
  *                         if seq not in seq_dict.keys():             # <<<<<<<<<<<<<<
@@ -7880,22 +7904,22 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
  */
         }
 
-        /* "chimeramate_cy.pyx":101
+        /* "chimeramate_main.pyx":107
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]
  *                             seq_dict[seq]['name'] = f.name.decode().split(';')[0]
  *                         seq_dict[seq]['kmers'].append(node)             # <<<<<<<<<<<<<<
  *             return seq_dict
  * 
  */
-        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_seq_dict, __pyx_v_seq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_kmers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+        __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_kmers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_node); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 101, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_node); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 107, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "chimeramate_cy.pyx":95
+        /* "chimeramate_main.pyx":101
  *                 for i in range(len(seq)-k+1):
  *                     node = seq[i:i+k]
  *                     if node.isupper():             # <<<<<<<<<<<<<<
@@ -7905,7 +7929,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
       }
     }
 
-    /* "chimeramate_cy.pyx":91
+    /* "chimeramate_main.pyx":97
  *             cdef str node2
  *             cdef int i
  *             for f in dinopy.FastaReader(masked_reads).entries():             # <<<<<<<<<<<<<<
@@ -7915,7 +7939,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":102
+  /* "chimeramate_main.pyx":108
  *                             seq_dict[seq]['name'] = f.name.decode().split(';')[0]
  *                         seq_dict[seq]['kmers'].append(node)
  *             return seq_dict             # <<<<<<<<<<<<<<
@@ -7927,8 +7951,8 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
   __pyx_r = __pyx_v_seq_dict;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":84
- *                 self.chimeric_subgraphs)
+  /* "chimeramate_main.pyx":90
+ *         self.write(masked_reads, 'chims.fasta', 'nonchims.fasta')
  * 
  *     def _seq_dict(self, str masked_reads, int k):             # <<<<<<<<<<<<<<
  *             cdef dict seq_dict = {}
@@ -7941,7 +7965,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._seq_dict", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._seq_dict", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_seq_dict);
@@ -7953,7 +7977,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":104
+/* "chimeramate_main.pyx":110
  *             return seq_dict
  * 
  *     def _abu_kmer_zip(self, dict seq_dict):             # <<<<<<<<<<<<<<
@@ -7962,13 +7986,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_2_seq_dict(CYTHON_UN
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_5_abu_kmer_zip(PyObject *__pyx_v_self, PyObject *__pyx_v_seq_dict); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_5_abu_kmer_zip(PyObject *__pyx_v_self, PyObject *__pyx_v_seq_dict) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_5_abu_kmer_zip(PyObject *__pyx_v_self, PyObject *__pyx_v_seq_dict); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_5_abu_kmer_zip(PyObject *__pyx_v_self, PyObject *__pyx_v_seq_dict) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_abu_kmer_zip (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_seq_dict), (&PyDict_Type), 1, "seq_dict", 1))) __PYX_ERR(0, 104, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_seq_dict));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_seq_dict), (&PyDict_Type), 1, "seq_dict", 1))) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_4_abu_kmer_zip(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_seq_dict));
 
   /* function exit code */
   goto __pyx_L0;
@@ -7979,7 +8003,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_5_abu_kmer_zip(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_seq_dict) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_4_abu_kmer_zip(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_seq_dict) {
   PyObject *__pyx_v_keys = 0;
   PyObject *__pyx_v_values = 0;
   PyObject *__pyx_v_abus = 0;
@@ -7998,7 +8022,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("_abu_kmer_zip", 0);
 
-  /* "chimeramate_cy.pyx":109
+  /* "chimeramate_main.pyx":115
  *         cdef list names
  *         cdef int i
  *         keys, values = zip(*seq_dict.items())             # <<<<<<<<<<<<<<
@@ -8007,14 +8031,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  */
   if (unlikely(__pyx_v_seq_dict == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
-    __PYX_ERR(0, 109, __pyx_L1_error)
+    __PYX_ERR(0, 115, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_Items(__pyx_v_seq_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Items(__pyx_v_seq_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
@@ -8027,7 +8051,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 109, __pyx_L1_error)
+      __PYX_ERR(0, 115, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -8040,15 +8064,15 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -8056,7 +8080,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -8064,53 +8088,53 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 109, __pyx_L1_error)
+    __PYX_ERR(0, 115, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  if (!(likely(PyTuple_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 109, __pyx_L1_error)
-  if (!(likely(PyTuple_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (!(likely(PyTuple_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (!(likely(PyTuple_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_v_keys = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   __pyx_v_values = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":110
+  /* "chimeramate_main.pyx":116
  *         cdef int i
  *         keys, values = zip(*seq_dict.items())
  *         abus = []             # <<<<<<<<<<<<<<
  *         kmers = []
  *         names = []
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_abus = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":111
+  /* "chimeramate_main.pyx":117
  *         keys, values = zip(*seq_dict.items())
  *         abus = []
  *         kmers = []             # <<<<<<<<<<<<<<
  *         names = []
  *         for i in range(len(values)):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_kmers = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":112
+  /* "chimeramate_main.pyx":118
  *         abus = []
  *         kmers = []
  *         names = []             # <<<<<<<<<<<<<<
  *         for i in range(len(values)):
  *             abus.append(values[i]['abu'])
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_names = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":113
+  /* "chimeramate_main.pyx":119
  *         kmers = []
  *         names = []
  *         for i in range(len(values)):             # <<<<<<<<<<<<<<
@@ -8119,13 +8143,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  */
   if (unlikely(__pyx_v_values == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 113, __pyx_L1_error)
+    __PYX_ERR(0, 119, __pyx_L1_error)
   }
-  __pyx_t_6 = PyTuple_GET_SIZE(__pyx_v_values); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_GET_SIZE(__pyx_v_values); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 119, __pyx_L1_error)
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "chimeramate_cy.pyx":114
+    /* "chimeramate_main.pyx":120
  *         names = []
  *         for i in range(len(values)):
  *             abus.append(values[i]['abu'])             # <<<<<<<<<<<<<<
@@ -8134,17 +8158,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  */
     if (unlikely(__pyx_v_values == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 114, __pyx_L1_error)
+      __PYX_ERR(0, 120, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_abu); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_abu); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_abus, __pyx_t_3); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_abus, __pyx_t_3); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":115
+    /* "chimeramate_main.pyx":121
  *         for i in range(len(values)):
  *             abus.append(values[i]['abu'])
  *             kmers.append(values[i]['kmers'])             # <<<<<<<<<<<<<<
@@ -8153,17 +8177,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  */
     if (unlikely(__pyx_v_values == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 115, __pyx_L1_error)
+      __PYX_ERR(0, 121, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_kmers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_kmers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_kmers, __pyx_t_1); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_kmers, __pyx_t_1); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":116
+    /* "chimeramate_main.pyx":122
  *             abus.append(values[i]['abu'])
  *             kmers.append(values[i]['kmers'])
  *             names.append(values[i]['name'])             # <<<<<<<<<<<<<<
@@ -8172,18 +8196,18 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  */
     if (unlikely(__pyx_v_values == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 116, __pyx_L1_error)
+      __PYX_ERR(0, 122, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_values, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_names, __pyx_t_3); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_names, __pyx_t_3); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "chimeramate_cy.pyx":118
+  /* "chimeramate_main.pyx":124
  *             names.append(values[i]['name'])
  * 
  *         return (abus, kmers, keys, names)             # <<<<<<<<<<<<<<
@@ -8191,7 +8215,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_abus);
   __Pyx_GIVEREF(__pyx_v_abus);
@@ -8209,7 +8233,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":104
+  /* "chimeramate_main.pyx":110
  *             return seq_dict
  * 
  *     def _abu_kmer_zip(self, dict seq_dict):             # <<<<<<<<<<<<<<
@@ -8223,7 +8247,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._abu_kmer_zip", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._abu_kmer_zip", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_keys);
@@ -8236,17 +8260,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_4_abu_kmer_zip(CYTHO
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":125
+/* "chimeramate_main.pyx":131
  *     # both sequences share an overlap and then a softmasked region, followed by another overlap
  *     # the reduce function ignores this "gap" and concatenates the kmers anyway
  *     def _longest_common_substring(self, tuple pair, list kmers, list kmer_sets):             # <<<<<<<<<<<<<<
- *         cdef list tranverse
+ *         cdef list traverse
  *         cdef list search
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_substring(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_substring(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_7_longest_common_substring(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_7_longest_common_substring(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_pair = 0;
   PyObject *__pyx_v_kmers = 0;
   PyObject *__pyx_v_kmer_sets = 0;
@@ -8254,7 +8278,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_sub
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_longest_common_substring (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pair,&__pyx_n_s_kmers,&__pyx_n_s_kmer_sets,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pair,&__pyx_n_s_kmers,&__pyx_n_s_kmer_sets_2,0};
     PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -8278,17 +8302,17 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_sub
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmers)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, 1); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, 1); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmer_sets)) != 0)) kw_args--;
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmer_sets_2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, 2); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, 2); __PYX_ERR(0, 131, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_longest_common_substring") < 0)) __PYX_ERR(0, 125, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_longest_common_substring") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -8303,16 +8327,16 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_sub
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 125, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_longest_common_substring", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._longest_common_substring", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._longest_common_substring", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pair), (&PyTuple_Type), 1, "pair", 1))) __PYX_ERR(0, 125, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmers), (&PyList_Type), 1, "kmers", 1))) __PYX_ERR(0, 125, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_sets), (&PyList_Type), 1, "kmer_sets", 1))) __PYX_ERR(0, 125, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_substring(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_pair, __pyx_v_kmers, __pyx_v_kmer_sets);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pair), (&PyTuple_Type), 1, "pair", 1))) __PYX_ERR(0, 131, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmers), (&PyList_Type), 1, "kmers", 1))) __PYX_ERR(0, 131, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_sets), (&PyList_Type), 1, "kmer_sets", 1))) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_6_longest_common_substring(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_pair, __pyx_v_kmers, __pyx_v_kmer_sets);
 
   /* function exit code */
   goto __pyx_L0;
@@ -8323,18 +8347,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_sub
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":159
+/* "chimeramate_main.pyx":162
  *         if len(buffer) > len(longest_entry):
  *             longest_entry = buffer.copy()
  *         return reduce(lambda x,y: x+y[-1], longest_entry)             # <<<<<<<<<<<<<<
  * 
- *     #add static typisation
+ *     def _kmer_sets(self, list kmers):
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25_longest_common_substring_lambda1(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_14chimeramate_cy_14chimera_search_25_longest_common_substring_lambda1 = {"lambda1", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_25_longest_common_substring_lambda1, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25_longest_common_substring_lambda1(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_25_longest_common_substring_lambda1(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16chimeramate_main_14chimera_search_25_longest_common_substring_lambda1 = {"lambda1", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_25_longest_common_substring_lambda1, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_25_longest_common_substring_lambda1(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x = 0;
   PyObject *__pyx_v_y = 0;
   PyObject *__pyx_r = 0;
@@ -8363,11 +8387,11 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25_longest_common_su
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_y)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("lambda1", 1, 2, 2, 1); __PYX_ERR(0, 159, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("lambda1", 1, 2, 2, 1); __PYX_ERR(0, 162, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "lambda1") < 0)) __PYX_ERR(0, 159, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "lambda1") < 0)) __PYX_ERR(0, 162, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8380,9 +8404,9 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25_longest_common_su
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("lambda1", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 159, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("lambda1", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 162, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._longest_common_substring.lambda1", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._longest_common_substring.lambda1", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -8400,9 +8424,9 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("lambda1", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_y, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_y, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Add(__pyx_v_x, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Add(__pyx_v_x, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
@@ -8413,7 +8437,7 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._longest_common_substring.lambda1", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._longest_common_substring.lambda1", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8421,18 +8445,17 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":125
+/* "chimeramate_main.pyx":131
  *     # both sequences share an overlap and then a softmasked region, followed by another overlap
  *     # the reduce function ignores this "gap" and concatenates the kmers anyway
  *     def _longest_common_substring(self, tuple pair, list kmers, list kmer_sets):             # <<<<<<<<<<<<<<
- *         cdef list tranverse
+ *         cdef list traverse
  *         cdef list search
  */
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_substring(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_pair, PyObject *__pyx_v_kmers, PyObject *__pyx_v_kmer_sets) {
-  PyObject *__pyx_v_tranverse = 0;
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_6_longest_common_substring(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_pair, PyObject *__pyx_v_kmers, PyObject *__pyx_v_kmer_sets) {
+  PyObject *__pyx_v_traverse = 0;
   PyObject *__pyx_v_search = 0;
-  CYTHON_UNUSED PyObject *__pyx_v_s_search = 0;
   PyObject *__pyx_v_longest_entry = 0;
   PyObject *__pyx_v_buffer = 0;
   int __pyx_v_i;
@@ -8446,720 +8469,658 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_sub
   Py_ssize_t __pyx_t_4;
   int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_7;
   int __pyx_t_8;
   int __pyx_t_9;
-  int __pyx_t_10;
+  PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   int __pyx_t_12;
   long __pyx_t_13;
   Py_ssize_t __pyx_t_14;
   __Pyx_RefNannySetupContext("_longest_common_substring", 0);
 
-  /* "chimeramate_cy.pyx":133
+  /* "chimeramate_main.pyx":138
  *         cdef int i
  *         cdef int j
  *         if len(kmers[pair[0]]) > len(kmers[pair[1]]):             # <<<<<<<<<<<<<<
- *             tranverse = self._abu_kmer_zip[1][pair[0]]
+ *             traverse = self._abu_kmer_zip[1][pair[0]]
  *             search = self._abu_kmer_zip[1][pair[1]]
  */
   if (unlikely(__pyx_v_kmers == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 138, __pyx_L1_error)
   }
   if (unlikely(__pyx_v_pair == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 138, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_GetItem(__pyx_v_kmers, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetItem(__pyx_v_kmers, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (unlikely(__pyx_v_kmers == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 138, __pyx_L1_error)
   }
   if (unlikely(__pyx_v_pair == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 138, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_GetItem(__pyx_v_kmers, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = PyObject_GetItem(__pyx_v_kmers, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_5 = ((__pyx_t_3 > __pyx_t_4) != 0);
   if (__pyx_t_5) {
 
-    /* "chimeramate_cy.pyx":134
+    /* "chimeramate_main.pyx":139
  *         cdef int j
  *         if len(kmers[pair[0]]) > len(kmers[pair[1]]):
- *             tranverse = self._abu_kmer_zip[1][pair[0]]             # <<<<<<<<<<<<<<
+ *             traverse = self._abu_kmer_zip[1][pair[0]]             # <<<<<<<<<<<<<<
  *             search = self._abu_kmer_zip[1][pair[1]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[1]])
+ *             k_set = kmer_sets[pair[1]]
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_v_pair == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 134, __pyx_L1_error)
+      __PYX_ERR(0, 139, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyObject_GetItem(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_6 = PyObject_GetItem(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 134, __pyx_L1_error)
-    __pyx_v_tranverse = ((PyObject*)__pyx_t_6);
+    if (!(likely(PyList_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 139, __pyx_L1_error)
+    __pyx_v_traverse = ((PyObject*)__pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "chimeramate_cy.pyx":135
+    /* "chimeramate_main.pyx":140
  *         if len(kmers[pair[0]]) > len(kmers[pair[1]]):
- *             tranverse = self._abu_kmer_zip[1][pair[0]]
+ *             traverse = self._abu_kmer_zip[1][pair[0]]
  *             search = self._abu_kmer_zip[1][pair[1]]             # <<<<<<<<<<<<<<
- *             s_search = sorted(self._abu_kmer_zip[1][pair[1]])
  *             k_set = kmer_sets[pair[1]]
+ *         else:
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     if (unlikely(__pyx_v_pair == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 135, __pyx_L1_error)
+      __PYX_ERR(0, 140, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 135, __pyx_L1_error)
+    __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 135, __pyx_L1_error)
+    if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 140, __pyx_L1_error)
     __pyx_v_search = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "chimeramate_cy.pyx":136
- *             tranverse = self._abu_kmer_zip[1][pair[0]]
+    /* "chimeramate_main.pyx":141
+ *             traverse = self._abu_kmer_zip[1][pair[0]]
  *             search = self._abu_kmer_zip[1][pair[1]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[1]])             # <<<<<<<<<<<<<<
- *             k_set = kmer_sets[pair[1]]
- *         else:
- */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(__pyx_v_pair == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 136, __pyx_L1_error)
-    }
-    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = PyObject_GetItem(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PySequence_List(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_2 = ((PyObject*)__pyx_t_6);
-    __pyx_t_6 = 0;
-    __pyx_t_8 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 136, __pyx_L1_error)
-    __pyx_v_s_search = ((PyObject*)__pyx_t_2);
-    __pyx_t_2 = 0;
-
-    /* "chimeramate_cy.pyx":137
- *             search = self._abu_kmer_zip[1][pair[1]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[1]])
  *             k_set = kmer_sets[pair[1]]             # <<<<<<<<<<<<<<
  *         else:
- *             tranverse = self._abu_kmer_zip[1][pair[1]]
+ *             traverse = self._abu_kmer_zip[1][pair[1]]
  */
     if (unlikely(__pyx_v_kmer_sets == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 137, __pyx_L1_error)
+      __PYX_ERR(0, 141, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_pair == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 137, __pyx_L1_error)
+      __PYX_ERR(0, 141, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __pyx_t_6 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_k_set = __pyx_t_6;
     __pyx_t_6 = 0;
 
-    /* "chimeramate_cy.pyx":133
+    /* "chimeramate_main.pyx":138
  *         cdef int i
  *         cdef int j
  *         if len(kmers[pair[0]]) > len(kmers[pair[1]]):             # <<<<<<<<<<<<<<
- *             tranverse = self._abu_kmer_zip[1][pair[0]]
+ *             traverse = self._abu_kmer_zip[1][pair[0]]
  *             search = self._abu_kmer_zip[1][pair[1]]
  */
     goto __pyx_L3;
   }
 
-  /* "chimeramate_cy.pyx":139
+  /* "chimeramate_main.pyx":143
  *             k_set = kmer_sets[pair[1]]
  *         else:
- *             tranverse = self._abu_kmer_zip[1][pair[1]]             # <<<<<<<<<<<<<<
+ *             traverse = self._abu_kmer_zip[1][pair[1]]             # <<<<<<<<<<<<<<
  *             search = self._abu_kmer_zip[1][pair[0]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[0]])
- */
-  /*else*/ {
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(__pyx_v_pair == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 139, __pyx_L1_error)
-    }
-    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = PyObject_GetItem(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_7)->tp_name), 0))) __PYX_ERR(0, 139, __pyx_L1_error)
-    __pyx_v_tranverse = ((PyObject*)__pyx_t_7);
-    __pyx_t_7 = 0;
-
-    /* "chimeramate_cy.pyx":140
- *         else:
- *             tranverse = self._abu_kmer_zip[1][pair[1]]
- *             search = self._abu_kmer_zip[1][pair[0]]             # <<<<<<<<<<<<<<
- *             s_search = sorted(self._abu_kmer_zip[1][pair[0]])
  *             k_set = kmer_sets[pair[0]]
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
+  /*else*/ {
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(__pyx_v_pair == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 140, __pyx_L1_error)
-    }
-    __pyx_t_7 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = PyObject_GetItem(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 140, __pyx_L1_error)
-    __pyx_v_search = ((PyObject*)__pyx_t_2);
-    __pyx_t_2 = 0;
+    if (unlikely(__pyx_v_pair == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 143, __pyx_L1_error)
+    }
+    __pyx_t_6 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_1 = PyObject_GetItem(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_v_traverse = ((PyObject*)__pyx_t_1);
+    __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":141
- *             tranverse = self._abu_kmer_zip[1][pair[1]]
- *             search = self._abu_kmer_zip[1][pair[0]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[0]])             # <<<<<<<<<<<<<<
+    /* "chimeramate_main.pyx":144
+ *         else:
+ *             traverse = self._abu_kmer_zip[1][pair[1]]
+ *             search = self._abu_kmer_zip[1][pair[0]]             # <<<<<<<<<<<<<<
  *             k_set = kmer_sets[pair[0]]
  *         longest_entry = []
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_v_pair == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 141, __pyx_L1_error)
+      __PYX_ERR(0, 144, __pyx_L1_error)
     }
-    __pyx_t_7 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = PyObject_GetItem(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = PyObject_GetItem(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_2 = ((PyObject*)__pyx_t_7);
-    __pyx_t_7 = 0;
-    __pyx_t_8 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 141, __pyx_L1_error)
-    __pyx_v_s_search = ((PyObject*)__pyx_t_2);
+    if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 144, __pyx_L1_error)
+    __pyx_v_search = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "chimeramate_cy.pyx":142
+    /* "chimeramate_main.pyx":145
+ *             traverse = self._abu_kmer_zip[1][pair[1]]
  *             search = self._abu_kmer_zip[1][pair[0]]
- *             s_search = sorted(self._abu_kmer_zip[1][pair[0]])
  *             k_set = kmer_sets[pair[0]]             # <<<<<<<<<<<<<<
  *         longest_entry = []
  *         buffer = []
  */
     if (unlikely(__pyx_v_kmer_sets == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 142, __pyx_L1_error)
+      __PYX_ERR(0, 145, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_pair == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 142, __pyx_L1_error)
+      __PYX_ERR(0, 145, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 142, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_1 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_v_k_set = __pyx_t_7;
-    __pyx_t_7 = 0;
+    __pyx_v_k_set = __pyx_t_1;
+    __pyx_t_1 = 0;
   }
   __pyx_L3:;
 
-  /* "chimeramate_cy.pyx":143
- *             s_search = sorted(self._abu_kmer_zip[1][pair[0]])
+  /* "chimeramate_main.pyx":146
+ *             search = self._abu_kmer_zip[1][pair[0]]
  *             k_set = kmer_sets[pair[0]]
  *         longest_entry = []             # <<<<<<<<<<<<<<
  *         buffer = []
- *         for i in range(len(tranverse)):
+ *         for i in range(len(traverse)):
  */
-  __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_v_longest_entry = ((PyObject*)__pyx_t_7);
-  __pyx_t_7 = 0;
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_longest_entry = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":144
+  /* "chimeramate_main.pyx":147
  *             k_set = kmer_sets[pair[0]]
  *         longest_entry = []
  *         buffer = []             # <<<<<<<<<<<<<<
- *         for i in range(len(tranverse)):
+ *         for i in range(len(traverse)):
  *             if not buffer:
  */
-  __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 144, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_v_buffer = ((PyObject*)__pyx_t_7);
-  __pyx_t_7 = 0;
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_buffer = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":145
+  /* "chimeramate_main.pyx":148
  *         longest_entry = []
  *         buffer = []
- *         for i in range(len(tranverse)):             # <<<<<<<<<<<<<<
+ *         for i in range(len(traverse)):             # <<<<<<<<<<<<<<
  *             if not buffer:
- *                 if tranverse[i] in k_set:
+ *                 if traverse[i] in k_set:
  */
-  if (unlikely(__pyx_v_tranverse == Py_None)) {
+  if (unlikely(__pyx_v_traverse == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 145, __pyx_L1_error)
+    __PYX_ERR(0, 148, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_tranverse); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 145, __pyx_L1_error)
-  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_4; __pyx_t_9+=1) {
-    __pyx_v_i = __pyx_t_9;
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_traverse); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 148, __pyx_L1_error)
+  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_4; __pyx_t_7+=1) {
+    __pyx_v_i = __pyx_t_7;
 
-    /* "chimeramate_cy.pyx":146
+    /* "chimeramate_main.pyx":149
  *         buffer = []
- *         for i in range(len(tranverse)):
+ *         for i in range(len(traverse)):
  *             if not buffer:             # <<<<<<<<<<<<<<
- *                 if tranverse[i] in k_set:
- *                     buffer.append(tranverse[i])
+ *                 if traverse[i] in k_set:
+ *                     buffer.append(traverse[i])
  */
     __pyx_t_5 = (__pyx_v_buffer != Py_None) && (PyList_GET_SIZE(__pyx_v_buffer) != 0);
-    __pyx_t_10 = ((!__pyx_t_5) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_8 = ((!__pyx_t_5) != 0);
+    if (__pyx_t_8) {
 
-      /* "chimeramate_cy.pyx":147
- *         for i in range(len(tranverse)):
+      /* "chimeramate_main.pyx":150
+ *         for i in range(len(traverse)):
  *             if not buffer:
- *                 if tranverse[i] in k_set:             # <<<<<<<<<<<<<<
- *                     buffer.append(tranverse[i])
- *                     j = search.index(tranverse[i])
+ *                 if traverse[i] in k_set:             # <<<<<<<<<<<<<<
+ *                     buffer.append(traverse[i])
+ *                     j = search.index(traverse[i])
  */
-      if (unlikely(__pyx_v_tranverse == Py_None)) {
+      if (unlikely(__pyx_v_traverse == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 147, __pyx_L1_error)
+        __PYX_ERR(0, 150, __pyx_L1_error)
       }
-      __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_v_tranverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 147, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_t_7, __pyx_v_k_set, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 147, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_5 = (__pyx_t_10 != 0);
+      __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_traverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_k_set, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_5 = (__pyx_t_8 != 0);
       if (__pyx_t_5) {
 
-        /* "chimeramate_cy.pyx":148
+        /* "chimeramate_main.pyx":151
  *             if not buffer:
- *                 if tranverse[i] in k_set:
- *                     buffer.append(tranverse[i])             # <<<<<<<<<<<<<<
- *                     j = search.index(tranverse[i])
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:
+ *                 if traverse[i] in k_set:
+ *                     buffer.append(traverse[i])             # <<<<<<<<<<<<<<
+ *                     j = search.index(traverse[i])
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:
  */
-        if (unlikely(__pyx_v_tranverse == Py_None)) {
+        if (unlikely(__pyx_v_traverse == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 148, __pyx_L1_error)
+          __PYX_ERR(0, 151, __pyx_L1_error)
         }
-        __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_v_tranverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 148, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_buffer, __pyx_t_7); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 148, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
-        /* "chimeramate_cy.pyx":149
- *                 if tranverse[i] in k_set:
- *                     buffer.append(tranverse[i])
- *                     j = search.index(tranverse[i])             # <<<<<<<<<<<<<<
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:
- *                 buffer.append(tranverse[i])
- */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_search, __pyx_n_s_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        if (unlikely(__pyx_v_tranverse == Py_None)) {
-          PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 149, __pyx_L1_error)
-        }
-        __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_tranverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_traverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = NULL;
+        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_buffer, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 151, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+        /* "chimeramate_main.pyx":152
+ *                 if traverse[i] in k_set:
+ *                     buffer.append(traverse[i])
+ *                     j = search.index(traverse[i])             # <<<<<<<<<<<<<<
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:
+ *                 buffer.append(traverse[i])
+ */
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_search, __pyx_n_s_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        if (unlikely(__pyx_v_traverse == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+          __PYX_ERR(0, 152, __pyx_L1_error)
+        }
+        __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_traverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 152, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_10 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-          __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
-          if (likely(__pyx_t_6)) {
+          __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_2);
+          if (likely(__pyx_t_10)) {
             PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-            __Pyx_INCREF(__pyx_t_6);
+            __Pyx_INCREF(__pyx_t_10);
             __Pyx_INCREF(function);
             __Pyx_DECREF_SET(__pyx_t_2, function);
           }
         }
-        if (!__pyx_t_6) {
-          __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          __Pyx_GOTREF(__pyx_t_7);
+        if (!__pyx_t_10) {
+          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+          __Pyx_GOTREF(__pyx_t_1);
         } else {
           #if CYTHON_FAST_PYCALL
           if (PyFunction_Check(__pyx_t_2)) {
-            PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_1};
-            __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
-            __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __Pyx_GOTREF(__pyx_t_7);
-            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+            PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_6};
+            __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+            __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           } else
           #endif
           #if CYTHON_FAST_PYCCALL
           if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-            PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_1};
-            __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
-            __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __Pyx_GOTREF(__pyx_t_7);
-            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+            PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_6};
+            __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+            __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           } else
           #endif
           {
-            __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
+            __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 152, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_11);
-            __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_6); __pyx_t_6 = NULL;
-            __Pyx_GIVEREF(__pyx_t_1);
-            PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_t_1);
-            __pyx_t_1 = 0;
-            __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_7);
+            __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10); __pyx_t_10 = NULL;
+            __Pyx_GIVEREF(__pyx_t_6);
+            PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_t_6);
+            __pyx_t_6 = 0;
+            __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           }
         }
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_12 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_12 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_12 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_12 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 152, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_j = __pyx_t_12;
 
-        /* "chimeramate_cy.pyx":147
- *         for i in range(len(tranverse)):
+        /* "chimeramate_main.pyx":150
+ *         for i in range(len(traverse)):
  *             if not buffer:
- *                 if tranverse[i] in k_set:             # <<<<<<<<<<<<<<
- *                     buffer.append(tranverse[i])
- *                     j = search.index(tranverse[i])
+ *                 if traverse[i] in k_set:             # <<<<<<<<<<<<<<
+ *                     buffer.append(traverse[i])
+ *                     j = search.index(traverse[i])
  */
       }
 
-      /* "chimeramate_cy.pyx":146
+      /* "chimeramate_main.pyx":149
  *         buffer = []
- *         for i in range(len(tranverse)):
+ *         for i in range(len(traverse)):
  *             if not buffer:             # <<<<<<<<<<<<<<
- *                 if tranverse[i] in k_set:
- *                     buffer.append(tranverse[i])
+ *                 if traverse[i] in k_set:
+ *                     buffer.append(traverse[i])
  */
       goto __pyx_L6;
     }
 
-    /* "chimeramate_cy.pyx":150
- *                     buffer.append(tranverse[i])
- *                     j = search.index(tranverse[i])
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:             # <<<<<<<<<<<<<<
- *                 buffer.append(tranverse[i])
+    /* "chimeramate_main.pyx":153
+ *                     buffer.append(traverse[i])
+ *                     j = search.index(traverse[i])
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:             # <<<<<<<<<<<<<<
+ *                 buffer.append(traverse[i])
  *                 j += 1
  */
     if (unlikely(__pyx_v_search == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 150, __pyx_L1_error)
+      __PYX_ERR(0, 153, __pyx_L1_error)
     }
-    __pyx_t_3 = PyList_GET_SIZE(__pyx_v_search); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 150, __pyx_L1_error)
-    __pyx_t_10 = ((__pyx_t_3 >= (__pyx_v_j + 2)) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_3 = PyList_GET_SIZE(__pyx_v_search); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_8 = ((__pyx_t_3 >= (__pyx_v_j + 2)) != 0);
+    if (__pyx_t_8) {
     } else {
-      __pyx_t_5 = __pyx_t_10;
+      __pyx_t_5 = __pyx_t_8;
       goto __pyx_L8_bool_binop_done;
     }
-    if (unlikely(__pyx_v_tranverse == Py_None)) {
+    if (unlikely(__pyx_v_traverse == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 150, __pyx_L1_error)
+      __PYX_ERR(0, 153, __pyx_L1_error)
     }
-    __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_v_tranverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 150, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_traverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_search == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 150, __pyx_L1_error)
+      __PYX_ERR(0, 153, __pyx_L1_error)
     }
     __pyx_t_13 = (__pyx_v_j + 1);
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_search, __pyx_t_13, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_search, __pyx_t_13, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_11 = PyObject_RichCompare(__pyx_t_7, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 150, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_11 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_5 = __pyx_t_10;
+    __pyx_t_5 = __pyx_t_8;
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_5) {
 
-      /* "chimeramate_cy.pyx":151
- *                     j = search.index(tranverse[i])
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:
- *                 buffer.append(tranverse[i])             # <<<<<<<<<<<<<<
+      /* "chimeramate_main.pyx":154
+ *                     j = search.index(traverse[i])
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:
+ *                 buffer.append(traverse[i])             # <<<<<<<<<<<<<<
  *                 j += 1
  *             else:
  */
-      if (unlikely(__pyx_v_tranverse == Py_None)) {
+      if (unlikely(__pyx_v_traverse == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 151, __pyx_L1_error)
+        __PYX_ERR(0, 154, __pyx_L1_error)
       }
-      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_v_tranverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 151, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_v_traverse, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 154, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_buffer, __pyx_t_11); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 151, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_buffer, __pyx_t_11); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-      /* "chimeramate_cy.pyx":152
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:
- *                 buffer.append(tranverse[i])
+      /* "chimeramate_main.pyx":155
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:
+ *                 buffer.append(traverse[i])
  *                 j += 1             # <<<<<<<<<<<<<<
  *             else:
  *                 if len(buffer) > len(longest_entry):
  */
       __pyx_v_j = (__pyx_v_j + 1);
 
-      /* "chimeramate_cy.pyx":150
- *                     buffer.append(tranverse[i])
- *                     j = search.index(tranverse[i])
- *             elif len(search) >= j+2 and tranverse[i] == search[j+1]:             # <<<<<<<<<<<<<<
- *                 buffer.append(tranverse[i])
+      /* "chimeramate_main.pyx":153
+ *                     buffer.append(traverse[i])
+ *                     j = search.index(traverse[i])
+ *             elif len(search) >= j+2 and traverse[i] == search[j+1]:             # <<<<<<<<<<<<<<
+ *                 buffer.append(traverse[i])
  *                 j += 1
  */
       goto __pyx_L6;
     }
 
-    /* "chimeramate_cy.pyx":154
+    /* "chimeramate_main.pyx":157
  *                 j += 1
  *             else:
  *                 if len(buffer) > len(longest_entry):             # <<<<<<<<<<<<<<
  *                     longest_entry = buffer.copy()
- *                     buffer = []
+ *                 buffer = []
  */
     /*else*/ {
-      __pyx_t_3 = PyList_GET_SIZE(__pyx_v_buffer); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+      __pyx_t_3 = PyList_GET_SIZE(__pyx_v_buffer); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
       if (unlikely(__pyx_v_longest_entry == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        __PYX_ERR(0, 154, __pyx_L1_error)
+        __PYX_ERR(0, 157, __pyx_L1_error)
       }
-      __pyx_t_14 = PyList_GET_SIZE(__pyx_v_longest_entry); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+      __pyx_t_14 = PyList_GET_SIZE(__pyx_v_longest_entry); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
       __pyx_t_5 = ((__pyx_t_3 > __pyx_t_14) != 0);
       if (__pyx_t_5) {
 
-        /* "chimeramate_cy.pyx":155
+        /* "chimeramate_main.pyx":158
  *             else:
  *                 if len(buffer) > len(longest_entry):
  *                     longest_entry = buffer.copy()             # <<<<<<<<<<<<<<
- *                     buffer = []
+ *                 buffer = []
  *         if len(buffer) > len(longest_entry):
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_buffer, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_buffer, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_7 = NULL;
+        __pyx_t_1 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
-          if (likely(__pyx_t_7)) {
+          __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+          if (likely(__pyx_t_1)) {
             PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-            __Pyx_INCREF(__pyx_t_7);
+            __Pyx_INCREF(__pyx_t_1);
             __Pyx_INCREF(function);
             __Pyx_DECREF_SET(__pyx_t_2, function);
           }
         }
-        if (__pyx_t_7) {
-          __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 155, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        if (__pyx_t_1) {
+          __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 158, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else {
-          __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 155, __pyx_L1_error)
+          __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 158, __pyx_L1_error)
         }
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_11))||((__pyx_t_11) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_11)->tp_name), 0))) __PYX_ERR(0, 155, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_11))||((__pyx_t_11) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_11)->tp_name), 0))) __PYX_ERR(0, 158, __pyx_L1_error)
         __Pyx_DECREF_SET(__pyx_v_longest_entry, ((PyObject*)__pyx_t_11));
         __pyx_t_11 = 0;
 
-        /* "chimeramate_cy.pyx":156
- *                 if len(buffer) > len(longest_entry):
- *                     longest_entry = buffer.copy()
- *                     buffer = []             # <<<<<<<<<<<<<<
- *         if len(buffer) > len(longest_entry):
- *             longest_entry = buffer.copy()
- */
-        __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 156, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_11);
-        __Pyx_DECREF_SET(__pyx_v_buffer, ((PyObject*)__pyx_t_11));
-        __pyx_t_11 = 0;
-
-        /* "chimeramate_cy.pyx":154
+        /* "chimeramate_main.pyx":157
  *                 j += 1
  *             else:
  *                 if len(buffer) > len(longest_entry):             # <<<<<<<<<<<<<<
  *                     longest_entry = buffer.copy()
- *                     buffer = []
+ *                 buffer = []
  */
       }
+
+      /* "chimeramate_main.pyx":159
+ *                 if len(buffer) > len(longest_entry):
+ *                     longest_entry = buffer.copy()
+ *                 buffer = []             # <<<<<<<<<<<<<<
+ *         if len(buffer) > len(longest_entry):
+ *             longest_entry = buffer.copy()
+ */
+      __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 159, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF_SET(__pyx_v_buffer, ((PyObject*)__pyx_t_11));
+      __pyx_t_11 = 0;
     }
     __pyx_L6:;
   }
 
-  /* "chimeramate_cy.pyx":157
+  /* "chimeramate_main.pyx":160
  *                     longest_entry = buffer.copy()
- *                     buffer = []
+ *                 buffer = []
  *         if len(buffer) > len(longest_entry):             # <<<<<<<<<<<<<<
  *             longest_entry = buffer.copy()
  *         return reduce(lambda x,y: x+y[-1], longest_entry)
  */
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_buffer); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_buffer); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 160, __pyx_L1_error)
   if (unlikely(__pyx_v_longest_entry == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 157, __pyx_L1_error)
+    __PYX_ERR(0, 160, __pyx_L1_error)
   }
-  __pyx_t_14 = PyList_GET_SIZE(__pyx_v_longest_entry); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_14 = PyList_GET_SIZE(__pyx_v_longest_entry); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 160, __pyx_L1_error)
   __pyx_t_5 = ((__pyx_t_4 > __pyx_t_14) != 0);
   if (__pyx_t_5) {
 
-    /* "chimeramate_cy.pyx":158
- *                     buffer = []
+    /* "chimeramate_main.pyx":161
+ *                 buffer = []
  *         if len(buffer) > len(longest_entry):
  *             longest_entry = buffer.copy()             # <<<<<<<<<<<<<<
  *         return reduce(lambda x,y: x+y[-1], longest_entry)
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_buffer, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_buffer, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = NULL;
+    __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_7)) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_1)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_2, function);
       }
     }
-    if (__pyx_t_7) {
-      __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 158, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (__pyx_t_1) {
+      __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 161, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
-      __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 158, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 161, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_11))||((__pyx_t_11) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_11)->tp_name), 0))) __PYX_ERR(0, 158, __pyx_L1_error)
+    if (!(likely(PyList_CheckExact(__pyx_t_11))||((__pyx_t_11) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_11)->tp_name), 0))) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_longest_entry, ((PyObject*)__pyx_t_11));
     __pyx_t_11 = 0;
 
-    /* "chimeramate_cy.pyx":157
+    /* "chimeramate_main.pyx":160
  *                     longest_entry = buffer.copy()
- *                     buffer = []
+ *                 buffer = []
  *         if len(buffer) > len(longest_entry):             # <<<<<<<<<<<<<<
  *             longest_entry = buffer.copy()
  *         return reduce(lambda x,y: x+y[-1], longest_entry)
  */
   }
 
-  /* "chimeramate_cy.pyx":159
+  /* "chimeramate_main.pyx":162
  *         if len(buffer) > len(longest_entry):
  *             longest_entry = buffer.copy()
  *         return reduce(lambda x,y: x+y[-1], longest_entry)             # <<<<<<<<<<<<<<
  * 
- *     #add static typisation
+ *     def _kmer_sets(self, list kmers):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_reduce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_reduce); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_CyFunction_NewEx(&__pyx_mdef_14chimeramate_cy_14chimera_search_25_longest_common_substring_lambda1, 0, __pyx_n_s_longest_common_substring_locals, NULL, __pyx_n_s_chimeramate_cy, __pyx_d, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = NULL;
-  __pyx_t_9 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_16chimeramate_main_14chimera_search_25_longest_common_substring_lambda1, 0, __pyx_n_s_longest_common_substring_locals, NULL, __pyx_n_s_chimeramate_main, __pyx_d, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = NULL;
+  __pyx_t_7 = 0;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_1)) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_6)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_6);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_9 = 1;
+      __pyx_t_7 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_t_7, __pyx_v_longest_entry};
-    __pyx_t_11 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 159, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_1, __pyx_v_longest_entry};
+    __pyx_t_11 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_t_7, __pyx_v_longest_entry};
-    __pyx_t_11 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 159, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_1, __pyx_v_longest_entry};
+    __pyx_t_11 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 159, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (__pyx_t_1) {
-      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
+    __pyx_t_10 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    if (__pyx_t_6) {
+      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_6); __pyx_t_6 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_7);
-    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_9, __pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_7, __pyx_t_1);
     __Pyx_INCREF(__pyx_v_longest_entry);
     __Pyx_GIVEREF(__pyx_v_longest_entry);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_9, __pyx_v_longest_entry);
-    __pyx_t_7 = 0;
-    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 159, __pyx_L1_error)
+    PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_7, __pyx_v_longest_entry);
+    __pyx_t_1 = 0;
+    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_11;
   __pyx_t_11 = 0;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":125
+  /* "chimeramate_main.pyx":131
  *     # both sequences share an overlap and then a softmasked region, followed by another overlap
  *     # the reduce function ignores this "gap" and concatenates the kmers anyway
  *     def _longest_common_substring(self, tuple pair, list kmers, list kmer_sets):             # <<<<<<<<<<<<<<
- *         cdef list tranverse
+ *         cdef list traverse
  *         cdef list search
  */
 
@@ -9168,14 +9129,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_sub
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._longest_common_substring", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._longest_common_substring", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_tranverse);
+  __Pyx_XDECREF(__pyx_v_traverse);
   __Pyx_XDECREF(__pyx_v_search);
-  __Pyx_XDECREF(__pyx_v_s_search);
   __Pyx_XDECREF(__pyx_v_longest_entry);
   __Pyx_XDECREF(__pyx_v_buffer);
   __Pyx_XDECREF(__pyx_v_k_set);
@@ -9184,22 +9144,22 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_6_longest_common_sub
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":162
+/* "chimeramate_main.pyx":164
+ *         return reduce(lambda x,y: x+y[-1], longest_entry)
  * 
- *     #add static typisation
- *     def _intersection_list(self, list kmers):             # <<<<<<<<<<<<<<
+ *     def _kmer_sets(self, list kmers):             # <<<<<<<<<<<<<<
+ *         cdef list kmer_sets
  *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
- *         pairs = it.combinations(range(len(kmers)), 2)
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_9_intersection_list(PyObject *__pyx_v_self, PyObject *__pyx_v_kmers); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_9_intersection_list(PyObject *__pyx_v_self, PyObject *__pyx_v_kmers) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_9_kmer_sets(PyObject *__pyx_v_self, PyObject *__pyx_v_kmers); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_9_kmer_sets(PyObject *__pyx_v_self, PyObject *__pyx_v_kmers) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_intersection_list (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmers), (&PyList_Type), 1, "kmers", 1))) __PYX_ERR(0, 162, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_kmers));
+  __Pyx_RefNannySetupContext("_kmer_sets (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmers), (&PyList_Type), 1, "kmers", 1))) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_8_kmer_sets(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_kmers));
 
   /* function exit code */
   goto __pyx_L0;
@@ -9210,11 +9170,8 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_9_intersection_list(
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmers) {
-  PyObject *__pyx_v_kmer_sets = NULL;
-  PyObject *__pyx_v_pairs = NULL;
-  PyObject *__pyx_v_res = NULL;
-  PyObject *__pyx_v_tup = NULL;
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_8_kmer_sets(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmers) {
+  PyObject *__pyx_v_kmer_sets = 0;
   PyObject *__pyx_v_kmer_l = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -9222,6 +9179,112 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(
   PyObject *__pyx_t_2 = NULL;
   Py_ssize_t __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
+  __Pyx_RefNannySetupContext("_kmer_sets", 0);
+
+  /* "chimeramate_main.pyx":166
+ *     def _kmer_sets(self, list kmers):
+ *         cdef list kmer_sets
+ *         kmer_sets = [set(kmer_l) for kmer_l in kmers]             # <<<<<<<<<<<<<<
+ *         return kmer_sets
+ * 
+ */
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely(__pyx_v_kmers == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+    __PYX_ERR(0, 166, __pyx_L1_error)
+  }
+  __pyx_t_2 = __pyx_v_kmers; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
+  for (;;) {
+    if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
+    #else
+    __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v_kmer_l, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __pyx_t_4 = PySet_New(__pyx_v_kmer_l); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_kmer_sets = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "chimeramate_main.pyx":167
+ *         cdef list kmer_sets
+ *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
+ *         return kmer_sets             # <<<<<<<<<<<<<<
+ * 
+ *     def _intersection_list(self, list kmer_sets):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_kmer_sets);
+  __pyx_r = __pyx_v_kmer_sets;
+  goto __pyx_L0;
+
+  /* "chimeramate_main.pyx":164
+ *         return reduce(lambda x,y: x+y[-1], longest_entry)
+ * 
+ *     def _kmer_sets(self, list kmers):             # <<<<<<<<<<<<<<
+ *         cdef list kmer_sets
+ *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._kmer_sets", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_kmer_sets);
+  __Pyx_XDECREF(__pyx_v_kmer_l);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "chimeramate_main.pyx":169
+ *         return kmer_sets
+ * 
+ *     def _intersection_list(self, list kmer_sets):             # <<<<<<<<<<<<<<
+ *         cdef list res
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_11_intersection_list(PyObject *__pyx_v_self, PyObject *__pyx_v_kmer_sets); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_11_intersection_list(PyObject *__pyx_v_self, PyObject *__pyx_v_kmer_sets) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_intersection_list (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_sets), (&PyList_Type), 1, "kmer_sets", 1))) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_10_intersection_list(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_kmer_sets));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_10_intersection_list(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_kmer_sets) {
+  PyObject *__pyx_v_res = 0;
+  PyObject *__pyx_v_pairs = NULL;
+  PyObject *__pyx_v_tup = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
@@ -9232,98 +9295,65 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("_intersection_list", 0);
 
-  /* "chimeramate_cy.pyx":163
- *     #add static typisation
- *     def _intersection_list(self, list kmers):
- *         kmer_sets = [set(kmer_l) for kmer_l in kmers]             # <<<<<<<<<<<<<<
- *         pairs = it.combinations(range(len(kmers)), 2)
- *         res = []
- */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely(__pyx_v_kmers == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 163, __pyx_L1_error)
-  }
-  __pyx_t_2 = __pyx_v_kmers; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
-  for (;;) {
-    if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
-    #else
-    __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_kmer_l, __pyx_t_4);
-    __pyx_t_4 = 0;
-    __pyx_t_4 = PySet_New(__pyx_v_kmer_l); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 163, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_kmer_sets = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "chimeramate_cy.pyx":164
- *     def _intersection_list(self, list kmers):
- *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
- *         pairs = it.combinations(range(len(kmers)), 2)             # <<<<<<<<<<<<<<
+  /* "chimeramate_main.pyx":171
+ *     def _intersection_list(self, list kmer_sets):
+ *         cdef list res
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)             # <<<<<<<<<<<<<<
  *         res = []
  *         for tup in pairs:
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_it); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_it); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_combinations); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_combinations); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(__pyx_v_kmers == Py_None)) {
+  if (unlikely(__pyx_v_kmer_sets == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 164, __pyx_L1_error)
+    __PYX_ERR(0, 171, __pyx_L1_error)
   }
-  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_kmers); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_kmer_sets); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
     if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
       __pyx_t_6 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_4)) {
+  if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_2, __pyx_int_2};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_2, __pyx_int_2};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -9334,93 +9364,101 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_int_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_pairs = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":165
- *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
- *         pairs = it.combinations(range(len(kmers)), 2)
+  /* "chimeramate_main.pyx":172
+ *         cdef list res
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)
  *         res = []             # <<<<<<<<<<<<<<
  *         for tup in pairs:
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_res = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":166
- *         pairs = it.combinations(range(len(kmers)), 2)
+  /* "chimeramate_main.pyx":173
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)
  *         res = []
  *         for tup in pairs:             # <<<<<<<<<<<<<<
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
  *                 res.append(tup)
  */
   if (likely(PyList_CheckExact(__pyx_v_pairs)) || PyTuple_CheckExact(__pyx_v_pairs)) {
-    __pyx_t_1 = __pyx_v_pairs; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
+    __pyx_t_1 = __pyx_v_pairs; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
     __pyx_t_8 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_pairs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_pairs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_8 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 173, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_8)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
-        if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
-        if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
     } else {
-      __pyx_t_4 = __pyx_t_8(__pyx_t_1);
-      if (unlikely(!__pyx_t_4)) {
+      __pyx_t_3 = __pyx_t_8(__pyx_t_1);
+      if (unlikely(!__pyx_t_3)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 166, __pyx_L1_error)
+          else __PYX_ERR(0, 173, __pyx_L1_error)
         }
         break;
       }
-      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GOTREF(__pyx_t_3);
     }
-    __Pyx_XDECREF_SET(__pyx_v_tup, __pyx_t_4);
-    __pyx_t_4 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_tup, __pyx_t_3);
+    __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":167
+    /* "chimeramate_main.pyx":174
  *         res = []
  *         for tup in pairs:
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):             # <<<<<<<<<<<<<<
  *                 res.append(tup)
- *         return res, kmer_sets
+ *         return res
  */
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_tup, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 167, __pyx_L1_error)
+    if (unlikely(__pyx_v_kmer_sets == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 174, __pyx_L1_error)
+    }
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_tup, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_isdisjoint); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_isdisjoint); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_tup, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+    if (unlikely(__pyx_v_kmer_sets == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 174, __pyx_L1_error)
+    }
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_tup, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_v_kmer_sets, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_2 = NULL;
@@ -9434,66 +9472,66 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(
       }
     }
     if (!__pyx_t_2) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_7)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_t_5};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_t_5};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 167, __pyx_L1_error)
+        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 174, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_2); __pyx_t_2 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 167, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_11 = ((!__pyx_t_10) != 0);
     if (__pyx_t_11) {
 
-      /* "chimeramate_cy.pyx":168
+      /* "chimeramate_main.pyx":175
  *         for tup in pairs:
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
  *                 res.append(tup)             # <<<<<<<<<<<<<<
- *         return res, kmer_sets
+ *         return res
  * 
  */
-      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_res, __pyx_v_tup); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 168, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_res, __pyx_v_tup); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 175, __pyx_L1_error)
 
-      /* "chimeramate_cy.pyx":167
+      /* "chimeramate_main.pyx":174
  *         res = []
  *         for tup in pairs:
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):             # <<<<<<<<<<<<<<
  *                 res.append(tup)
- *         return res, kmer_sets
+ *         return res
  */
     }
 
-    /* "chimeramate_cy.pyx":166
- *         pairs = it.combinations(range(len(kmers)), 2)
+    /* "chimeramate_main.pyx":173
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)
  *         res = []
  *         for tup in pairs:             # <<<<<<<<<<<<<<
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
@@ -9502,66 +9540,56 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_8_intersection_list(
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":169
+  /* "chimeramate_main.pyx":176
  *             if not kmer_sets[tup[0]].isdisjoint(kmer_sets[tup[1]]):
  *                 res.append(tup)
- *         return res, kmer_sets             # <<<<<<<<<<<<<<
+ *         return res             # <<<<<<<<<<<<<<
  * 
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_res);
-  __Pyx_GIVEREF(__pyx_v_res);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_res);
-  __Pyx_INCREF(__pyx_v_kmer_sets);
-  __Pyx_GIVEREF(__pyx_v_kmer_sets);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_kmer_sets);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":162
+  /* "chimeramate_main.pyx":169
+ *         return kmer_sets
  * 
- *     #add static typisation
- *     def _intersection_list(self, list kmers):             # <<<<<<<<<<<<<<
- *         kmer_sets = [set(kmer_l) for kmer_l in kmers]
- *         pairs = it.combinations(range(len(kmers)), 2)
+ *     def _intersection_list(self, list kmer_sets):             # <<<<<<<<<<<<<<
+ *         cdef list res
+ *         pairs = it.combinations(range(len(kmer_sets)), 2)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._intersection_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._intersection_list", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_kmer_sets);
-  __Pyx_XDECREF(__pyx_v_pairs);
   __Pyx_XDECREF(__pyx_v_res);
+  __Pyx_XDECREF(__pyx_v_pairs);
   __Pyx_XDECREF(__pyx_v_tup);
-  __Pyx_XDECREF(__pyx_v_kmer_l);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":171
- *         return res, kmer_sets
+/* "chimeramate_main.pyx":178
+ *         return res
  * 
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs             # <<<<<<<<<<<<<<
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):             # <<<<<<<<<<<<<<
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_13create_scs_lists(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_13create_scs_lists(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_abus = 0;
   PyObject *__pyx_v_keys = 0;
   PyObject *__pyx_v_names = 0;
@@ -9571,7 +9599,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(P
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("create_scs_lists (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_abus,&__pyx_n_s_keys,&__pyx_n_s_names,&__pyx_n_s_nums,&__pyx_n_s_kmer_sets,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_abus,&__pyx_n_s_keys,&__pyx_n_s_names,&__pyx_n_s_nums,&__pyx_n_s_kmer_sets_2,0};
     PyObject* values[5] = {0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -9599,29 +9627,29 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(P
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_keys)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 1); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 1); __PYX_ERR(0, 178, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_names)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 2); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 2); __PYX_ERR(0, 178, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nums)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 3); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 3); __PYX_ERR(0, 178, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
-        if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmer_sets)) != 0)) kw_args--;
+        if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_kmer_sets_2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 4); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, 4); __PYX_ERR(0, 178, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_scs_lists") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_scs_lists") < 0)) __PYX_ERR(0, 178, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -9640,18 +9668,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 171, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("create_scs_lists", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 178, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.create_scs_lists", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.create_scs_lists", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_abus), (&PyList_Type), 1, "abus", 1))) __PYX_ERR(0, 171, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_keys), (&PyTuple_Type), 1, "keys", 1))) __PYX_ERR(0, 171, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_names), (&PyList_Type), 1, "names", 1))) __PYX_ERR(0, 171, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_nums), (&PyList_Type), 1, "nums", 1))) __PYX_ERR(0, 171, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_sets), (&PyList_Type), 1, "kmer_sets", 1))) __PYX_ERR(0, 171, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_abus, __pyx_v_keys, __pyx_v_names, __pyx_v_nums, __pyx_v_kmer_sets);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_abus), (&PyList_Type), 1, "abus", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_keys), (&PyTuple_Type), 1, "keys", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_names), (&PyList_Type), 1, "names", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_nums), (&PyList_Type), 1, "nums", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kmer_sets), (&PyList_Type), 1, "kmer_sets", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_12create_scs_lists(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_abus, __pyx_v_keys, __pyx_v_names, __pyx_v_nums, __pyx_v_kmer_sets);
 
   /* function exit code */
   goto __pyx_L0;
@@ -9662,7 +9690,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists(P
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_abus, PyObject *__pyx_v_keys, PyObject *__pyx_v_names, PyObject *__pyx_v_nums, PyObject *__pyx_v_kmer_sets) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_12create_scs_lists(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_abus, PyObject *__pyx_v_keys, PyObject *__pyx_v_names, PyObject *__pyx_v_nums, PyObject *__pyx_v_kmer_sets) {
   PyObject *__pyx_v_intersec_list = 0;
   Py_ssize_t __pyx_v_i;
   PyObject *__pyx_r = NULL;
@@ -9681,17 +9709,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
   PyObject *__pyx_t_12 = NULL;
   __Pyx_RefNannySetupContext("create_scs_lists", 0);
 
-  /* "chimeramate_cy.pyx":173
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+  /* "chimeramate_main.pyx":180
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],             # <<<<<<<<<<<<<<
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "chimeramate_cy.pyx":176
+  /* "chimeramate_main.pyx":183
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
  *             for i in range(len(nums))]             # <<<<<<<<<<<<<<
@@ -9700,14 +9728,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
   if (unlikely(__pyx_v_nums == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 176, __pyx_L1_error)
+    __PYX_ERR(0, 183, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_nums); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_nums); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 183, __pyx_L1_error)
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "chimeramate_cy.pyx":173
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+    /* "chimeramate_main.pyx":180
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],             # <<<<<<<<<<<<<<
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
@@ -9715,38 +9743,38 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
     if (unlikely(__pyx_v_keys == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 173, __pyx_L1_error)
+      __PYX_ERR(0, 180, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 173, __pyx_L1_error)
+      __PYX_ERR(0, 180, __pyx_L1_error)
     }
-    __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyObject_GetItem(__pyx_v_keys, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_v_keys, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (unlikely(__pyx_v_abus == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 173, __pyx_L1_error)
+      __PYX_ERR(0, 180, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 173, __pyx_L1_error)
+      __PYX_ERR(0, 180, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = PyObject_GetItem(__pyx_v_abus, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_v_abus, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "chimeramate_cy.pyx":174
+    /* "chimeramate_main.pyx":181
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],             # <<<<<<<<<<<<<<
@@ -9755,29 +9783,29 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
     if (unlikely(__pyx_v_names == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyObject_GetItem(__pyx_v_names, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_6 = PyObject_GetItem(__pyx_v_names, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "chimeramate_cy.pyx":173
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+    /* "chimeramate_main.pyx":180
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],             # <<<<<<<<<<<<<<
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
  */
-    __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -9789,7 +9817,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     __pyx_t_5 = 0;
     __pyx_t_6 = 0;
 
-    /* "chimeramate_cy.pyx":174
+    /* "chimeramate_main.pyx":181
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],             # <<<<<<<<<<<<<<
@@ -9798,38 +9826,38 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
     if (unlikely(__pyx_v_keys == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyObject_GetItem(__pyx_v_keys, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_6 = PyObject_GetItem(__pyx_v_keys, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (unlikely(__pyx_v_abus == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 181, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = PyObject_GetItem(__pyx_v_abus, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_v_abus, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "chimeramate_cy.pyx":175
+    /* "chimeramate_main.pyx":182
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))             # <<<<<<<<<<<<<<
@@ -9838,29 +9866,29 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
     if (unlikely(__pyx_v_names == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 175, __pyx_L1_error)
+      __PYX_ERR(0, 182, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 175, __pyx_L1_error)
+      __PYX_ERR(0, 182, __pyx_L1_error)
     }
-    __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyObject_GetItem(__pyx_v_names, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_v_names, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "chimeramate_cy.pyx":174
+    /* "chimeramate_main.pyx":181
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],             # <<<<<<<<<<<<<<
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
  *             for i in range(len(nums))]
  */
-    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 181, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_6);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6);
@@ -9872,24 +9900,24 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     __pyx_t_5 = 0;
     __pyx_t_4 = 0;
 
-    /* "chimeramate_cy.pyx":175
+    /* "chimeramate_main.pyx":182
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))             # <<<<<<<<<<<<<<
  *             for i in range(len(nums))]
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_longest_common_substring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_longest_common_substring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (unlikely(__pyx_v_nums == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 175, __pyx_L1_error)
+      __PYX_ERR(0, 182, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_nums, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_abu_kmer_zip); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetItemInt(__pyx_t_9, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 182, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_9 = NULL;
@@ -9907,7 +9935,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[4] = {__pyx_t_9, __pyx_t_6, __pyx_t_10, __pyx_v_kmer_sets};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 3+__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 3+__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -9917,7 +9945,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[4] = {__pyx_t_9, __pyx_t_6, __pyx_t_10, __pyx_v_kmer_sets};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 3+__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 3+__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -9925,7 +9953,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     } else
     #endif
     {
-      __pyx_t_12 = PyTuple_New(3+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 175, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(3+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 182, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       if (__pyx_t_9) {
         __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_9); __pyx_t_9 = NULL;
@@ -9939,20 +9967,20 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
       PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_11, __pyx_v_kmer_sets);
       __pyx_t_6 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 182, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "chimeramate_cy.pyx":173
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs
+    /* "chimeramate_main.pyx":180
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],             # <<<<<<<<<<<<<<
  *             names[nums[i][0]]), (keys[nums[i][1]], abus[nums[i][1]],
  *                 names[nums[i][1]]), self._longest_common_substring(nums[i], self._abu_kmer_zip[1], kmer_sets))
  */
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_7);
@@ -9963,13 +9991,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
     __pyx_t_7 = 0;
     __pyx_t_8 = 0;
     __pyx_t_4 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 173, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __pyx_v_intersec_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":178
+  /* "chimeramate_main.pyx":185
  *             for i in range(len(nums))]
  * 
  *         return intersec_list             # <<<<<<<<<<<<<<
@@ -9981,10 +10009,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
   __pyx_r = __pyx_v_intersec_list;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":171
- *         return res, kmer_sets
+  /* "chimeramate_main.pyx":178
+ *         return res
  * 
- *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets): #tuple seqs             # <<<<<<<<<<<<<<
+ *     def create_scs_lists(self, list abus, tuple keys, list names, list nums, list kmer_sets):             # <<<<<<<<<<<<<<
  *         cdef list intersec_list
  *         intersec_list = [((keys[nums[i][0]], abus[nums[i][0]],
  */
@@ -10000,7 +10028,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.create_scs_lists", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.create_scs_lists", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_intersec_list);
@@ -10009,7 +10037,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":180
+/* "chimeramate_main.pyx":187
  *         return intersec_list
  * 
  *     def _compare_sequences(self, list intersec_list, graph, int i,             # <<<<<<<<<<<<<<
@@ -10018,8 +10046,8 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_10create_scs_lists(s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_15_compare_sequences(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_15_compare_sequences(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_intersec_list = 0;
   PyObject *__pyx_v_graph = 0;
   int __pyx_v_i;
@@ -10057,29 +10085,29 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_graph)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 1); __PYX_ERR(0, 180, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 1); __PYX_ERR(0, 187, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_i)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 2); __PYX_ERR(0, 180, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 2); __PYX_ERR(0, 187, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_direction)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 3); __PYX_ERR(0, 180, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 3); __PYX_ERR(0, 187, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_scs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 4); __PYX_ERR(0, 180, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, 4); __PYX_ERR(0, 187, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_compare_sequences") < 0)) __PYX_ERR(0, 180, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_compare_sequences") < 0)) __PYX_ERR(0, 187, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -10092,22 +10120,22 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences
     }
     __pyx_v_intersec_list = ((PyObject*)values[0]);
     __pyx_v_graph = values[1];
-    __pyx_v_i = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L3_error)
+    __pyx_v_i = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L3_error)
     __pyx_v_direction = ((PyObject*)values[3]);
     __pyx_v_scs = ((PyObject*)values[4]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 180, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_compare_sequences", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 187, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._compare_sequences", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._compare_sequences", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 180, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_direction), (&PyTuple_Type), 1, "direction", 1))) __PYX_ERR(0, 181, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_scs), (&PyString_Type), 1, "scs", 1))) __PYX_ERR(0, 181, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_intersec_list, __pyx_v_graph, __pyx_v_i, __pyx_v_direction, __pyx_v_scs);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 187, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_direction), (&PyTuple_Type), 1, "direction", 1))) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_scs), (&PyString_Type), 1, "scs", 1))) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_14_compare_sequences(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_intersec_list, __pyx_v_graph, __pyx_v_i, __pyx_v_direction, __pyx_v_scs);
 
   /* function exit code */
   goto __pyx_L0;
@@ -10118,7 +10146,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_14_compare_sequences(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs) {
   PyObject *__pyx_v_remove_edge = 0;
   int __pyx_v_flag;
   PyObject *__pyx_v_edge = 0;
@@ -10140,32 +10168,32 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
   PyObject *__pyx_t_14 = NULL;
   __Pyx_RefNannySetupContext("_compare_sequences", 0);
 
-  /* "chimeramate_cy.pyx":185
+  /* "chimeramate_main.pyx":192
  *             cdef int flag
  *             cdef tuple edge
  *             if graph.in_edges(intersec_list[i][direction[1]][0]):             # <<<<<<<<<<<<<<
  *                 remove_edge = []
  *                 flag = 0
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 185, __pyx_L1_error)
+    __PYX_ERR(0, 192, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 185, __pyx_L1_error)
+    __PYX_ERR(0, 192, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_5 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -10179,14 +10207,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -10195,42 +10223,42 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "chimeramate_cy.pyx":186
+    /* "chimeramate_main.pyx":193
  *             cdef tuple edge
  *             if graph.in_edges(intersec_list[i][direction[1]][0]):
  *                 remove_edge = []             # <<<<<<<<<<<<<<
  *                 flag = 0
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_remove_edge = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":187
+    /* "chimeramate_main.pyx":194
  *             if graph.in_edges(intersec_list[i][direction[1]][0]):
  *                 remove_edge = []
  *                 flag = 0             # <<<<<<<<<<<<<<
@@ -10239,59 +10267,59 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
     __pyx_v_flag = 0;
 
-    /* "chimeramate_cy.pyx":188
+    /* "chimeramate_main.pyx":195
  *                 remove_edge = []
  *                 flag = 0
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],             # <<<<<<<<<<<<<<
  *                         data=True):
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_intersec_list == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 188, __pyx_L1_error)
+      __PYX_ERR(0, 195, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (unlikely(__pyx_v_direction == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 188, __pyx_L1_error)
+      __PYX_ERR(0, 195, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":189
+    /* "chimeramate_main.pyx":196
  *                 flag = 0
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],
  *                         data=True):             # <<<<<<<<<<<<<<
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
  *                         flag = 1
  */
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 189, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_data, Py_True) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_data, Py_True) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
 
-    /* "chimeramate_cy.pyx":188
+    /* "chimeramate_main.pyx":195
  *                 remove_edge = []
  *                 flag = 0
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],             # <<<<<<<<<<<<<<
  *                         data=True):
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -10300,9 +10328,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+      __pyx_t_7 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 188, __pyx_L1_error)
+      __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 195, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -10310,17 +10338,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         if (likely(PyList_CheckExact(__pyx_t_3))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 188, __pyx_L1_error)
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 188, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -10330,17 +10358,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 188, __pyx_L1_error)
+            else __PYX_ERR(0, 195, __pyx_L1_error)
           }
           break;
         }
         __Pyx_GOTREF(__pyx_t_2);
       }
-      if (!(likely(PyTuple_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 188, __pyx_L1_error)
+      if (!(likely(PyTuple_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 195, __pyx_L1_error)
       __Pyx_XDECREF_SET(__pyx_v_edge, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "chimeramate_cy.pyx":190
+      /* "chimeramate_main.pyx":197
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],
  *                         data=True):
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10349,14 +10377,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
       if (unlikely(__pyx_v_edge == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 190, __pyx_L1_error)
+        __PYX_ERR(0, 197, __pyx_L1_error)
       }
-      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_v_scs, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_v_scs, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_10 = (__pyx_t_9 != 0);
       if (__pyx_t_10) {
@@ -10366,21 +10394,21 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       }
       if (unlikely(__pyx_v_edge == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 190, __pyx_L1_error)
+        __PYX_ERR(0, 197, __pyx_L1_error)
       }
-      __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_10 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 190, __pyx_L1_error)
+      __pyx_t_10 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_9 = ((!__pyx_t_10) != 0);
       __pyx_t_6 = __pyx_t_9;
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_6) {
 
-        /* "chimeramate_cy.pyx":191
+        /* "chimeramate_main.pyx":198
  *                         data=True):
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
  *                         flag = 1             # <<<<<<<<<<<<<<
@@ -10389,7 +10417,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
         __pyx_v_flag = 1;
 
-        /* "chimeramate_cy.pyx":192
+        /* "chimeramate_main.pyx":199
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:
  *                         flag = 1
  *                         break             # <<<<<<<<<<<<<<
@@ -10398,7 +10426,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
         goto __pyx_L5_break;
 
-        /* "chimeramate_cy.pyx":190
+        /* "chimeramate_main.pyx":197
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],
  *                         data=True):
  *                     if scs in edge[2]['seq'] and not scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10407,7 +10435,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
       }
 
-      /* "chimeramate_cy.pyx":193
+      /* "chimeramate_main.pyx":200
  *                         flag = 1
  *                         break
  *                     elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10416,14 +10444,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
       if (unlikely(__pyx_v_edge == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 193, __pyx_L1_error)
+        __PYX_ERR(0, 200, __pyx_L1_error)
       }
-      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_scs, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_scs, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_10 = (__pyx_t_9 != 0);
       if (__pyx_t_10) {
@@ -10433,30 +10461,30 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       }
       if (unlikely(__pyx_v_edge == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 193, __pyx_L1_error)
+        __PYX_ERR(0, 200, __pyx_L1_error)
       }
-      __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_10 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_10 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_9 = ((!__pyx_t_10) != 0);
       __pyx_t_6 = __pyx_t_9;
       __pyx_L9_bool_binop_done:;
       if (__pyx_t_6) {
 
-        /* "chimeramate_cy.pyx":194
+        /* "chimeramate_main.pyx":201
  *                         break
  *                     elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
  *                         remove_edge.append(edge)             # <<<<<<<<<<<<<<
  *                     elif scs == edge[2]['seq']:
  *                         if int(intersec_list[i][direction[0]][1]) > int(
  */
-        __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_remove_edge, __pyx_v_edge); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 194, __pyx_L1_error)
+        __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_remove_edge, __pyx_v_edge); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 201, __pyx_L1_error)
 
-        /* "chimeramate_cy.pyx":193
+        /* "chimeramate_main.pyx":200
  *                         flag = 1
  *                         break
  *                     elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10466,7 +10494,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         goto __pyx_L6;
       }
 
-      /* "chimeramate_cy.pyx":195
+      /* "chimeramate_main.pyx":202
  *                     elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
  *                         remove_edge.append(edge)
  *                     elif scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10475,18 +10503,18 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
       if (unlikely(__pyx_v_edge == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 195, __pyx_L1_error)
+        __PYX_ERR(0, 202, __pyx_L1_error)
       }
-      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_seq); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
+      __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_scs, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (__pyx_t_6) {
 
-        /* "chimeramate_cy.pyx":196
+        /* "chimeramate_main.pyx":203
  *                         remove_edge.append(edge)
  *                     elif scs == edge[2]['seq']:
  *                         if int(intersec_list[i][direction[0]][1]) > int(             # <<<<<<<<<<<<<<
@@ -10495,28 +10523,28 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
         if (unlikely(__pyx_v_intersec_list == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 196, __pyx_L1_error)
+          __PYX_ERR(0, 203, __pyx_L1_error)
         }
-        __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         if (unlikely(__pyx_v_direction == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 196, __pyx_L1_error)
+          __PYX_ERR(0, 203, __pyx_L1_error)
         }
-        __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_1 = PyObject_GetItem(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_1 = PyObject_GetItem(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "chimeramate_cy.pyx":197
+        /* "chimeramate_main.pyx":204
  *                     elif scs == edge[2]['seq']:
  *                         if int(intersec_list[i][direction[0]][1]) > int(
  *                                 edge[2]['abu1']):             # <<<<<<<<<<<<<<
@@ -10525,41 +10553,41 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
         if (unlikely(__pyx_v_edge == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 197, __pyx_L1_error)
+          __PYX_ERR(0, 204, __pyx_L1_error)
         }
-        __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 204, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_abu1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_n_s_abu1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 204, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "chimeramate_cy.pyx":196
+        /* "chimeramate_main.pyx":203
  *                         remove_edge.append(edge)
  *                     elif scs == edge[2]['seq']:
  *                         if int(intersec_list[i][direction[0]][1]) > int(             # <<<<<<<<<<<<<<
  *                                 edge[2]['abu1']):
  *                             remove_edge.append(edge)
  */
-        __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_4 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_4 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 196, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         if (__pyx_t_6) {
 
-          /* "chimeramate_cy.pyx":198
+          /* "chimeramate_main.pyx":205
  *                         if int(intersec_list[i][direction[0]][1]) > int(
  *                                 edge[2]['abu1']):
  *                             remove_edge.append(edge)             # <<<<<<<<<<<<<<
  *                         else:
  *                             flag = 1
  */
-          __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_remove_edge, __pyx_v_edge); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 198, __pyx_L1_error)
+          __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_remove_edge, __pyx_v_edge); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 205, __pyx_L1_error)
 
-          /* "chimeramate_cy.pyx":196
+          /* "chimeramate_main.pyx":203
  *                         remove_edge.append(edge)
  *                     elif scs == edge[2]['seq']:
  *                         if int(intersec_list[i][direction[0]][1]) > int(             # <<<<<<<<<<<<<<
@@ -10569,7 +10597,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
           goto __pyx_L11;
         }
 
-        /* "chimeramate_cy.pyx":200
+        /* "chimeramate_main.pyx":207
  *                             remove_edge.append(edge)
  *                         else:
  *                             flag = 1             # <<<<<<<<<<<<<<
@@ -10579,7 +10607,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         /*else*/ {
           __pyx_v_flag = 1;
 
-          /* "chimeramate_cy.pyx":201
+          /* "chimeramate_main.pyx":208
  *                         else:
  *                             flag = 1
  *                             break             # <<<<<<<<<<<<<<
@@ -10590,7 +10618,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         }
         __pyx_L11:;
 
-        /* "chimeramate_cy.pyx":195
+        /* "chimeramate_main.pyx":202
  *                     elif edge[2]['seq'] in scs and not scs == edge[2]['seq']:
  *                         remove_edge.append(edge)
  *                     elif scs == edge[2]['seq']:             # <<<<<<<<<<<<<<
@@ -10600,7 +10628,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       }
       __pyx_L6:;
 
-      /* "chimeramate_cy.pyx":188
+      /* "chimeramate_main.pyx":195
  *                 remove_edge = []
  *                 flag = 0
  *                 for edge in graph.in_edges(intersec_list[i][direction[1]][0],             # <<<<<<<<<<<<<<
@@ -10611,7 +10639,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     __pyx_L5_break:;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":202
+    /* "chimeramate_main.pyx":209
  *                             flag = 1
  *                             break
  *                 if remove_edge:             # <<<<<<<<<<<<<<
@@ -10621,7 +10649,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     __pyx_t_6 = (__pyx_v_remove_edge != Py_None) && (PyList_GET_SIZE(__pyx_v_remove_edge) != 0);
     if (__pyx_t_6) {
 
-      /* "chimeramate_cy.pyx":203
+      /* "chimeramate_main.pyx":210
  *                             break
  *                 if remove_edge:
  *                     for edge in remove_edge:             # <<<<<<<<<<<<<<
@@ -10632,35 +10660,35 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       for (;;) {
         if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_4); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 203, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_4); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 210, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 210, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
-        if (!(likely(PyTuple_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 203, __pyx_L1_error)
+        if (!(likely(PyTuple_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 210, __pyx_L1_error)
         __Pyx_XDECREF_SET(__pyx_v_edge, ((PyObject*)__pyx_t_4));
         __pyx_t_4 = 0;
 
-        /* "chimeramate_cy.pyx":204
+        /* "chimeramate_main.pyx":211
  *                 if remove_edge:
  *                     for edge in remove_edge:
  *                         graph.remove_edge(edge[0], edge[1])             # <<<<<<<<<<<<<<
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  *                 if flag == 0:
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_remove_edge); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 204, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_remove_edge); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         if (unlikely(__pyx_v_edge == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 204, __pyx_L1_error)
+          __PYX_ERR(0, 211, __pyx_L1_error)
         }
-        __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if (unlikely(__pyx_v_edge == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 204, __pyx_L1_error)
+          __PYX_ERR(0, 211, __pyx_L1_error)
         }
-        __pyx_t_5 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 204, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_GetItemInt_Tuple(__pyx_v_edge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __pyx_t_12 = NULL;
         __pyx_t_13 = 0;
@@ -10677,7 +10705,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_2)) {
           PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_5};
-          __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_13, 2+__pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 204, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_13, 2+__pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10687,7 +10715,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
           PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_5};
-          __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_13, 2+__pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 204, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_13, 2+__pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10695,7 +10723,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         } else
         #endif
         {
-          __pyx_t_14 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 204, __pyx_L1_error)
+          __pyx_t_14 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 211, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           if (__pyx_t_12) {
             __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_12); __pyx_t_12 = NULL;
@@ -10706,14 +10734,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
           PyTuple_SET_ITEM(__pyx_t_14, 1+__pyx_t_13, __pyx_t_5);
           __pyx_t_1 = 0;
           __pyx_t_5 = 0;
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_14, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 204, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_14, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "chimeramate_cy.pyx":203
+        /* "chimeramate_main.pyx":210
  *                             break
  *                 if remove_edge:
  *                     for edge in remove_edge:             # <<<<<<<<<<<<<<
@@ -10723,16 +10751,16 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "chimeramate_cy.pyx":205
+      /* "chimeramate_main.pyx":212
  *                     for edge in remove_edge:
  *                         graph.remove_edge(edge[0], edge[1])
  *                     self._add_edge(intersec_list, graph, i, direction, scs)             # <<<<<<<<<<<<<<
  *                 if flag == 0:
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_14 = NULL;
       __pyx_t_13 = 0;
@@ -10749,7 +10777,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[6] = {__pyx_t_14, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_2, __pyx_v_direction, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -10758,14 +10786,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[6] = {__pyx_t_14, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_2, __pyx_v_direction, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 205, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 212, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         if (__pyx_t_14) {
           __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -10785,14 +10813,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         __Pyx_GIVEREF(__pyx_v_scs);
         PyTuple_SET_ITEM(__pyx_t_5, 4+__pyx_t_13, __pyx_v_scs);
         __pyx_t_2 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "chimeramate_cy.pyx":202
+      /* "chimeramate_main.pyx":209
  *                             flag = 1
  *                             break
  *                 if remove_edge:             # <<<<<<<<<<<<<<
@@ -10801,7 +10829,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
     }
 
-    /* "chimeramate_cy.pyx":206
+    /* "chimeramate_main.pyx":213
  *                         graph.remove_edge(edge[0], edge[1])
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  *                 if flag == 0:             # <<<<<<<<<<<<<<
@@ -10811,16 +10839,16 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     __pyx_t_6 = ((__pyx_v_flag == 0) != 0);
     if (__pyx_t_6) {
 
-      /* "chimeramate_cy.pyx":207
+      /* "chimeramate_main.pyx":214
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  *                 if flag == 0:
  *                     self._add_edge(intersec_list, graph, i, direction, scs)             # <<<<<<<<<<<<<<
  *             else:
  *                 self._add_edge(intersec_list, graph, i, direction, scs)
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 214, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_2 = NULL;
       __pyx_t_13 = 0;
@@ -10837,7 +10865,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[6] = {__pyx_t_2, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_5, __pyx_v_direction, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10846,14 +10874,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[6] = {__pyx_t_2, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_5, __pyx_v_direction, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_14 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 207, __pyx_L1_error)
+        __pyx_t_14 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 214, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
         if (__pyx_t_2) {
           __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_2); __pyx_t_2 = NULL;
@@ -10873,14 +10901,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
         __Pyx_GIVEREF(__pyx_v_scs);
         PyTuple_SET_ITEM(__pyx_t_14, 4+__pyx_t_13, __pyx_v_scs);
         __pyx_t_5 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "chimeramate_cy.pyx":206
+      /* "chimeramate_main.pyx":213
  *                         graph.remove_edge(edge[0], edge[1])
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  *                 if flag == 0:             # <<<<<<<<<<<<<<
@@ -10889,7 +10917,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
     }
 
-    /* "chimeramate_cy.pyx":185
+    /* "chimeramate_main.pyx":192
  *             cdef int flag
  *             cdef tuple edge
  *             if graph.in_edges(intersec_list[i][direction[1]][0]):             # <<<<<<<<<<<<<<
@@ -10899,7 +10927,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     goto __pyx_L3;
   }
 
-  /* "chimeramate_cy.pyx":209
+  /* "chimeramate_main.pyx":216
  *                     self._add_edge(intersec_list, graph, i, direction, scs)
  *             else:
  *                 self._add_edge(intersec_list, graph, i, direction, scs)             # <<<<<<<<<<<<<<
@@ -10907,9 +10935,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_edge); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_14 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 216, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __pyx_t_5 = NULL;
     __pyx_t_13 = 0;
@@ -10926,7 +10954,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[6] = {__pyx_t_5, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_14, __pyx_v_direction, __pyx_v_scs};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -10935,14 +10963,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[6] = {__pyx_t_5, __pyx_v_intersec_list, __pyx_v_graph, __pyx_t_14, __pyx_v_direction, __pyx_v_scs};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     } else
     #endif
     {
-      __pyx_t_2 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (__pyx_t_5) {
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -10962,7 +10990,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
       __Pyx_GIVEREF(__pyx_v_scs);
       PyTuple_SET_ITEM(__pyx_t_2, 4+__pyx_t_13, __pyx_v_scs);
       __pyx_t_14 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
@@ -10971,7 +10999,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
   }
   __pyx_L3:;
 
-  /* "chimeramate_cy.pyx":180
+  /* "chimeramate_main.pyx":187
  *         return intersec_list
  * 
  *     def _compare_sequences(self, list intersec_list, graph, int i,             # <<<<<<<<<<<<<<
@@ -10990,7 +11018,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._compare_sequences", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._compare_sequences", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_remove_edge);
@@ -11000,7 +11028,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":211
+/* "chimeramate_main.pyx":218
  *                 self._add_edge(intersec_list, graph, i, direction, scs)
  * 
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,             # <<<<<<<<<<<<<<
@@ -11009,8 +11037,8 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_12_compare_sequences
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_17_add_edge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_17_add_edge(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_intersec_list = 0;
   PyObject *__pyx_v_graph = 0;
   int __pyx_v_i;
@@ -11048,29 +11076,29 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge(PyObject
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_graph)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 1); __PYX_ERR(0, 211, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 1); __PYX_ERR(0, 218, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_i)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 2); __PYX_ERR(0, 211, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 2); __PYX_ERR(0, 218, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_direction)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 3); __PYX_ERR(0, 211, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 3); __PYX_ERR(0, 218, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_scs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 4); __PYX_ERR(0, 211, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, 4); __PYX_ERR(0, 218, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_add_edge") < 0)) __PYX_ERR(0, 211, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_add_edge") < 0)) __PYX_ERR(0, 218, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -11083,22 +11111,22 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge(PyObject
     }
     __pyx_v_intersec_list = ((PyObject*)values[0]);
     __pyx_v_graph = values[1];
-    __pyx_v_i = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L3_error)
+    __pyx_v_i = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_i == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L3_error)
     __pyx_v_direction = ((PyObject*)values[3]);
     __pyx_v_scs = ((PyObject*)values[4]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 211, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_add_edge", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 218, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._add_edge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._add_edge", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 211, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_direction), (&PyTuple_Type), 1, "direction", 1))) __PYX_ERR(0, 211, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_scs), (&PyString_Type), 1, "scs", 1))) __PYX_ERR(0, 212, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_intersec_list, __pyx_v_graph, __pyx_v_i, __pyx_v_direction, __pyx_v_scs);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 218, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_direction), (&PyTuple_Type), 1, "direction", 1))) __PYX_ERR(0, 218, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_scs), (&PyString_Type), 1, "scs", 1))) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_16_add_edge(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_intersec_list, __pyx_v_graph, __pyx_v_i, __pyx_v_direction, __pyx_v_scs);
 
   /* function exit code */
   goto __pyx_L0;
@@ -11109,7 +11137,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge(PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_16_add_edge(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list, PyObject *__pyx_v_graph, int __pyx_v_i, PyObject *__pyx_v_direction, PyObject *__pyx_v_scs) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -11121,36 +11149,36 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("_add_edge", 0);
 
-  /* "chimeramate_cy.pyx":213
+  /* "chimeramate_main.pyx":220
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,
  *             str scs):
  *         graph.add_edge(intersec_list[i][direction[0]][0],             # <<<<<<<<<<<<<<
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
  *                 abu1 = intersec_list[i][direction[0]][1],
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_add_edge_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_add_edge_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 213, __pyx_L1_error)
+    __PYX_ERR(0, 220, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 213, __pyx_L1_error)
+    __PYX_ERR(0, 220, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":214
+  /* "chimeramate_main.pyx":221
  *             str scs):
  *         graph.add_edge(intersec_list[i][direction[0]][0],
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,             # <<<<<<<<<<<<<<
@@ -11159,32 +11187,32 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 214, __pyx_L1_error)
+    __PYX_ERR(0, 221, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 214, __pyx_L1_error)
+    __PYX_ERR(0, 221, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = PyObject_GetItem(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_5 = PyObject_GetItem(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_5, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "chimeramate_cy.pyx":213
+  /* "chimeramate_main.pyx":220
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,
  *             str scs):
  *         graph.add_edge(intersec_list[i][direction[0]][0],             # <<<<<<<<<<<<<<
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
  *                 abu1 = intersec_list[i][direction[0]][1],
  */
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
@@ -11193,23 +11221,23 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
   __pyx_t_3 = 0;
   __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":214
+  /* "chimeramate_main.pyx":221
  *             str scs):
  *         graph.add_edge(intersec_list[i][direction[0]][0],
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,             # <<<<<<<<<<<<<<
  *                 abu1 = intersec_list[i][direction[0]][1],
  *                 abu2 = intersec_list[i][direction[1]][1],
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = PyObject_Length(__pyx_v_scs); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 214, __pyx_L1_error)
-  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_scs); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_length, __pyx_t_3) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_length, __pyx_t_3) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_seq, __pyx_v_scs) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_seq, __pyx_v_scs) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
 
-  /* "chimeramate_cy.pyx":215
+  /* "chimeramate_main.pyx":222
  *         graph.add_edge(intersec_list[i][direction[0]][0],
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
  *                 abu1 = intersec_list[i][direction[0]][1],             # <<<<<<<<<<<<<<
@@ -11218,27 +11246,27 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 215, __pyx_L1_error)
+    __PYX_ERR(0, 222, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 215, __pyx_L1_error)
+    __PYX_ERR(0, 222, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_abu1, __pyx_t_4) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_abu1, __pyx_t_4) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":216
+  /* "chimeramate_main.pyx":223
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
  *                 abu1 = intersec_list[i][direction[0]][1],
  *                 abu2 = intersec_list[i][direction[1]][1],             # <<<<<<<<<<<<<<
@@ -11247,27 +11275,27 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 216, __pyx_L1_error)
+    __PYX_ERR(0, 223, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 216, __pyx_L1_error)
+    __PYX_ERR(0, 223, __pyx_L1_error)
   }
-  __pyx_t_7 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_abu2, __pyx_t_7) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_abu2, __pyx_t_7) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "chimeramate_cy.pyx":217
+  /* "chimeramate_main.pyx":224
  *                 abu1 = intersec_list[i][direction[0]][1],
  *                 abu2 = intersec_list[i][direction[1]][1],
  *                 name1 = intersec_list[i][direction[0]][2],             # <<<<<<<<<<<<<<
@@ -11276,27 +11304,27 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 217, __pyx_L1_error)
+    __PYX_ERR(0, 224, __pyx_L1_error)
   }
-  __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 217, __pyx_L1_error)
+    __PYX_ERR(0, 224, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_GetItem(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_4 = PyObject_GetItem(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name1, __pyx_t_3) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name1, __pyx_t_3) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":218
+  /* "chimeramate_main.pyx":225
  *                 abu2 = intersec_list[i][direction[1]][1],
  *                 name1 = intersec_list[i][direction[0]][2],
  *                 name2 = intersec_list[i][direction[1]][2])             # <<<<<<<<<<<<<<
@@ -11305,41 +11333,41 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 218, __pyx_L1_error)
+    __PYX_ERR(0, 225, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_direction == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 218, __pyx_L1_error)
+    __PYX_ERR(0, 225, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_direction, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_7, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_7, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name2, __pyx_t_4) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name2, __pyx_t_4) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":213
+  /* "chimeramate_main.pyx":220
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,
  *             str scs):
  *         graph.add_edge(intersec_list[i][direction[0]][0],             # <<<<<<<<<<<<<<
  *                 intersec_list[i][direction[1]][0], length=len(scs), seq = scs,
  *                 abu1 = intersec_list[i][direction[0]][1],
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":211
+  /* "chimeramate_main.pyx":218
  *                 self._add_edge(intersec_list, graph, i, direction, scs)
  * 
  *     def _add_edge(self, list intersec_list, graph, int i,tuple direction,             # <<<<<<<<<<<<<<
@@ -11357,7 +11385,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._add_edge", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._add_edge", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -11365,7 +11393,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":220
+/* "chimeramate_main.pyx":227
  *                 name2 = intersec_list[i][direction[1]][2])
  * 
  *     def _overlap_graph(self, list intersec_list):             # <<<<<<<<<<<<<<
@@ -11374,13 +11402,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_14_add_edge(CYTHON_U
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_17_overlap_graph(PyObject *__pyx_v_self, PyObject *__pyx_v_intersec_list); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_17_overlap_graph(PyObject *__pyx_v_self, PyObject *__pyx_v_intersec_list) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_19_overlap_graph(PyObject *__pyx_v_self, PyObject *__pyx_v_intersec_list); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_19_overlap_graph(PyObject *__pyx_v_self, PyObject *__pyx_v_intersec_list) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_overlap_graph (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 220, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_intersec_list));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_intersec_list), (&PyList_Type), 1, "intersec_list", 1))) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_18_overlap_graph(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_intersec_list));
 
   /* function exit code */
   goto __pyx_L0;
@@ -11391,7 +11419,7 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_17_overlap_graph(PyO
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_18_overlap_graph(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_intersec_list) {
   int __pyx_v_i;
   PyObject *__pyx_v_scs = 0;
   PyObject *__pyx_v_t_g = NULL;
@@ -11408,16 +11436,16 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
   PyObject *__pyx_t_9 = NULL;
   __Pyx_RefNannySetupContext("_overlap_graph", 0);
 
-  /* "chimeramate_cy.pyx":223
+  /* "chimeramate_main.pyx":230
  *         cdef int i
  *         cdef str scs
  *         t_g = nx.DiGraph()             # <<<<<<<<<<<<<<
  *         for i in range(len(intersec_list)):
  *             scs = intersec_list[i][2]
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 223, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DiGraph); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DiGraph); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -11431,17 +11459,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_t_g = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":224
+  /* "chimeramate_main.pyx":231
  *         cdef str scs
  *         t_g = nx.DiGraph()
  *         for i in range(len(intersec_list)):             # <<<<<<<<<<<<<<
@@ -11450,13 +11478,13 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
  */
   if (unlikely(__pyx_v_intersec_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 224, __pyx_L1_error)
+    __PYX_ERR(0, 231, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_intersec_list); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_v_intersec_list); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 231, __pyx_L1_error)
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "chimeramate_cy.pyx":225
+    /* "chimeramate_main.pyx":232
  *         t_g = nx.DiGraph()
  *         for i in range(len(intersec_list)):
  *             scs = intersec_list[i][2]             # <<<<<<<<<<<<<<
@@ -11465,18 +11493,18 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
  */
     if (unlikely(__pyx_v_intersec_list == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 225, __pyx_L1_error)
+      __PYX_ERR(0, 232, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(PyString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 225, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 232, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_scs, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":226
+    /* "chimeramate_main.pyx":233
  *         for i in range(len(intersec_list)):
  *             scs = intersec_list[i][2]
  *             if int(intersec_list[i][0][1]) > int(intersec_list[i][1][1]):             # <<<<<<<<<<<<<<
@@ -11485,51 +11513,51 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
  */
     if (unlikely(__pyx_v_intersec_list == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 233, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (unlikely(__pyx_v_intersec_list == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 233, __pyx_L1_error)
     }
-    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_intersec_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 233, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_6) {
 
-      /* "chimeramate_cy.pyx":227
+      /* "chimeramate_main.pyx":234
  *             scs = intersec_list[i][2]
  *             if int(intersec_list[i][0][1]) > int(intersec_list[i][1][1]):
  *                 self._compare_sequences(intersec_list, t_g, i, (0, 1), scs)             # <<<<<<<<<<<<<<
  *             else:
  *                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compare_sequences); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compare_sequences); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_7 = NULL;
       __pyx_t_8 = 0;
@@ -11546,7 +11574,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[6] = {__pyx_t_7, __pyx_v_intersec_list, __pyx_v_t_g, __pyx_t_1, __pyx_tuple__7, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -11555,14 +11583,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[6] = {__pyx_t_7, __pyx_v_intersec_list, __pyx_v_t_g, __pyx_t_1, __pyx_tuple__7, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else
       #endif
       {
-        __pyx_t_9 = PyTuple_New(5+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
+        __pyx_t_9 = PyTuple_New(5+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 234, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         if (__pyx_t_7) {
           __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -11582,14 +11610,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
         __Pyx_GIVEREF(__pyx_v_scs);
         PyTuple_SET_ITEM(__pyx_t_9, 4+__pyx_t_8, __pyx_v_scs);
         __pyx_t_1 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "chimeramate_cy.pyx":226
+      /* "chimeramate_main.pyx":233
  *         for i in range(len(intersec_list)):
  *             scs = intersec_list[i][2]
  *             if int(intersec_list[i][0][1]) > int(intersec_list[i][1][1]):             # <<<<<<<<<<<<<<
@@ -11599,7 +11627,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
       goto __pyx_L5;
     }
 
-    /* "chimeramate_cy.pyx":229
+    /* "chimeramate_main.pyx":236
  *                 self._compare_sequences(intersec_list, t_g, i, (0, 1), scs)
  *             else:
  *                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)             # <<<<<<<<<<<<<<
@@ -11607,9 +11635,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
  *         return t_g
  */
     /*else*/ {
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compare_sequences); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compare_sequences); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 236, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 229, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 236, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_1 = NULL;
       __pyx_t_8 = 0;
@@ -11626,7 +11654,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[6] = {__pyx_t_1, __pyx_v_intersec_list, __pyx_v_t_g, __pyx_t_9, __pyx_tuple__8, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -11635,14 +11663,14 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[6] = {__pyx_t_1, __pyx_v_intersec_list, __pyx_v_t_g, __pyx_t_9, __pyx_tuple__8, __pyx_v_scs};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 5+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(5+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 229, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(5+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 236, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         if (__pyx_t_1) {
           __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_1); __pyx_t_1 = NULL;
@@ -11662,7 +11690,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
         __Pyx_GIVEREF(__pyx_v_scs);
         PyTuple_SET_ITEM(__pyx_t_7, 4+__pyx_t_8, __pyx_v_scs);
         __pyx_t_9 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
@@ -11672,19 +11700,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
     __pyx_L5:;
   }
 
-  /* "chimeramate_cy.pyx":231
+  /* "chimeramate_main.pyx":238
  *                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)
  * 
  *         return t_g             # <<<<<<<<<<<<<<
  * 
- *     def _remove_low_indegree_edges(self, overlap_graph, float abskew):
+ *     def _graph_filter(self, overlap_graph, float abskew):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_t_g);
   __pyx_r = __pyx_v_t_g;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":220
+  /* "chimeramate_main.pyx":227
  *                 name2 = intersec_list[i][direction[1]][2])
  * 
  *     def _overlap_graph(self, list intersec_list):             # <<<<<<<<<<<<<<
@@ -11699,7 +11727,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._overlap_graph", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._overlap_graph", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_scs);
@@ -11709,22 +11737,22 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_16_overlap_graph(str
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":233
+/* "chimeramate_main.pyx":240
  *         return t_g
  * 
- *     def _remove_low_indegree_edges(self, overlap_graph, float abskew):             # <<<<<<<<<<<<<<
+ *     def _graph_filter(self, overlap_graph, float abskew):             # <<<<<<<<<<<<<<
  *         cdef list remove_edges
  *         remove_edges = list()
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_19_remove_low_indegree_edges(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_19_remove_low_indegree_edges(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_21_graph_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_21_graph_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_overlap_graph = 0;
   float __pyx_v_abskew;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("_remove_low_indegree_edges (wrapper)", 0);
+  __Pyx_RefNannySetupContext("_graph_filter (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_overlap_graph_2,&__pyx_n_s_abskew,0};
     PyObject* values[2] = {0,0};
@@ -11748,11 +11776,11 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_19_remove_low_indegr
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_abskew)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_remove_low_indegree_edges", 1, 2, 2, 1); __PYX_ERR(0, 233, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_graph_filter", 1, 2, 2, 1); __PYX_ERR(0, 240, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_remove_low_indegree_edges") < 0)) __PYX_ERR(0, 233, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_graph_filter") < 0)) __PYX_ERR(0, 240, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -11761,24 +11789,24 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_19_remove_low_indegr
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_overlap_graph = values[0];
-    __pyx_v_abskew = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_abskew == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 233, __pyx_L3_error)
+    __pyx_v_abskew = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_abskew == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_remove_low_indegree_edges", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 233, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_graph_filter", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 240, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._remove_low_indegree_edges", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._graph_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegree_edges(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), __pyx_v_overlap_graph, __pyx_v_abskew);
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_20_graph_filter(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_overlap_graph, __pyx_v_abskew);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegree_edges(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph, float __pyx_v_abskew) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_20_graph_filter(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph, float __pyx_v_abskew) {
   PyObject *__pyx_v_remove_edges = 0;
   PyObject *__pyx_v_edge = NULL;
   PyObject *__pyx_v_redge = NULL;
@@ -11790,42 +11818,42 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
   Py_ssize_t __pyx_t_4;
   PyObject *(*__pyx_t_5)(PyObject *);
   PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
-  int __pyx_t_10;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
   PyObject *__pyx_t_13 = NULL;
   int __pyx_t_14;
   PyObject *__pyx_t_15 = NULL;
-  __Pyx_RefNannySetupContext("_remove_low_indegree_edges", 0);
+  __Pyx_RefNannySetupContext("_graph_filter", 0);
 
-  /* "chimeramate_cy.pyx":235
- *     def _remove_low_indegree_edges(self, overlap_graph, float abskew):
+  /* "chimeramate_main.pyx":242
+ *     def _graph_filter(self, overlap_graph, float abskew):
  *         cdef list remove_edges
  *         remove_edges = list()             # <<<<<<<<<<<<<<
  *         for edge in overlap_graph.edges(data=True):
- *             if overlap_graph.in_degree(edge[1]) < 2:
+ *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_remove_edges = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":236
+  /* "chimeramate_main.pyx":243
  *         cdef list remove_edges
  *         remove_edges = list()
  *         for edge in overlap_graph.edges(data=True):             # <<<<<<<<<<<<<<
- *             if overlap_graph.in_degree(edge[1]) < 2:
+ *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  *                 remove_edges.append(edge)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_data, Py_True) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_data, Py_True) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -11833,9 +11861,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
     __pyx_t_2 = __pyx_t_3; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 243, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -11843,17 +11871,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 236, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 243, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 236, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 243, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -11863,7 +11891,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 236, __pyx_L1_error)
+          else __PYX_ERR(0, 243, __pyx_L1_error)
         }
         break;
       }
@@ -11872,174 +11900,93 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
     __Pyx_XDECREF_SET(__pyx_v_edge, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "chimeramate_cy.pyx":237
+    /* "chimeramate_main.pyx":244
  *         remove_edges = list()
  *         for edge in overlap_graph.edges(data=True):
- *             if overlap_graph.in_degree(edge[1]) < 2:             # <<<<<<<<<<<<<<
- *                 remove_edges.append(edge)
- *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
- */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_in_degree); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_edge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 237, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-      }
-    }
-    if (!__pyx_t_7) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_1)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_6};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_6};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 237, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
-        __Pyx_GIVEREF(__pyx_t_6);
-        PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_6);
-        __pyx_t_6 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      }
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 237, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__pyx_t_9) {
-
-      /* "chimeramate_cy.pyx":238
- *         for edge in overlap_graph.edges(data=True):
- *             if overlap_graph.in_degree(edge[1]) < 2:
- *                 remove_edges.append(edge)             # <<<<<<<<<<<<<<
- *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
- *                 remove_edges.append(edge)
- */
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_remove_edges, __pyx_v_edge); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 238, __pyx_L1_error)
-
-      /* "chimeramate_cy.pyx":237
- *         remove_edges = list()
- *         for edge in overlap_graph.edges(data=True):
- *             if overlap_graph.in_degree(edge[1]) < 2:             # <<<<<<<<<<<<<<
- *                 remove_edges.append(edge)
- *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
- */
-    }
-
-    /* "chimeramate_cy.pyx":239
- *             if overlap_graph.in_degree(edge[1]) < 2:
- *                 remove_edges.append(edge)
  *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:             # <<<<<<<<<<<<<<
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_abu2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_abu2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_abu1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_abskew); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_8, __pyx_t_3, Py_GE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edge, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_6 = PyObject_GetItem(__pyx_t_1, __pyx_n_s_abu1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__pyx_t_9) {
+    __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_abskew); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_6, __pyx_t_1, Py_GE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (__pyx_t_7) {
 
-      /* "chimeramate_cy.pyx":240
- *                 remove_edges.append(edge)
+      /* "chimeramate_main.pyx":245
+ *         for edge in overlap_graph.edges(data=True):
  *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  *                 remove_edges.append(edge)             # <<<<<<<<<<<<<<
  *         for redge in list(remove_edges):
  *             try:
  */
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_remove_edges, __pyx_v_edge); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 240, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_remove_edges, __pyx_v_edge); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
 
-      /* "chimeramate_cy.pyx":239
- *             if overlap_graph.in_degree(edge[1]) < 2:
- *                 remove_edges.append(edge)
+      /* "chimeramate_main.pyx":244
+ *         remove_edges = list()
+ *         for edge in overlap_graph.edges(data=True):
  *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:             # <<<<<<<<<<<<<<
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):
  */
     }
 
-    /* "chimeramate_cy.pyx":236
+    /* "chimeramate_main.pyx":243
  *         cdef list remove_edges
  *         remove_edges = list()
  *         for edge in overlap_graph.edges(data=True):             # <<<<<<<<<<<<<<
- *             if overlap_graph.in_degree(edge[1]) < 2:
+ *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  *                 remove_edges.append(edge)
  */
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":241
+  /* "chimeramate_main.pyx":246
  *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):             # <<<<<<<<<<<<<<
  *             try:
  *                 overlap_graph.remove_edge(redge[0], redge[1])
  */
-  __pyx_t_2 = PySequence_List(__pyx_v_remove_edges); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_2 = PySequence_List(__pyx_v_remove_edges); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
+  __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
-    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 246, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_redge, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "chimeramate_cy.pyx":242
+    /* "chimeramate_main.pyx":247
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):
  *             try:             # <<<<<<<<<<<<<<
@@ -12049,77 +11996,77 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
     {
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
-      __Pyx_ExceptionSave(&__pyx_t_11, &__pyx_t_12, &__pyx_t_13);
+      __Pyx_ExceptionSave(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
+      __Pyx_XGOTREF(__pyx_t_9);
+      __Pyx_XGOTREF(__pyx_t_10);
       __Pyx_XGOTREF(__pyx_t_11);
-      __Pyx_XGOTREF(__pyx_t_12);
-      __Pyx_XGOTREF(__pyx_t_13);
       /*try:*/ {
 
-        /* "chimeramate_cy.pyx":243
+        /* "chimeramate_main.pyx":248
  *         for redge in list(remove_edges):
  *             try:
  *                 overlap_graph.remove_edge(redge[0], redge[1])             # <<<<<<<<<<<<<<
  *             except:
  *                 pass
  */
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_remove_edge); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L9_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_redge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 243, __pyx_L9_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_redge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 243, __pyx_L9_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_remove_edge); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L8_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_redge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 248, __pyx_L8_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = NULL;
+        __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_redge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 248, __pyx_L8_error)
+        __Pyx_GOTREF(__pyx_t_12);
+        __pyx_t_13 = NULL;
         __pyx_t_14 = 0;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
-          if (likely(__pyx_t_7)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-            __Pyx_INCREF(__pyx_t_7);
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+          __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_1);
+          if (likely(__pyx_t_13)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+            __Pyx_INCREF(__pyx_t_13);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_3, function);
+            __Pyx_DECREF_SET(__pyx_t_1, function);
             __pyx_t_14 = 1;
           }
         }
         #if CYTHON_FAST_PYCALL
-        if (PyFunction_Check(__pyx_t_3)) {
-          PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_8, __pyx_t_6};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L9_error)
-          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+        if (PyFunction_Check(__pyx_t_1)) {
+          PyObject *__pyx_temp[3] = {__pyx_t_13, __pyx_t_6, __pyx_t_12};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L8_error)
+          __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         } else
         #endif
         #if CYTHON_FAST_PYCCALL
-        if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-          PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_8, __pyx_t_6};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L9_error)
-          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
+          PyObject *__pyx_temp[3] = {__pyx_t_13, __pyx_t_6, __pyx_t_12};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L8_error)
+          __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         } else
         #endif
         {
-          __pyx_t_15 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 243, __pyx_L9_error)
+          __pyx_t_15 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 248, __pyx_L8_error)
           __Pyx_GOTREF(__pyx_t_15);
-          if (__pyx_t_7) {
-            __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_7); __pyx_t_7 = NULL;
+          if (__pyx_t_13) {
+            __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_13); __pyx_t_13 = NULL;
           }
-          __Pyx_GIVEREF(__pyx_t_8);
-          PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_14, __pyx_t_8);
           __Pyx_GIVEREF(__pyx_t_6);
-          PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_14, __pyx_t_6);
-          __pyx_t_8 = 0;
+          PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_14, __pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_12);
+          PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_14, __pyx_t_12);
           __pyx_t_6 = 0;
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L9_error)
+          __pyx_t_12 = 0;
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L8_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
         }
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "chimeramate_cy.pyx":242
+        /* "chimeramate_main.pyx":247
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):
  *             try:             # <<<<<<<<<<<<<<
@@ -12127,19 +12074,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
  *             except:
  */
       }
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+      goto __pyx_L15_try_end;
+      __pyx_L8_error:;
       __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-      goto __pyx_L16_try_end;
-      __pyx_L9_error:;
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "chimeramate_cy.pyx":244
+      /* "chimeramate_main.pyx":249
  *             try:
  *                 overlap_graph.remove_edge(redge[0], redge[1])
  *             except:             # <<<<<<<<<<<<<<
@@ -12148,17 +12095,17 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
  */
       /*except:*/ {
         __Pyx_ErrRestore(0,0,0);
-        goto __pyx_L10_exception_handled;
+        goto __pyx_L9_exception_handled;
       }
-      __pyx_L10_exception_handled:;
+      __pyx_L9_exception_handled:;
+      __Pyx_XGIVEREF(__pyx_t_9);
+      __Pyx_XGIVEREF(__pyx_t_10);
       __Pyx_XGIVEREF(__pyx_t_11);
-      __Pyx_XGIVEREF(__pyx_t_12);
-      __Pyx_XGIVEREF(__pyx_t_13);
-      __Pyx_ExceptionReset(__pyx_t_11, __pyx_t_12, __pyx_t_13);
-      __pyx_L16_try_end:;
+      __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
+      __pyx_L15_try_end:;
     }
 
-    /* "chimeramate_cy.pyx":241
+    /* "chimeramate_main.pyx":246
  *             if int(edge[2]['abu2'])/int(edge[2]['abu1']) >= abskew:
  *                 remove_edges.append(edge)
  *         for redge in list(remove_edges):             # <<<<<<<<<<<<<<
@@ -12166,24 +12113,24 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
  *                 overlap_graph.remove_edge(redge[0], redge[1])
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":247
+  /* "chimeramate_main.pyx":252
  *                 pass
  * 
  *         return overlap_graph             # <<<<<<<<<<<<<<
  * 
- *     def subgraphs(self,overlap_graph):
+ *     def potential_chimeras(self, graph):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_overlap_graph);
   __pyx_r = __pyx_v_overlap_graph;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":233
+  /* "chimeramate_main.pyx":240
  *         return t_g
  * 
- *     def _remove_low_indegree_edges(self, overlap_graph, float abskew):             # <<<<<<<<<<<<<<
+ *     def _graph_filter(self, overlap_graph, float abskew):             # <<<<<<<<<<<<<<
  *         cdef list remove_edges
  *         remove_edges = list()
  */
@@ -12194,10 +12141,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
   __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search._remove_low_indegree_edges", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search._graph_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_remove_edges);
@@ -12208,463 +12155,270 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_18_remove_low_indegr
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":249
+/* "chimeramate_main.pyx":254
  *         return overlap_graph
  * 
- *     def subgraphs(self,overlap_graph):             # <<<<<<<<<<<<<<
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
+ *     def potential_chimeras(self, graph):             # <<<<<<<<<<<<<<
+ *         cdef list node_list
+ *         node_list = []
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_21subgraphs(PyObject *__pyx_v_self, PyObject *__pyx_v_overlap_graph); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_21subgraphs(PyObject *__pyx_v_self, PyObject *__pyx_v_overlap_graph) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_23potential_chimeras(PyObject *__pyx_v_self, PyObject *__pyx_v_graph); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_23potential_chimeras(PyObject *__pyx_v_self, PyObject *__pyx_v_graph) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("subgraphs (wrapper)", 0);
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_20subgraphs(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject *)__pyx_v_overlap_graph));
+  __Pyx_RefNannySetupContext("potential_chimeras (wrapper)", 0);
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_22potential_chimeras(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject *)__pyx_v_graph));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static PyObject *__pyx_gb_14chimeramate_cy_14chimera_search_9subgraphs_2generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "chimeramate_cy.pyx":255
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]             # <<<<<<<<<<<<<<
- * 
- *         return high_indegree_subgraphs
- */
-
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_9subgraphs_genexpr(PyObject *__pyx_self) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *__pyx_cur_scope;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("genexpr", 0);
-  __pyx_cur_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_3_genexpr(__pyx_ptype_14chimeramate_cy___pyx_scope_struct_3_genexpr, __pyx_empty_tuple, NULL);
-  if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)Py_None);
-    __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 255, __pyx_L1_error)
-  } else {
-    __Pyx_GOTREF(__pyx_cur_scope);
-  }
-  __pyx_cur_scope->__pyx_outer_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *) __pyx_self;
-  __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
-  __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
-  {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14chimeramate_cy_14chimera_search_9subgraphs_2generator1, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_subgraphs_locals_genexpr, __pyx_n_s_chimeramate_cy); if (unlikely(!gen)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_cur_scope);
-    __Pyx_RefNannyFinishContext();
-    return (PyObject *) gen;
-  }
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.subgraphs.genexpr", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_gb_14chimeramate_cy_14chimera_search_9subgraphs_2generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value) /* generator body */
-{
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *__pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)__pyx_generator->closure);
-  PyObject *__pyx_r = NULL;
-  PyObject *__pyx_t_1 = NULL;
-  Py_ssize_t __pyx_t_2;
-  Py_ssize_t __pyx_t_3;
-  int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
-  int __pyx_t_9;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("genexpr", 0);
-  switch (__pyx_generator->resume_label) {
-    case 0: goto __pyx_L3_first_run;
-    default: /* CPython raises the right error here */
-    __Pyx_RefNannyFinishContext();
-    return NULL;
-  }
-  __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 255, __pyx_L1_error)
-  __pyx_t_2 = 0;
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_subgraph)) { __Pyx_RaiseClosureNameError("subgraph"); __PYX_ERR(0, 255, __pyx_L1_error) }
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_subgraph, __pyx_n_s_in_degree); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_7)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_7);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  if (__pyx_t_7) {
-    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  } else {
-    __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
-  __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)(&PyDict_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_t_5, 1, __pyx_n_s_values, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_XDECREF(__pyx_t_1);
-  __pyx_t_1 = __pyx_t_6;
-  __pyx_t_6 = 0;
-  while (1) {
-    __pyx_t_8 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, NULL, &__pyx_t_6, NULL, __pyx_t_4);
-    if (unlikely(__pyx_t_8 == 0)) break;
-    if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_x);
-    __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_x, __pyx_t_6);
-    __Pyx_GIVEREF(__pyx_t_6);
-    __pyx_t_6 = 0;
-    __pyx_t_6 = PyObject_RichCompare(__pyx_cur_scope->__pyx_v_x, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__pyx_t_9) {
-      __Pyx_XDECREF(__pyx_r);
-      __Pyx_INCREF(Py_True);
-      __pyx_r = Py_True;
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      goto __pyx_L0;
-    }
-  }
-  /*else*/ {
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_False);
-    __pyx_r = Py_False;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    goto __pyx_L0;
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("genexpr", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_Coroutine_ResetAndClearException(__pyx_generator);
-  __pyx_generator->resume_label = -1;
-  __Pyx_Coroutine_clear((PyObject*)__pyx_generator);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "chimeramate_cy.pyx":249
- *         return overlap_graph
- * 
- *     def subgraphs(self,overlap_graph):             # <<<<<<<<<<<<<<
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
- */
-
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_20subgraphs(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_overlap_graph) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *__pyx_cur_scope;
-  PyObject *__pyx_v_subgraph_list = 0;
-  PyObject *__pyx_v_high_indegree_subgraphs = 0;
-  PyObject *__pyx_v_subg = NULL;
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_22potential_chimeras(CYTHON_UNUSED struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_graph) {
+  PyObject *__pyx_v_node_list = 0;
+  PyObject *__pyx_v_node = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *__pyx_t_8 = NULL;
+  Py_ssize_t __pyx_t_4;
+  PyObject *(*__pyx_t_5)(PyObject *);
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
   int __pyx_t_9;
-  __Pyx_RefNannySetupContext("subgraphs", 0);
-  __pyx_cur_scope = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_2_subgraphs(__pyx_ptype_14chimeramate_cy___pyx_scope_struct_2_subgraphs, __pyx_empty_tuple, NULL);
-  if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)Py_None);
-    __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 249, __pyx_L1_error)
-  } else {
-    __Pyx_GOTREF(__pyx_cur_scope);
-  }
+  __Pyx_RefNannySetupContext("potential_chimeras", 0);
 
-  /* "chimeramate_cy.pyx":252
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg             # <<<<<<<<<<<<<<
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
+  /* "chimeramate_main.pyx":256
+ *     def potential_chimeras(self, graph):
+ *         cdef list node_list
+ *         node_list = []             # <<<<<<<<<<<<<<
+ *         for node in graph.nodes():
+ *             if graph.in_degree(node) > 1:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_node_list = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "chimeramate_cy.pyx":253
- *         cdef list high_indegree_subgraphs
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]             # <<<<<<<<<<<<<<
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
+  /* "chimeramate_main.pyx":257
+ *         cdef list node_list
+ *         node_list = []
+ *         for node in graph.nodes():             # <<<<<<<<<<<<<<
+ *             if graph.in_degree(node) > 1:
+ *                 node_list.append((node,
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_weakly_connected_component_subgr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 253, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  if (!__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_overlap_graph); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+  if (__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_4)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_overlap_graph};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_overlap_graph};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
-    } else
-    #endif
-    {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_INCREF(__pyx_v_overlap_graph);
-      __Pyx_GIVEREF(__pyx_v_overlap_graph);
-      PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_overlap_graph);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    }
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-    __pyx_t_4 = __pyx_t_2; __Pyx_INCREF(__pyx_t_4); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 253, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 253, __pyx_L1_error)
-  }
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
+    __pyx_t_5 = NULL;
+  } else {
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_4))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_4)) break;
+    if (likely(!__pyx_t_5)) {
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 253, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 257, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
+        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 253, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 257, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
     } else {
-      __pyx_t_2 = __pyx_t_7(__pyx_t_4);
-      if (unlikely(!__pyx_t_2)) {
+      __pyx_t_1 = __pyx_t_5(__pyx_t_2);
+      if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 253, __pyx_L1_error)
+          else __PYX_ERR(0, 257, __pyx_L1_error)
         }
         break;
       }
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GOTREF(__pyx_t_1);
     }
-    __Pyx_XDECREF_SET(__pyx_v_subg, __pyx_t_2);
-    __pyx_t_2 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_1);
+    __pyx_t_1 = 0;
 
-    /* "chimeramate_cy.pyx":252
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg             # <<<<<<<<<<<<<<
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
+    /* "chimeramate_main.pyx":258
+ *         node_list = []
+ *         for node in graph.nodes():
+ *             if graph.in_degree(node) > 1:             # <<<<<<<<<<<<<<
+ *                 node_list.append((node,
+ *                     list(graph.in_edges(node, data='name2'))[0][2]))
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_overlap_graph, __pyx_n_s_subgraph); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_3);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_degree); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 258, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_6 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
       }
     }
-    if (!__pyx_t_3) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_subg); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+    if (!__pyx_t_6) {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_subg};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
+      if (PyFunction_Check(__pyx_t_3)) {
+        PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_node};
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_subg};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_GOTREF(__pyx_t_2);
+      if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+        PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_node};
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       {
-        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 252, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
-        __Pyx_INCREF(__pyx_v_subg);
-        __Pyx_GIVEREF(__pyx_v_subg);
-        PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_v_subg);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 258, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
+        __Pyx_INCREF(__pyx_v_node);
+        __Pyx_GIVEREF(__pyx_v_node);
+        PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_node);
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
     }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 252, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_v_subgraph_list = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 258, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 258, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (__pyx_t_8) {
 
-  /* "chimeramate_cy.pyx":254
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list             # <<<<<<<<<<<<<<
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
+      /* "chimeramate_main.pyx":260
+ *             if graph.in_degree(node) > 1:
+ *                 node_list.append((node,
+ *                     list(graph.in_edges(node, data='name2'))[0][2]))             # <<<<<<<<<<<<<<
+ * 
+ *         return node_list
+ */
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_v_node);
+      __Pyx_GIVEREF(__pyx_v_node);
+      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_node);
+      __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_data, __pyx_n_s_name2) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = PySequence_List(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_6, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+      /* "chimeramate_main.pyx":259
+ *         for node in graph.nodes():
+ *             if graph.in_degree(node) > 1:
+ *                 node_list.append((node,             # <<<<<<<<<<<<<<
+ *                     list(graph.in_edges(node, data='name2'))[0][2]))
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 254, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_v_subgraph_list; __Pyx_INCREF(__pyx_t_4); __pyx_t_6 = 0;
-  for (;;) {
-    if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_4)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 254, __pyx_L1_error)
-    #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    #endif
-    __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_subgraph);
-    __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_subgraph, __pyx_t_2);
-    __Pyx_GIVEREF(__pyx_t_2);
-    __pyx_t_2 = 0;
+      __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 259, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_INCREF(__pyx_v_node);
+      __Pyx_GIVEREF(__pyx_v_node);
+      PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_node);
+      __Pyx_GIVEREF(__pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_7);
+      __pyx_t_7 = 0;
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_node_list, __pyx_t_6); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "chimeramate_cy.pyx":255
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]             # <<<<<<<<<<<<<<
- * 
- *         return high_indegree_subgraphs
- */
-    __pyx_t_2 = __pyx_pf_14chimeramate_cy_14chimera_search_9subgraphs_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __Pyx_Generator_Next(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (__pyx_t_9) {
-
-      /* "chimeramate_cy.pyx":254
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list             # <<<<<<<<<<<<<<
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
- * 
- */
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_cur_scope->__pyx_v_subgraph))) __PYX_ERR(0, 254, __pyx_L1_error)
-
-      /* "chimeramate_cy.pyx":255
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]             # <<<<<<<<<<<<<<
- * 
- *         return high_indegree_subgraphs
+      /* "chimeramate_main.pyx":258
+ *         node_list = []
+ *         for node in graph.nodes():
+ *             if graph.in_degree(node) > 1:             # <<<<<<<<<<<<<<
+ *                 node_list.append((node,
+ *                     list(graph.in_edges(node, data='name2'))[0][2]))
  */
     }
 
-    /* "chimeramate_cy.pyx":254
- *         subgraph_list = [overlap_graph.subgraph(subg) for subg
- *                 in nx.weakly_connected_component_subgraphs(overlap_graph)]
- *         high_indegree_subgraphs = [subgraph for subgraph in subgraph_list             # <<<<<<<<<<<<<<
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
- * 
+    /* "chimeramate_main.pyx":257
+ *         cdef list node_list
+ *         node_list = []
+ *         for node in graph.nodes():             # <<<<<<<<<<<<<<
+ *             if graph.in_degree(node) > 1:
+ *                 node_list.append((node,
  */
   }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_v_high_indegree_subgraphs = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "chimeramate_cy.pyx":257
- *                 if any(x > 1 for x in dict(subgraph.in_degree()).values())]
+  /* "chimeramate_main.pyx":262
+ *                     list(graph.in_edges(node, data='name2'))[0][2]))
  * 
- *         return high_indegree_subgraphs             # <<<<<<<<<<<<<<
+ *         return node_list             # <<<<<<<<<<<<<<
  * 
- *     def potential_chimeras(self, list subgraphs):
+ *     def write(self, masked_reads, str chimname, str nonchimname):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_high_indegree_subgraphs);
-  __pyx_r = __pyx_v_high_indegree_subgraphs;
+  __Pyx_INCREF(__pyx_v_node_list);
+  __pyx_r = __pyx_v_node_list;
   goto __pyx_L0;
 
-  /* "chimeramate_cy.pyx":249
+  /* "chimeramate_main.pyx":254
  *         return overlap_graph
  * 
- *     def subgraphs(self,overlap_graph):             # <<<<<<<<<<<<<<
- *         cdef list subgraph_list
- *         cdef list high_indegree_subgraphs
+ *     def potential_chimeras(self, graph):             # <<<<<<<<<<<<<<
+ *         cdef list node_list
+ *         node_list = []
  */
 
   /* function exit code */
@@ -12672,806 +12426,94 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_20subgraphs(CYTHON_U
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.subgraphs", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_subgraph_list);
-  __Pyx_XDECREF(__pyx_v_high_indegree_subgraphs);
-  __Pyx_XDECREF(__pyx_v_subg);
-  __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "chimeramate_cy.pyx":259
- *         return high_indegree_subgraphs
- * 
- *     def potential_chimeras(self, list subgraphs):             # <<<<<<<<<<<<<<
- *         cdef list node_list
- *         node_list = []
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_23potential_chimeras(PyObject *__pyx_v_self, PyObject *__pyx_v_subgraphs); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_23potential_chimeras(PyObject *__pyx_v_self, PyObject *__pyx_v_subgraphs) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("potential_chimeras (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_subgraphs), (&PyList_Type), 1, "subgraphs", 1))) __PYX_ERR(0, 259, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_22potential_chimeras(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_subgraphs));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_22potential_chimeras(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_subgraphs) {
-  PyObject *__pyx_v_node_list = 0;
-  PyObject *__pyx_v_subgraph = NULL;
-  PyObject *__pyx_v_node = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  Py_ssize_t __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  int __pyx_t_10;
-  int __pyx_t_11;
-  __Pyx_RefNannySetupContext("potential_chimeras", 0);
-
-  /* "chimeramate_cy.pyx":261
- *     def potential_chimeras(self, list subgraphs):
- *         cdef list node_list
- *         node_list = []             # <<<<<<<<<<<<<<
- *         for subgraph in subgraphs:
- *             for node in subgraph.nodes():
- */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_node_list = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "chimeramate_cy.pyx":262
- *         cdef list node_list
- *         node_list = []
- *         for subgraph in subgraphs:             # <<<<<<<<<<<<<<
- *             for node in subgraph.nodes():
- *                 if subgraph.in_degree(node) > 1:
- */
-  if (unlikely(__pyx_v_subgraphs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 262, __pyx_L1_error)
-  }
-  __pyx_t_1 = __pyx_v_subgraphs; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
-  for (;;) {
-    if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 262, __pyx_L1_error)
-    #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_subgraph, __pyx_t_3);
-    __pyx_t_3 = 0;
-
-    /* "chimeramate_cy.pyx":263
- *         node_list = []
- *         for subgraph in subgraphs:
- *             for node in subgraph.nodes():             # <<<<<<<<<<<<<<
- *                 if subgraph.in_degree(node) > 1:
- *                     node_list.append((node,
- */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_subgraph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-      }
-    }
-    if (__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 263, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    } else {
-      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 263, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
-      __pyx_t_4 = __pyx_t_3; __Pyx_INCREF(__pyx_t_4); __pyx_t_6 = 0;
-      __pyx_t_7 = NULL;
-    } else {
-      __pyx_t_6 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_7 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 263, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_7)) {
-        if (likely(PyList_CheckExact(__pyx_t_4))) {
-          if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_4)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 263, __pyx_L1_error)
-          #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 263, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          #endif
-        } else {
-          if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 263, __pyx_L1_error)
-          #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 263, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          #endif
-        }
-      } else {
-        __pyx_t_3 = __pyx_t_7(__pyx_t_4);
-        if (unlikely(!__pyx_t_3)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 263, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_3);
-      }
-      __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_3);
-      __pyx_t_3 = 0;
-
-      /* "chimeramate_cy.pyx":264
- *         for subgraph in subgraphs:
- *             for node in subgraph.nodes():
- *                 if subgraph.in_degree(node) > 1:             # <<<<<<<<<<<<<<
- *                     node_list.append((node,
- *                         list(subgraph.in_edges(node, data='name2'))[0][2]))
- */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_subgraph, __pyx_n_s_in_degree); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 264, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_8 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_8)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_8);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-        }
-      }
-      if (!__pyx_t_8) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_node); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-      } else {
-        #if CYTHON_FAST_PYCALL
-        if (PyFunction_Check(__pyx_t_5)) {
-          PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_node};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
-          __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __Pyx_GOTREF(__pyx_t_3);
-        } else
-        #endif
-        #if CYTHON_FAST_PYCCALL
-        if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-          PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_v_node};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
-          __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __Pyx_GOTREF(__pyx_t_3);
-        } else
-        #endif
-        {
-          __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 264, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_9);
-          __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
-          __Pyx_INCREF(__pyx_v_node);
-          __Pyx_GIVEREF(__pyx_v_node);
-          PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_node);
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_3);
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        }
-      }
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 264, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 264, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (__pyx_t_10) {
-
-        /* "chimeramate_cy.pyx":266
- *                 if subgraph.in_degree(node) > 1:
- *                     node_list.append((node,
- *                         list(subgraph.in_edges(node, data='name2'))[0][2]))             # <<<<<<<<<<<<<<
- * 
- *         return node_list
- */
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_subgraph, __pyx_n_s_in_edges); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_INCREF(__pyx_v_node);
-        __Pyx_GIVEREF(__pyx_v_node);
-        PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_node);
-        __pyx_t_9 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_data, __pyx_n_s_name2) < 0) __PYX_ERR(0, 266, __pyx_L1_error)
-        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        __pyx_t_9 = PySequence_List(__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_8, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 266, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-        /* "chimeramate_cy.pyx":265
- *             for node in subgraph.nodes():
- *                 if subgraph.in_degree(node) > 1:
- *                     node_list.append((node,             # <<<<<<<<<<<<<<
- *                         list(subgraph.in_edges(node, data='name2'))[0][2]))
- * 
- */
-        __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 265, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_INCREF(__pyx_v_node);
-        __Pyx_GIVEREF(__pyx_v_node);
-        PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_v_node);
-        __Pyx_GIVEREF(__pyx_t_9);
-        PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_9);
-        __pyx_t_9 = 0;
-        __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_node_list, __pyx_t_8); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 265, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-        /* "chimeramate_cy.pyx":264
- *         for subgraph in subgraphs:
- *             for node in subgraph.nodes():
- *                 if subgraph.in_degree(node) > 1:             # <<<<<<<<<<<<<<
- *                     node_list.append((node,
- *                         list(subgraph.in_edges(node, data='name2'))[0][2]))
- */
-      }
-
-      /* "chimeramate_cy.pyx":263
- *         node_list = []
- *         for subgraph in subgraphs:
- *             for node in subgraph.nodes():             # <<<<<<<<<<<<<<
- *                 if subgraph.in_degree(node) > 1:
- *                     node_list.append((node,
- */
-    }
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-    /* "chimeramate_cy.pyx":262
- *         cdef list node_list
- *         node_list = []
- *         for subgraph in subgraphs:             # <<<<<<<<<<<<<<
- *             for node in subgraph.nodes():
- *                 if subgraph.in_degree(node) > 1:
- */
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "chimeramate_cy.pyx":268
- *                         list(subgraph.in_edges(node, data='name2'))[0][2]))
- * 
- *         return node_list             # <<<<<<<<<<<<<<
- * 
- *     def draw_subgraphs(self, list chimeric_subgraphs):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_node_list);
-  __pyx_r = __pyx_v_node_list;
-  goto __pyx_L0;
-
-  /* "chimeramate_cy.pyx":259
- *         return high_indegree_subgraphs
- * 
- *     def potential_chimeras(self, list subgraphs):             # <<<<<<<<<<<<<<
- *         cdef list node_list
- *         node_list = []
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.potential_chimeras", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.potential_chimeras", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_node_list);
-  __Pyx_XDECREF(__pyx_v_subgraph);
   __Pyx_XDECREF(__pyx_v_node);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "chimeramate_cy.pyx":270
+/* "chimeramate_main.pyx":264
  *         return node_list
  * 
- *     def draw_subgraphs(self, list chimeric_subgraphs):             # <<<<<<<<<<<<<<
- *         cdef int i
- *         cdef str weight
+ *     def write(self, masked_reads, str chimname, str nonchimname):             # <<<<<<<<<<<<<<
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25draw_subgraphs(PyObject *__pyx_v_self, PyObject *__pyx_v_chimeric_subgraphs); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_25draw_subgraphs(PyObject *__pyx_v_self, PyObject *__pyx_v_chimeric_subgraphs) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_25write(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_25write(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_masked_reads = 0;
+  PyObject *__pyx_v_chimname = 0;
+  PyObject *__pyx_v_nonchimname = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("draw_subgraphs (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_chimeric_subgraphs), (&PyList_Type), 1, "chimeric_subgraphs", 1))) __PYX_ERR(0, 270, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_24draw_subgraphs(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_chimeric_subgraphs));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_24draw_subgraphs(CYTHON_UNUSED struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_chimeric_subgraphs) {
-  int __pyx_v_i;
-  PyObject *__pyx_v_pos = NULL;
-  PyObject *__pyx_v_edge_labels1 = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  Py_ssize_t __pyx_t_1;
-  int __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
-  __Pyx_RefNannySetupContext("draw_subgraphs", 0);
-
-  /* "chimeramate_cy.pyx":274
- *         cdef str weight
- *         cdef int k
- *         for i in range(len(chimeric_subgraphs)):             # <<<<<<<<<<<<<<
- *             pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))
- */
-  if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 274, __pyx_L1_error)
+  __Pyx_RefNannySetupContext("write (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_masked_reads,&__pyx_n_s_chimname,&__pyx_n_s_nonchimname,0};
+    PyObject* values[3] = {0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_masked_reads)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_chimname)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("write", 1, 3, 3, 1); __PYX_ERR(0, 264, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nonchimname)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("write", 1, 3, 3, 2); __PYX_ERR(0, 264, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "write") < 0)) __PYX_ERR(0, 264, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+    }
+    __pyx_v_masked_reads = values[0];
+    __pyx_v_chimname = ((PyObject*)values[1]);
+    __pyx_v_nonchimname = ((PyObject*)values[2]);
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_chimeric_subgraphs); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 274, __pyx_L1_error)
-  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
-    __pyx_v_i = __pyx_t_2;
-
-    /* "chimeramate_cy.pyx":275
- *         cdef int k
- *         for i in range(len(chimeric_subgraphs)):
- *             pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',             # <<<<<<<<<<<<<<
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))
- *             nx.draw(chimeric_subgraphs[i], pos)
- */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_spring_layout); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 275, __pyx_L1_error)
-    }
-    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_chimeric_subgraphs, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
-    __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_weight, __pyx_n_s_length) < 0) __PYX_ERR(0, 275, __pyx_L1_error)
-
-    /* "chimeramate_cy.pyx":276
- *         for i in range(len(chimeric_subgraphs)):
- *             pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))             # <<<<<<<<<<<<<<
- *             nx.draw(chimeric_subgraphs[i], pos)
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
- */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_math); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 276, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 276, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 276, __pyx_L1_error)
-    }
-    __pyx_t_9 = __Pyx_GetItemInt_List(__pyx_v_chimeric_subgraphs, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 276, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_order); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 276, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
-      __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_10);
-      if (likely(__pyx_t_9)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
-        __Pyx_INCREF(__pyx_t_9);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_10, function);
-      }
-    }
-    if (__pyx_t_9) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 276, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    } else {
-      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 276, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
-      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_8);
-      if (likely(__pyx_t_10)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-        __Pyx_INCREF(__pyx_t_10);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_8, function);
-      }
-    }
-    if (!__pyx_t_10) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-    } else {
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_8)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_7};
-        __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __Pyx_GOTREF(__pyx_t_6);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_7};
-        __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __Pyx_GOTREF(__pyx_t_6);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 276, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_10); __pyx_t_10 = NULL;
-        __Pyx_GIVEREF(__pyx_t_7);
-        PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_7);
-        __pyx_t_7 = 0;
-        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      }
-    }
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyNumber_Divide(__pyx_int_5, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 276, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_k, __pyx_t_8) < 0) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-    /* "chimeramate_cy.pyx":275
- *         cdef int k
- *         for i in range(len(chimeric_subgraphs)):
- *             pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',             # <<<<<<<<<<<<<<
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))
- *             nx.draw(chimeric_subgraphs[i], pos)
- */
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_pos, __pyx_t_8);
-    __pyx_t_8 = 0;
-
-    /* "chimeramate_cy.pyx":277
- *             pos = nx.spring_layout(chimeric_subgraphs[i], weight='length',
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))
- *             nx.draw(chimeric_subgraphs[i], pos)             # <<<<<<<<<<<<<<
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
- */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 277, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_draw); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 277, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 277, __pyx_L1_error)
-    }
-    __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_chimeric_subgraphs, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 277, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = NULL;
-    __pyx_t_11 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-        __pyx_t_11 = 1;
-      }
-    }
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_3, __pyx_v_pos};
-      __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 277, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_3, __pyx_v_pos};
-      __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 277, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_6 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 277, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      if (__pyx_t_4) {
-        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
-      }
-      __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_11, __pyx_t_3);
-      __Pyx_INCREF(__pyx_v_pos);
-      __Pyx_GIVEREF(__pyx_v_pos);
-      PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_11, __pyx_v_pos);
-      __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 277, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-    /* "chimeramate_cy.pyx":278
- *                     k=5/math.sqrt(chimeric_subgraphs[i].order()))
- *             nx.draw(chimeric_subgraphs[i], pos)
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')             # <<<<<<<<<<<<<<
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
- *                     edge_labels=edge_labels1)
- */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_edge_attributes); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 278, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 278, __pyx_L1_error)
-    }
-    __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_chimeric_subgraphs, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = NULL;
-    __pyx_t_11 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_6);
-      if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-        __Pyx_INCREF(__pyx_t_3);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_6, function);
-        __pyx_t_11 = 1;
-      }
-    }
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_n_s_name2};
-      __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_n_s_name2};
-      __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_4 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      if (__pyx_t_3) {
-        __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      }
-      __Pyx_GIVEREF(__pyx_t_5);
-      PyTuple_SET_ITEM(__pyx_t_4, 0+__pyx_t_11, __pyx_t_5);
-      __Pyx_INCREF(__pyx_n_s_name2);
-      __Pyx_GIVEREF(__pyx_n_s_name2);
-      PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_11, __pyx_n_s_name2);
-      __pyx_t_5 = 0;
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_edge_labels1, __pyx_t_8);
-    __pyx_t_8 = 0;
-
-    /* "chimeramate_cy.pyx":279
- *             nx.draw(chimeric_subgraphs[i], pos)
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,             # <<<<<<<<<<<<<<
- *                     edge_labels=edge_labels1)
- *             plt.show()
- */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_draw_networkx_edge_labels); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 279, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(__pyx_v_chimeric_subgraphs == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 279, __pyx_L1_error)
-    }
-    __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_v_chimeric_subgraphs, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 279, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_8);
-    __Pyx_INCREF(__pyx_v_pos);
-    __Pyx_GIVEREF(__pyx_v_pos);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_pos);
-    __pyx_t_8 = 0;
-
-    /* "chimeramate_cy.pyx":280
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
- *                     edge_labels=edge_labels1)             # <<<<<<<<<<<<<<
- *             plt.show()
- * 
- */
-    __pyx_t_8 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 280, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_edge_labels, __pyx_v_edge_labels1) < 0) __PYX_ERR(0, 280, __pyx_L1_error)
-
-    /* "chimeramate_cy.pyx":279
- *             nx.draw(chimeric_subgraphs[i], pos)
- *             edge_labels1 = nx.get_edge_attributes(chimeric_subgraphs[i],'name2')
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,             # <<<<<<<<<<<<<<
- *                     edge_labels=edge_labels1)
- *             plt.show()
- */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 279, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-    /* "chimeramate_cy.pyx":281
- *             nx.draw_networkx_edge_labels(chimeric_subgraphs[i], pos,
- *                     edge_labels=edge_labels1)
- *             plt.show()             # <<<<<<<<<<<<<<
- * 
- *     def write_fasta(self, str filename):
- */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_plt); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 281, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_show); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 281, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-      }
-    }
-    if (__pyx_t_8) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-
-  /* "chimeramate_cy.pyx":270
- *         return node_list
- * 
- *     def draw_subgraphs(self, list chimeric_subgraphs):             # <<<<<<<<<<<<<<
- *         cdef int i
- *         cdef str weight
- */
-
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.draw_subgraphs", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_pos);
-  __Pyx_XDECREF(__pyx_v_edge_labels1);
-  __Pyx_XGIVEREF(__pyx_r);
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("write", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 264, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "chimeramate_cy.pyx":283
- *             plt.show()
- * 
- *     def write_fasta(self, str filename):             # <<<<<<<<<<<<<<
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_27write_fasta(PyObject *__pyx_v_self, PyObject *__pyx_v_filename); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_27write_fasta(PyObject *__pyx_v_self, PyObject *__pyx_v_filename) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("write_fasta (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_filename), (&PyString_Type), 1, "filename", 1))) __PYX_ERR(0, 283, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject*)__pyx_v_filename));
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_chimname), (&PyString_Type), 1, "chimname", 1))) __PYX_ERR(0, 264, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_nonchimname), (&PyString_Type), 1, "nonchimname", 1))) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_24write(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), __pyx_v_masked_reads, __pyx_v_chimname, __pyx_v_nonchimname);
 
   /* function exit code */
   goto __pyx_L0;
@@ -13482,9 +12524,12 @@ static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_27write_fasta(PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v_filename) {
-  PyObject *__pyx_v_faw = NULL;
-  PyObject *__pyx_v_node = NULL;
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_24write(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v_masked_reads, PyObject *__pyx_v_chimname, PyObject *__pyx_v_nonchimname) {
+  PyObject *__pyx_v_c_faw = NULL;
+  PyObject *__pyx_v_n_faw = NULL;
+  PyObject *__pyx_v_msk = NULL;
+  PyObject *__pyx_v_read = NULL;
+  PyObject *__pyx_v_seq = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -13494,48 +12539,52 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  Py_ssize_t __pyx_t_8;
-  PyObject *(*__pyx_t_9)(PyObject *);
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  PyObject *__pyx_t_13 = NULL;
+  Py_ssize_t __pyx_t_12;
+  PyObject *(*__pyx_t_13)(PyObject *);
   PyObject *__pyx_t_14 = NULL;
-  PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
-  int __pyx_t_17;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  PyObject *__pyx_t_17 = NULL;
   PyObject *__pyx_t_18 = NULL;
   PyObject *__pyx_t_19 = NULL;
-  int __pyx_t_20;
-  int __pyx_t_21;
-  __Pyx_RefNannySetupContext("write_fasta", 0);
+  PyObject *__pyx_t_20 = NULL;
+  __Pyx_RefNannySetupContext("write", 0);
 
-  /* "chimeramate_cy.pyx":284
+  /* "chimeramate_main.pyx":265
  * 
- *     def write_fasta(self, str filename):
- *         with dinopy.FastaWriter(filename, 'w') as faw:             # <<<<<<<<<<<<<<
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,             # <<<<<<<<<<<<<<
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
  */
   /*with:*/ {
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 265, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_v_filename);
-    __Pyx_GIVEREF(__pyx_v_filename);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_filename);
+    __Pyx_INCREF(__pyx_v_chimname);
+    __Pyx_GIVEREF(__pyx_v_chimname);
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_chimname);
     __Pyx_INCREF(__pyx_n_s_w);
     __Pyx_GIVEREF(__pyx_n_s_w);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_w);
-    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_writer_FastaWriter), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 284, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 265, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_exit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 284, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_force_overwrite, Py_True) < 0) __PYX_ERR(0, 265, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_line_width, __pyx_int_1000) < 0) __PYX_ERR(0, 265, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_writer_FastaWriter), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 265, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_6dinopy_12fasta_writer_FastaWriter *)((struct __pyx_obj_6dinopy_12fasta_writer_FastaWriter *)__pyx_t_2)->__pyx_base.__pyx_vtab)->__pyx_base.__pyx___enter__(((struct __pyx_obj_6dinopy_13output_opener_OutputOpener *)__pyx_t_2), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L3_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __pyx_t_1;
-    __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_4 = __Pyx_PyObject_LookupSpecial(__pyx_t_3, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 265, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = ((struct __pyx_vtabstruct_6dinopy_12fasta_writer_FastaWriter *)((struct __pyx_obj_6dinopy_12fasta_writer_FastaWriter *)__pyx_t_3)->__pyx_base.__pyx_vtab)->__pyx_base.__pyx___enter__(((struct __pyx_obj_6dinopy_13output_opener_OutputOpener *)__pyx_t_3), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 265, __pyx_L3_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __pyx_t_2;
+    __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     /*try:*/ {
       {
         __Pyx_PyThreadState_declare
@@ -13545,275 +12594,583 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
         __Pyx_XGOTREF(__pyx_t_6);
         __Pyx_XGOTREF(__pyx_t_7);
         /*try:*/ {
-          __pyx_v_faw = __pyx_t_4;
-          __pyx_t_4 = 0;
+          __pyx_v_c_faw = __pyx_t_1;
+          __pyx_t_1 = 0;
 
-          /* "chimeramate_cy.pyx":285
- *     def write_fasta(self, str filename):
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):             # <<<<<<<<<<<<<<
- *                 faw.write_entry((node[1][0].encode(),
- *                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
+          /* "chimeramate_main.pyx":266
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(             # <<<<<<<<<<<<<<
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
  */
-          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L7_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L7_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_GIVEREF(__pyx_t_4);
-          PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
-          __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_enumerate, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L7_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
-            __pyx_t_2 = __pyx_t_4; __Pyx_INCREF(__pyx_t_2); __pyx_t_8 = 0;
-            __pyx_t_9 = NULL;
-          } else {
-            __pyx_t_8 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_9 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 285, __pyx_L7_error)
-          }
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          for (;;) {
-            if (likely(!__pyx_t_9)) {
-              if (likely(PyList_CheckExact(__pyx_t_2))) {
-                if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_2)) break;
-                #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_4); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 285, __pyx_L7_error)
-                #else
-                __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L7_error)
-                __Pyx_GOTREF(__pyx_t_4);
-                #endif
-              } else {
-                if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-                #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_4); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 285, __pyx_L7_error)
-                #else
-                __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L7_error)
-                __Pyx_GOTREF(__pyx_t_4);
-                #endif
-              }
-            } else {
-              __pyx_t_4 = __pyx_t_9(__pyx_t_2);
-              if (unlikely(!__pyx_t_4)) {
-                PyObject* exc_type = PyErr_Occurred();
-                if (exc_type) {
-                  if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                  else __PYX_ERR(0, 285, __pyx_L7_error)
-                }
-                break;
-              }
-              __Pyx_GOTREF(__pyx_t_4);
-            }
-            __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_4);
-            __pyx_t_4 = 0;
+          /*with:*/ {
 
-            /* "chimeramate_cy.pyx":286
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),             # <<<<<<<<<<<<<<
- *                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
+            /* "chimeramate_main.pyx":267
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:             # <<<<<<<<<<<<<<
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ *             for read in msk.entries():
  */
-            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_faw, __pyx_n_s_write_entry); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 286, __pyx_L7_error)
+            __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_11 = __Pyx_GetItemInt(__pyx_v_node, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 286, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_11);
-            __pyx_t_12 = __Pyx_GetItemInt(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 286, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_12);
-            __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-            __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_encode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 286, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_11);
-            __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-            __pyx_t_12 = NULL;
-            if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-              __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_11);
-              if (likely(__pyx_t_12)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-                __Pyx_INCREF(__pyx_t_12);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_11, function);
-              }
-            }
-            if (__pyx_t_12) {
-              __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 286, __pyx_L7_error)
-              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-            } else {
-              __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 286, __pyx_L7_error)
-            }
-            __Pyx_GOTREF(__pyx_t_10);
-            __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+            __Pyx_INCREF(__pyx_v_nonchimname);
+            __Pyx_GIVEREF(__pyx_v_nonchimname);
+            PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_nonchimname);
+            __Pyx_INCREF(__pyx_n_s_w);
+            __Pyx_GIVEREF(__pyx_n_s_w);
+            PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_w);
+            __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 267, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_force_overwrite, Py_True) < 0) __PYX_ERR(0, 267, __pyx_L7_error)
+            if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_line_width, __pyx_int_1000) < 0) __PYX_ERR(0, 267, __pyx_L7_error)
 
-            /* "chimeramate_cy.pyx":287
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),
- *                     '{};{}'.format(str(node[0]), node[1][1]).encode()))             # <<<<<<<<<<<<<<
+            /* "chimeramate_main.pyx":266
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(             # <<<<<<<<<<<<<<
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
  */
-            __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__9, __pyx_n_s_format); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_13);
-            __pyx_t_14 = __Pyx_GetItemInt(__pyx_v_node, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_14);
-            __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_15);
-            __Pyx_GIVEREF(__pyx_t_14);
-            PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14);
-            __pyx_t_14 = 0;
-            __pyx_t_14 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_14);
-            __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_GetItemInt(__pyx_v_node, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_16 = __Pyx_GetItemInt(__pyx_t_15, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_16);
-            __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = NULL;
-            __pyx_t_17 = 0;
-            if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
-              __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_13);
-              if (likely(__pyx_t_15)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-                __Pyx_INCREF(__pyx_t_15);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_13, function);
-                __pyx_t_17 = 1;
-              }
-            }
-            #if CYTHON_FAST_PYCALL
-            if (PyFunction_Check(__pyx_t_13)) {
-              PyObject *__pyx_temp[3] = {__pyx_t_15, __pyx_t_14, __pyx_t_16};
-              __pyx_t_12 = __Pyx_PyFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 287, __pyx_L7_error)
-              __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
-              __Pyx_GOTREF(__pyx_t_12);
-              __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            } else
-            #endif
-            #if CYTHON_FAST_PYCCALL
-            if (__Pyx_PyFastCFunction_Check(__pyx_t_13)) {
-              PyObject *__pyx_temp[3] = {__pyx_t_15, __pyx_t_14, __pyx_t_16};
-              __pyx_t_12 = __Pyx_PyCFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 287, __pyx_L7_error)
-              __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
-              __Pyx_GOTREF(__pyx_t_12);
-              __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            } else
-            #endif
-            {
-              __pyx_t_18 = PyTuple_New(2+__pyx_t_17); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 287, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_18);
-              if (__pyx_t_15) {
-                __Pyx_GIVEREF(__pyx_t_15); PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_t_15); __pyx_t_15 = NULL;
-              }
-              __Pyx_GIVEREF(__pyx_t_14);
-              PyTuple_SET_ITEM(__pyx_t_18, 0+__pyx_t_17, __pyx_t_14);
-              __Pyx_GIVEREF(__pyx_t_16);
-              PyTuple_SET_ITEM(__pyx_t_18, 1+__pyx_t_17, __pyx_t_16);
-              __pyx_t_14 = 0;
-              __pyx_t_16 = 0;
-              __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_18, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 287, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_12);
-              __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-            }
-            __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-            __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_encode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 287, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_13);
-            __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-            __pyx_t_12 = NULL;
-            if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
-              __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_13);
-              if (likely(__pyx_t_12)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-                __Pyx_INCREF(__pyx_t_12);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_13, function);
-              }
-            }
-            if (__pyx_t_12) {
-              __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 287, __pyx_L7_error)
-              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-            } else {
-              __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 287, __pyx_L7_error)
-            }
-            __Pyx_GOTREF(__pyx_t_11);
-            __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-
-            /* "chimeramate_cy.pyx":286
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),             # <<<<<<<<<<<<<<
- *                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
- */
-            __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 286, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_13);
-            __Pyx_GIVEREF(__pyx_t_10);
-            PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_10);
-            __Pyx_GIVEREF(__pyx_t_11);
-            PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_t_11);
-            __pyx_t_10 = 0;
-            __pyx_t_11 = 0;
-            __pyx_t_11 = NULL;
-            if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-              __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_1);
-              if (likely(__pyx_t_11)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-                __Pyx_INCREF(__pyx_t_11);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_1, function);
-              }
-            }
-            if (!__pyx_t_11) {
-              __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L7_error)
-              __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              __Pyx_GOTREF(__pyx_t_4);
-            } else {
-              #if CYTHON_FAST_PYCALL
-              if (PyFunction_Check(__pyx_t_1)) {
-                PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_13};
-                __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L7_error)
-                __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-                __Pyx_GOTREF(__pyx_t_4);
-                __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              } else
-              #endif
-              #if CYTHON_FAST_PYCCALL
-              if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-                PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_13};
-                __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L7_error)
-                __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-                __Pyx_GOTREF(__pyx_t_4);
-                __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              } else
-              #endif
-              {
-                __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 286, __pyx_L7_error)
-                __Pyx_GOTREF(__pyx_t_10);
-                __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_11); __pyx_t_11 = NULL;
-                __Pyx_GIVEREF(__pyx_t_13);
-                PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_13);
-                __pyx_t_13 = 0;
-                __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L7_error)
-                __Pyx_GOTREF(__pyx_t_4);
-                __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-              }
-            }
+            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_writer_FastaWriter), __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+            __pyx_t_8 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_exit); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 266, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_8);
+            __pyx_t_3 = ((struct __pyx_vtabstruct_6dinopy_12fasta_writer_FastaWriter *)((struct __pyx_obj_6dinopy_12fasta_writer_FastaWriter *)__pyx_t_2)->__pyx_base.__pyx_vtab)->__pyx_base.__pyx___enter__(((struct __pyx_obj_6dinopy_13output_opener_OutputOpener *)__pyx_t_2), 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 266, __pyx_L13_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_1 = __pyx_t_3;
+            __pyx_t_3 = 0;
+            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+            /*try:*/ {
+              {
+                __Pyx_PyThreadState_declare
+                __Pyx_PyThreadState_assign
+                __Pyx_ExceptionSave(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
+                __Pyx_XGOTREF(__pyx_t_9);
+                __Pyx_XGOTREF(__pyx_t_10);
+                __Pyx_XGOTREF(__pyx_t_11);
+                /*try:*/ {
+                  __pyx_v_n_faw = __pyx_t_1;
+                  __pyx_t_1 = 0;
 
-            /* "chimeramate_cy.pyx":285
- *     def write_fasta(self, str filename):
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):             # <<<<<<<<<<<<<<
- *                 faw.write_entry((node[1][0].encode(),
- *                     '{};{}'.format(str(node[0]), node[1][1]).encode()))
+                  /* "chimeramate_main.pyx":268
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')             # <<<<<<<<<<<<<<
+ *             for read in msk.entries():
+ *                 seq = read.sequence.decode()
  */
-          }
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L17_error)
+                  __Pyx_GOTREF(__pyx_t_1);
+                  __Pyx_INCREF(__pyx_v_masked_reads);
+                  __Pyx_GIVEREF(__pyx_v_masked_reads);
+                  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_masked_reads);
+                  __Pyx_INCREF(__pyx_n_s_r);
+                  __Pyx_GIVEREF(__pyx_n_s_r);
+                  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_r);
+                  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6dinopy_12fasta_reader_FastaReader), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 268, __pyx_L17_error)
+                  __Pyx_GOTREF(__pyx_t_2);
+                  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+                  __pyx_v_msk = __pyx_t_2;
+                  __pyx_t_2 = 0;
 
-          /* "chimeramate_cy.pyx":284
+                  /* "chimeramate_main.pyx":269
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ *             for read in msk.entries():             # <<<<<<<<<<<<<<
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
+ */
+                  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_msk, __pyx_n_s_entries); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L17_error)
+                  __Pyx_GOTREF(__pyx_t_1);
+                  __pyx_t_3 = NULL;
+                  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+                    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+                    if (likely(__pyx_t_3)) {
+                      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+                      __Pyx_INCREF(__pyx_t_3);
+                      __Pyx_INCREF(function);
+                      __Pyx_DECREF_SET(__pyx_t_1, function);
+                    }
+                  }
+                  if (__pyx_t_3) {
+                    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L17_error)
+                    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                  } else {
+                    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L17_error)
+                  }
+                  __Pyx_GOTREF(__pyx_t_2);
+                  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+                  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
+                    __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_12 = 0;
+                    __pyx_t_13 = NULL;
+                  } else {
+                    __pyx_t_12 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_1);
+                    __pyx_t_13 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 269, __pyx_L17_error)
+                  }
+                  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                  for (;;) {
+                    if (likely(!__pyx_t_13)) {
+                      if (likely(PyList_CheckExact(__pyx_t_1))) {
+                        if (__pyx_t_12 >= PyList_GET_SIZE(__pyx_t_1)) break;
+                        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+                        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_12); __Pyx_INCREF(__pyx_t_2); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 269, __pyx_L17_error)
+                        #else
+                        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L17_error)
+                        __Pyx_GOTREF(__pyx_t_2);
+                        #endif
+                      } else {
+                        if (__pyx_t_12 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+                        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+                        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_12); __Pyx_INCREF(__pyx_t_2); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 269, __pyx_L17_error)
+                        #else
+                        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L17_error)
+                        __Pyx_GOTREF(__pyx_t_2);
+                        #endif
+                      }
+                    } else {
+                      __pyx_t_2 = __pyx_t_13(__pyx_t_1);
+                      if (unlikely(!__pyx_t_2)) {
+                        PyObject* exc_type = PyErr_Occurred();
+                        if (exc_type) {
+                          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+                          else __PYX_ERR(0, 269, __pyx_L17_error)
+                        }
+                        break;
+                      }
+                      __Pyx_GOTREF(__pyx_t_2);
+                    }
+                    __Pyx_XDECREF_SET(__pyx_v_read, __pyx_t_2);
+                    __pyx_t_2 = 0;
+
+                    /* "chimeramate_main.pyx":270
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ *             for read in msk.entries():
+ *                 seq = read.sequence.decode()             # <<<<<<<<<<<<<<
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))
+ */
+                    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_read, __pyx_n_s_sequence); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 270, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_3);
+                    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 270, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_14);
+                    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    __pyx_t_3 = NULL;
+                    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
+                      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_14);
+                      if (likely(__pyx_t_3)) {
+                        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+                        __Pyx_INCREF(__pyx_t_3);
+                        __Pyx_INCREF(function);
+                        __Pyx_DECREF_SET(__pyx_t_14, function);
+                      }
+                    }
+                    if (__pyx_t_3) {
+                      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 270, __pyx_L17_error)
+                      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    } else {
+                      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 270, __pyx_L17_error)
+                    }
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    __Pyx_XDECREF_SET(__pyx_v_seq, __pyx_t_2);
+                    __pyx_t_2 = 0;
+
+                    /* "chimeramate_main.pyx":271
+ *             for read in msk.entries():
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):             # <<<<<<<<<<<<<<
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))
+ *                 else:
+ */
+                    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_read, __pyx_n_s_name); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_14);
+                    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_3);
+                    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    __pyx_t_14 = NULL;
+                    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+                      __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_3);
+                      if (likely(__pyx_t_14)) {
+                        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+                        __Pyx_INCREF(__pyx_t_14);
+                        __Pyx_INCREF(function);
+                        __Pyx_DECREF_SET(__pyx_t_3, function);
+                      }
+                    }
+                    if (__pyx_t_14) {
+                      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    } else {
+                      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    }
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_split); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_3);
+                    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_3);
+                    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_potential_chimeras); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __pyx_t_14 = __Pyx_PySequence_Tuple(__pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_14);
+                    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_14, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    __pyx_t_14 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_14);
+                    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_t_14, 1, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_2);
+                    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    __pyx_t_14 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_GOTREF(__pyx_t_14);
+                    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                    __pyx_t_15 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_14, Py_NE)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 271, __pyx_L17_error)
+                    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    __pyx_t_16 = (__pyx_t_15 != 0);
+                    if (__pyx_t_16) {
+
+                      /* "chimeramate_main.pyx":272
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))             # <<<<<<<<<<<<<<
+ *                 else:
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))
+ */
+                      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_n_faw, __pyx_n_s_write_entry); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_3);
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_upper); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __pyx_t_19 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_18))) {
+                        __pyx_t_19 = PyMethod_GET_SELF(__pyx_t_18);
+                        if (likely(__pyx_t_19)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_18);
+                          __Pyx_INCREF(__pyx_t_19);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_18, function);
+                        }
+                      }
+                      if (__pyx_t_19) {
+                        __pyx_t_17 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_19); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 272, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+                      } else {
+                        __pyx_t_17 = __Pyx_PyObject_CallNoArg(__pyx_t_18); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      }
+                      __Pyx_GOTREF(__pyx_t_17);
+                      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_encode); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                      __pyx_t_17 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_18))) {
+                        __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_18);
+                        if (likely(__pyx_t_17)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_18);
+                          __Pyx_INCREF(__pyx_t_17);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_18, function);
+                        }
+                      }
+                      if (__pyx_t_17) {
+                        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                      } else {
+                        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_18); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      }
+                      __Pyx_GOTREF(__pyx_t_2);
+                      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_read, __pyx_n_s_name); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __pyx_t_17 = PyTuple_New(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 272, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_17);
+                      __Pyx_GIVEREF(__pyx_t_2);
+                      PyTuple_SET_ITEM(__pyx_t_17, 0, __pyx_t_2);
+                      __Pyx_GIVEREF(__pyx_t_18);
+                      PyTuple_SET_ITEM(__pyx_t_17, 1, __pyx_t_18);
+                      __pyx_t_2 = 0;
+                      __pyx_t_18 = 0;
+                      __pyx_t_18 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+                        __pyx_t_18 = PyMethod_GET_SELF(__pyx_t_3);
+                        if (likely(__pyx_t_18)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+                          __Pyx_INCREF(__pyx_t_18);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_3, function);
+                        }
+                      }
+                      if (!__pyx_t_18) {
+                        __pyx_t_14 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_17); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 272, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        __Pyx_GOTREF(__pyx_t_14);
+                      } else {
+                        #if CYTHON_FAST_PYCALL
+                        if (PyFunction_Check(__pyx_t_3)) {
+                          PyObject *__pyx_temp[2] = {__pyx_t_18, __pyx_t_17};
+                          __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 272, __pyx_L17_error)
+                          __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        } else
+                        #endif
+                        #if CYTHON_FAST_PYCCALL
+                        if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+                          PyObject *__pyx_temp[2] = {__pyx_t_18, __pyx_t_17};
+                          __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 272, __pyx_L17_error)
+                          __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        } else
+                        #endif
+                        {
+                          __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L17_error)
+                          __Pyx_GOTREF(__pyx_t_2);
+                          __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_18); __pyx_t_18 = NULL;
+                          __Pyx_GIVEREF(__pyx_t_17);
+                          PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_t_17);
+                          __pyx_t_17 = 0;
+                          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 272, __pyx_L17_error)
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                        }
+                      }
+                      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+
+                      /* "chimeramate_main.pyx":271
+ *             for read in msk.entries():
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):             # <<<<<<<<<<<<<<
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))
+ *                 else:
+ */
+                      goto __pyx_L25;
+                    }
+
+                    /* "chimeramate_main.pyx":274
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))
+ *                 else:
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))             # <<<<<<<<<<<<<<
  * 
- *     def write_fasta(self, str filename):
- *         with dinopy.FastaWriter(filename, 'w') as faw:             # <<<<<<<<<<<<<<
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):
+ */
+                    /*else*/ {
+                      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_c_faw, __pyx_n_s_write_entry); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_3);
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_seq, __pyx_n_s_upper); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __pyx_t_19 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_18))) {
+                        __pyx_t_19 = PyMethod_GET_SELF(__pyx_t_18);
+                        if (likely(__pyx_t_19)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_18);
+                          __Pyx_INCREF(__pyx_t_19);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_18, function);
+                        }
+                      }
+                      if (__pyx_t_19) {
+                        __pyx_t_17 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_19); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 274, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+                      } else {
+                        __pyx_t_17 = __Pyx_PyObject_CallNoArg(__pyx_t_18); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      }
+                      __Pyx_GOTREF(__pyx_t_17);
+                      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_encode); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                      __pyx_t_17 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_18))) {
+                        __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_18);
+                        if (likely(__pyx_t_17)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_18);
+                          __Pyx_INCREF(__pyx_t_17);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_18, function);
+                        }
+                      }
+                      if (__pyx_t_17) {
+                        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                      } else {
+                        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_18); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      }
+                      __Pyx_GOTREF(__pyx_t_2);
+                      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+                      __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_read, __pyx_n_s_name); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_18);
+                      __pyx_t_17 = PyTuple_New(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 274, __pyx_L17_error)
+                      __Pyx_GOTREF(__pyx_t_17);
+                      __Pyx_GIVEREF(__pyx_t_2);
+                      PyTuple_SET_ITEM(__pyx_t_17, 0, __pyx_t_2);
+                      __Pyx_GIVEREF(__pyx_t_18);
+                      PyTuple_SET_ITEM(__pyx_t_17, 1, __pyx_t_18);
+                      __pyx_t_2 = 0;
+                      __pyx_t_18 = 0;
+                      __pyx_t_18 = NULL;
+                      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+                        __pyx_t_18 = PyMethod_GET_SELF(__pyx_t_3);
+                        if (likely(__pyx_t_18)) {
+                          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+                          __Pyx_INCREF(__pyx_t_18);
+                          __Pyx_INCREF(function);
+                          __Pyx_DECREF_SET(__pyx_t_3, function);
+                        }
+                      }
+                      if (!__pyx_t_18) {
+                        __pyx_t_14 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_17); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 274, __pyx_L17_error)
+                        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        __Pyx_GOTREF(__pyx_t_14);
+                      } else {
+                        #if CYTHON_FAST_PYCALL
+                        if (PyFunction_Check(__pyx_t_3)) {
+                          PyObject *__pyx_temp[2] = {__pyx_t_18, __pyx_t_17};
+                          __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 274, __pyx_L17_error)
+                          __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        } else
+                        #endif
+                        #if CYTHON_FAST_PYCCALL
+                        if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+                          PyObject *__pyx_temp[2] = {__pyx_t_18, __pyx_t_17};
+                          __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 274, __pyx_L17_error)
+                          __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+                        } else
+                        #endif
+                        {
+                          __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L17_error)
+                          __Pyx_GOTREF(__pyx_t_2);
+                          __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_18); __pyx_t_18 = NULL;
+                          __Pyx_GIVEREF(__pyx_t_17);
+                          PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_t_17);
+                          __pyx_t_17 = 0;
+                          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 274, __pyx_L17_error)
+                          __Pyx_GOTREF(__pyx_t_14);
+                          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                        }
+                      }
+                      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                    }
+                    __pyx_L25:;
+
+                    /* "chimeramate_main.pyx":269
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ *             for read in msk.entries():             # <<<<<<<<<<<<<<
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):
+ */
+                  }
+                  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+                  /* "chimeramate_main.pyx":266
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(             # <<<<<<<<<<<<<<
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ */
+                }
+                __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+                __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+                __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+                goto __pyx_L22_try_end;
+                __pyx_L17_error:;
+                __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
+                __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+                __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+                __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+                __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+                __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+                __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+                /*except:*/ {
+                  __Pyx_AddTraceback("chimeramate_main.chimera_search.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
+                  if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_14, &__pyx_t_3) < 0) __PYX_ERR(0, 266, __pyx_L19_except_error)
+                  __Pyx_GOTREF(__pyx_t_1);
+                  __Pyx_GOTREF(__pyx_t_14);
+                  __Pyx_GOTREF(__pyx_t_3);
+                  __pyx_t_2 = PyTuple_Pack(3, __pyx_t_1, __pyx_t_14, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L19_except_error)
+                  __Pyx_GOTREF(__pyx_t_2);
+                  __pyx_t_20 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_2, NULL);
+                  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+                  if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 266, __pyx_L19_except_error)
+                  __Pyx_GOTREF(__pyx_t_20);
+                  __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_20);
+                  __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
+                  if (__pyx_t_16 < 0) __PYX_ERR(0, 266, __pyx_L19_except_error)
+                  __pyx_t_15 = ((!(__pyx_t_16 != 0)) != 0);
+                  if (__pyx_t_15) {
+                    __Pyx_GIVEREF(__pyx_t_1);
+                    __Pyx_GIVEREF(__pyx_t_14);
+                    __Pyx_XGIVEREF(__pyx_t_3);
+                    __Pyx_ErrRestoreWithState(__pyx_t_1, __pyx_t_14, __pyx_t_3);
+                    __pyx_t_1 = 0; __pyx_t_14 = 0; __pyx_t_3 = 0; 
+                    __PYX_ERR(0, 266, __pyx_L19_except_error)
+                  }
+                  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+                  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+                  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+                  goto __pyx_L18_exception_handled;
+                }
+                __pyx_L19_except_error:;
+                __Pyx_XGIVEREF(__pyx_t_9);
+                __Pyx_XGIVEREF(__pyx_t_10);
+                __Pyx_XGIVEREF(__pyx_t_11);
+                __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
+                goto __pyx_L7_error;
+                __pyx_L18_exception_handled:;
+                __Pyx_XGIVEREF(__pyx_t_9);
+                __Pyx_XGIVEREF(__pyx_t_10);
+                __Pyx_XGIVEREF(__pyx_t_11);
+                __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
+                __pyx_L22_try_end:;
+              }
+            }
+            /*finally:*/ {
+              /*normal exit:*/{
+                if (__pyx_t_8) {
+                  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__10, NULL);
+                  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+                  if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 266, __pyx_L7_error)
+                  __Pyx_GOTREF(__pyx_t_11);
+                  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+                }
+                goto __pyx_L16;
+              }
+              __pyx_L16:;
+            }
+            goto __pyx_L29;
+            __pyx_L13_error:;
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+            goto __pyx_L7_error;
+            __pyx_L29:;
+          }
+
+          /* "chimeramate_main.pyx":265
+ * 
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,             # <<<<<<<<<<<<<<
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
  */
         }
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -13821,44 +13178,40 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         goto __pyx_L12_try_end;
         __pyx_L7_error:;
-        __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
-        __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-        __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
+        __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
         __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
-        __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-        __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+        __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
         /*except:*/ {
-          __Pyx_AddTraceback("chimeramate_cy.chimera_search.write_fasta", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_4, &__pyx_t_1) < 0) __PYX_ERR(0, 284, __pyx_L9_except_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_AddTraceback("chimeramate_main.chimera_search.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
+          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_14, &__pyx_t_1) < 0) __PYX_ERR(0, 265, __pyx_L9_except_error)
+          __Pyx_GOTREF(__pyx_t_3);
+          __Pyx_GOTREF(__pyx_t_14);
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_10 = PyTuple_Pack(3, __pyx_t_2, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 284, __pyx_L9_except_error)
-          __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL);
-          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 284, __pyx_L9_except_error)
-          __Pyx_GOTREF(__pyx_t_19);
-          __pyx_t_20 = __Pyx_PyObject_IsTrue(__pyx_t_19);
-          __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
-          if (__pyx_t_20 < 0) __PYX_ERR(0, 284, __pyx_L9_except_error)
-          __pyx_t_21 = ((!(__pyx_t_20 != 0)) != 0);
-          if (__pyx_t_21) {
-            __Pyx_GIVEREF(__pyx_t_2);
-            __Pyx_GIVEREF(__pyx_t_4);
-            __Pyx_XGIVEREF(__pyx_t_1);
-            __Pyx_ErrRestoreWithState(__pyx_t_2, __pyx_t_4, __pyx_t_1);
-            __pyx_t_2 = 0; __pyx_t_4 = 0; __pyx_t_1 = 0; 
-            __PYX_ERR(0, 284, __pyx_L9_except_error)
-          }
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+          __pyx_t_2 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_14, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 265, __pyx_L9_except_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+          if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 265, __pyx_L9_except_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_8);
+          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+          if (__pyx_t_15 < 0) __PYX_ERR(0, 265, __pyx_L9_except_error)
+          __pyx_t_16 = ((!(__pyx_t_15 != 0)) != 0);
+          if (__pyx_t_16) {
+            __Pyx_GIVEREF(__pyx_t_3);
+            __Pyx_GIVEREF(__pyx_t_14);
+            __Pyx_XGIVEREF(__pyx_t_1);
+            __Pyx_ErrRestoreWithState(__pyx_t_3, __pyx_t_14, __pyx_t_1);
+            __pyx_t_3 = 0; __pyx_t_14 = 0; __pyx_t_1 = 0; 
+            __PYX_ERR(0, 265, __pyx_L9_except_error)
+          }
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           goto __pyx_L8_exception_handled;
         }
@@ -13878,10 +13231,10 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
     }
     /*finally:*/ {
       /*normal exit:*/{
-        if (__pyx_t_3) {
-          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__10, NULL);
-          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 284, __pyx_L1_error)
+        if (__pyx_t_4) {
+          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__11, NULL);
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 265, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         }
@@ -13889,19 +13242,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
       }
       __pyx_L6:;
     }
-    goto __pyx_L18;
+    goto __pyx_L33;
     __pyx_L3_error:;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L1_error;
-    __pyx_L18:;
+    __pyx_L33:;
   }
 
-  /* "chimeramate_cy.pyx":283
- *             plt.show()
+  /* "chimeramate_main.pyx":264
+ *         return node_list
  * 
- *     def write_fasta(self, str filename):             # <<<<<<<<<<<<<<
- *         with dinopy.FastaWriter(filename, 'w') as faw:
- *             for node in enumerate(self.potential_chimeras):
+ *     def write(self, masked_reads, str chimname, str nonchimname):             # <<<<<<<<<<<<<<
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
  */
 
   /* function exit code */
@@ -13910,20 +13263,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_XDECREF(__pyx_t_16);
+  __Pyx_XDECREF(__pyx_t_17);
   __Pyx_XDECREF(__pyx_t_18);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.write_fasta", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_19);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.write", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_faw);
-  __Pyx_XDECREF(__pyx_v_node);
+  __Pyx_XDECREF(__pyx_v_c_faw);
+  __Pyx_XDECREF(__pyx_v_n_faw);
+  __Pyx_XDECREF(__pyx_v_msk);
+  __Pyx_XDECREF(__pyx_v_read);
+  __Pyx_XDECREF(__pyx_v_seq);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -13936,19 +13288,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_26write_fasta(struct
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_29__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_29__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_27__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_27__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_28__reduce_cython__(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_26__reduce_cython__(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_28__reduce_cython__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_26__reduce_cython__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -14144,7 +13496,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_28__reduce_cython__(
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -14162,19 +13514,19 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_28__reduce_cython__(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_31__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_14chimeramate_cy_14chimera_search_31__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_29__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_16chimeramate_main_14chimera_search_29__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython__(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_16chimeramate_main_14chimera_search_28__setstate_cython__(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython__(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16chimeramate_main_14chimera_search_28__setstate_cython__(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -14186,7 +13538,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython_
  *     __pyx_unpickle_chimera_search__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 15, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_14chimeramate_cy___pyx_unpickle_chimera_search__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16chimeramate_main___pyx_unpickle_chimera_search__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -14202,9 +13554,284 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython_
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("chimeramate_cy.chimera_search.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.chimera_search.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "chimeramate_main.pyx":276
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))
+ * 
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):             # <<<<<<<<<<<<<<
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_16chimeramate_main_1run(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16chimeramate_main_1run = {"run", (PyCFunction)__pyx_pw_16chimeramate_main_1run, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16chimeramate_main_1run(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_otus = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_soft_k = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_cutoff = 0;
+  PyObject *__pyx_v_softmask_file = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_chim_k = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_abskew = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("run (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_otus,&__pyx_n_s_soft_k,&__pyx_n_s_cutoff,&__pyx_n_s_softmask_file,&__pyx_n_s_chim_k,&__pyx_n_s_abskew,0};
+    PyObject* values[6] = {0,0,0,0,0,0};
+    values[1] = ((PyObject *)__pyx_int_24);
+    values[2] = ((PyObject *)__pyx_int_10);
+    values[3] = ((PyObject *)__pyx_kp_s_softmasked_fasta);
+    values[4] = ((PyObject *)__pyx_int_29);
+    values[5] = ((PyObject *)__pyx_float_0_03);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_otus)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_soft_k);
+          if (value) { values[1] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff);
+          if (value) { values[2] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_softmask_file);
+          if (value) { values[3] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_chim_k);
+          if (value) { values[4] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_abskew);
+          if (value) { values[5] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run") < 0)) __PYX_ERR(0, 276, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_otus = values[0];
+    __pyx_v_soft_k = values[1];
+    __pyx_v_cutoff = values[2];
+    __pyx_v_softmask_file = values[3];
+    __pyx_v_chim_k = values[4];
+    __pyx_v_abskew = values[5];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("run", 0, 1, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 276, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("chimeramate_main.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_16chimeramate_main_run(__pyx_self, __pyx_v_otus, __pyx_v_soft_k, __pyx_v_cutoff, __pyx_v_softmask_file, __pyx_v_chim_k, __pyx_v_abskew);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_16chimeramate_main_run(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_otus, CYTHON_UNUSED PyObject *__pyx_v_soft_k, CYTHON_UNUSED PyObject *__pyx_v_cutoff, PyObject *__pyx_v_softmask_file, CYTHON_UNUSED PyObject *__pyx_v_chim_k, CYTHON_UNUSED PyObject *__pyx_v_abskew) {
+  struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v_d = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  __Pyx_RefNannySetupContext("run", 0);
+
+  /* "chimeramate_main.pyx":277
+ * 
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)             # <<<<<<<<<<<<<<
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ *     chimera_search(softmask_file, chim_k = 29, abskew = 0.03)
+ */
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_otus);
+  __Pyx_GIVEREF(__pyx_v_otus);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_otus);
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_soft_k, __pyx_int_24) < 0) __PYX_ERR(0, 277, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_cutoff, __pyx_int_10) < 0) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_16chimeramate_main_kmer_filter), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_d = ((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":278
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)             # <<<<<<<<<<<<<<
+ *     chimera_search(softmask_file, chim_k = 29, abskew = 0.03)
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_d), __pyx_n_s_softmask); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_d), __pyx_n_s_reads); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_d), __pyx_n_s_kmer_abundance_sorting); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = NULL;
+  __pyx_t_6 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_6 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_1, __pyx_t_4, __pyx_v_softmask_file};
+    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 278, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_1, __pyx_t_4, __pyx_v_softmask_file};
+    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 278, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 278, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (__pyx_t_5) {
+      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
+    __Pyx_INCREF(__pyx_v_softmask_file);
+    __Pyx_GIVEREF(__pyx_v_softmask_file);
+    PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_v_softmask_file);
+    __pyx_t_1 = 0;
+    __pyx_t_4 = 0;
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 278, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":279
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ *     chimera_search(softmask_file, chim_k = 29, abskew = 0.03)             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(__pyx_v_softmask_file);
+  __Pyx_GIVEREF(__pyx_v_softmask_file);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_softmask_file);
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_chim_k, __pyx_int_29) < 0) __PYX_ERR(0, 279, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_abskew, __pyx_float_0_03) < 0) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_16chimeramate_main_chimera_search), __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "chimeramate_main.pyx":276
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))
+ * 
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):             # <<<<<<<<<<<<<<
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("chimeramate_main.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_d);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -14217,9 +13844,9 @@ static PyObject *__pyx_pf_14chimeramate_cy_14chimera_search_30__setstate_cython_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_1__pyx_unpickle_kmer_filter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_14chimeramate_cy_1__pyx_unpickle_kmer_filter = {"__pyx_unpickle_kmer_filter", (PyCFunction)__pyx_pw_14chimeramate_cy_1__pyx_unpickle_kmer_filter, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_14chimeramate_cy_1__pyx_unpickle_kmer_filter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_3__pyx_unpickle_kmer_filter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16chimeramate_main_3__pyx_unpickle_kmer_filter = {"__pyx_unpickle_kmer_filter", (PyCFunction)__pyx_pw_16chimeramate_main_3__pyx_unpickle_kmer_filter, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16chimeramate_main_3__pyx_unpickle_kmer_filter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -14278,18 +13905,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_1__pyx_unpickle_kmer_filter(PyObject 
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_kmer_filter", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_kmer_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_kmer_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_16chimeramate_main_2__pyx_unpickle_kmer_filter(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16chimeramate_main_2__pyx_unpickle_kmer_filter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = NULL;
   PyObject *__pyx_v___pyx_result = NULL;
   PyObject *__pyx_r = NULL;
@@ -14412,7 +14039,7 @@ static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNU
  *     if __pyx_state is not None:
  *         __pyx_unpickle_kmer_filter__set_state(<kmer_filter> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_14chimeramate_cy_kmer_filter), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_16chimeramate_main_kmer_filter), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14479,7 +14106,7 @@ static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNU
  * cdef __pyx_unpickle_kmer_filter__set_state(kmer_filter __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 7, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(((struct __pyx_obj_14chimeramate_cy_kmer_filter *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_16chimeramate_main___pyx_unpickle_kmer_filter__set_state(((struct __pyx_obj_16chimeramate_main_kmer_filter *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -14517,7 +14144,7 @@ static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNU
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_kmer_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_kmer_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -14535,7 +14162,7 @@ static PyObject *__pyx_pf_14chimeramate_cy___pyx_unpickle_kmer_filter(CYTHON_UNU
  *         __pyx_result.__dict__.update(__pyx_state[0])
  */
 
-static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(struct __pyx_obj_14chimeramate_cy_kmer_filter *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_16chimeramate_main___pyx_unpickle_kmer_filter__set_state(struct __pyx_obj_16chimeramate_main_kmer_filter *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -14658,7 +14285,7 @@ static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_kmer_filter__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_kmer_filter__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -14673,9 +14300,9 @@ static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_kmer_filter__set_state(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14chimeramate_cy_3__pyx_unpickle_chimera_search(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_14chimeramate_cy_3__pyx_unpickle_chimera_search = {"__pyx_unpickle_chimera_search", (PyCFunction)__pyx_pw_14chimeramate_cy_3__pyx_unpickle_chimera_search, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_14chimeramate_cy_3__pyx_unpickle_chimera_search(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16chimeramate_main_5__pyx_unpickle_chimera_search(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16chimeramate_main_5__pyx_unpickle_chimera_search = {"__pyx_unpickle_chimera_search", (PyCFunction)__pyx_pw_16chimeramate_main_5__pyx_unpickle_chimera_search, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16chimeramate_main_5__pyx_unpickle_chimera_search(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -14734,18 +14361,18 @@ static PyObject *__pyx_pw_14chimeramate_cy_3__pyx_unpickle_chimera_search(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_chimera_search", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_chimera_search", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_chimera_search", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_16chimeramate_main_4__pyx_unpickle_chimera_search(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16chimeramate_main_4__pyx_unpickle_chimera_search(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = NULL;
   PyObject *__pyx_v___pyx_result = NULL;
   PyObject *__pyx_r = NULL;
@@ -14868,7 +14495,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON
  *     if __pyx_state is not None:
  *         __pyx_unpickle_chimera_search__set_state(<chimera_search> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_14chimeramate_cy_chimera_search), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_16chimeramate_main_chimera_search), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14935,7 +14562,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON
  * cdef __pyx_unpickle_chimera_search__set_state(chimera_search __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 7, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_14chimeramate_cy___pyx_unpickle_chimera_search__set_state(((struct __pyx_obj_14chimeramate_cy_chimera_search *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_16chimeramate_main___pyx_unpickle_chimera_search__set_state(((struct __pyx_obj_16chimeramate_main_chimera_search *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -14973,7 +14600,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_chimera_search", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_chimera_search", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -14991,7 +14618,7 @@ static PyObject *__pyx_pf_14chimeramate_cy_2__pyx_unpickle_chimera_search(CYTHON
  *         __pyx_result.__dict__.update(__pyx_state[0])
  */
 
-static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_chimera_search__set_state(struct __pyx_obj_14chimeramate_cy_chimera_search *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_16chimeramate_main___pyx_unpickle_chimera_search__set_state(struct __pyx_obj_16chimeramate_main_chimera_search *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -15114,7 +14741,7 @@ static PyObject *__pyx_f_14chimeramate_cy___pyx_unpickle_chimera_search__set_sta
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("chimeramate_cy.__pyx_unpickle_chimera_search__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("chimeramate_main.__pyx_unpickle_chimera_search__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -15291,7 +14918,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -15347,7 +14974,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -15656,7 +15283,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -16545,7 +16172,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -16613,7 +16240,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -16722,7 +16349,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -17402,7 +17029,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -17531,7 +17158,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -17657,7 +17284,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -18534,7 +18161,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *         if itemsize <= 0:
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 131, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -18566,7 +18193,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *         if not isinstance(format, bytes):
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 134, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 134, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -18601,7 +18228,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  */
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_format, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 137, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 137, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 137, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF_SET(__pyx_v_format, __pyx_t_5);
@@ -18681,7 +18308,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 146, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_Raise(__pyx_t_5, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -18965,7 +18592,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __
  * 
  *             if self.dtype_is_object:
  */
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 174, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 174, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -19203,7 +18830,7 @@ static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(stru
  *         info.buf = self.data
  *         info.len = self.len
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 190, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 190, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -19919,7 +19546,7 @@ static PyObject *__pyx_pf___pyx_array___reduce_cython__(CYTHON_UNUSED struct __p
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19972,7 +19599,7 @@ static PyObject *__pyx_pf___pyx_array_2__setstate_cython__(CYTHON_UNUSED struct 
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -22615,7 +22242,7 @@ static PyObject *__pyx_memoryview_convert_item_to_object(struct __pyx_memoryview
  *         else:
  *             if len(self.view.format) == 1:
  */
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 486, __pyx_L5_except_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 486, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -23454,7 +23081,7 @@ static PyObject *__pyx_pf_15View_dot_MemoryView_10memoryview_7strides___get__(st
  * 
  *         return tuple([stride for stride in self.view.strides[:self.view.ndim]])
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 558, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 558, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23568,7 +23195,7 @@ static PyObject *__pyx_pf_15View_dot_MemoryView_10memoryview_10suboffsets___get_
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->view.ndim); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 565, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Multiply(__pyx_tuple__30, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 565, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Multiply(__pyx_tuple__31, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 565, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_r = __pyx_t_3;
@@ -24575,7 +24202,7 @@ static PyObject *__pyx_pf___pyx_memoryview___reduce_cython__(CYTHON_UNUSED struc
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -24628,7 +24255,7 @@ static PyObject *__pyx_pf___pyx_memoryview_2__setstate_cython__(CYTHON_UNUSED st
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__33, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -24979,9 +24606,9 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
         __Pyx_GOTREF(__pyx_t_7);
         { Py_ssize_t __pyx_temp;
           for (__pyx_temp=0; __pyx_temp < ((__pyx_v_ndim - __pyx_t_8) + 1); __pyx_temp++) {
-            __Pyx_INCREF(__pyx_slice__33);
-            __Pyx_GIVEREF(__pyx_slice__33);
-            PyList_SET_ITEM(__pyx_t_7, __pyx_temp, __pyx_slice__33);
+            __Pyx_INCREF(__pyx_slice__34);
+            __Pyx_GIVEREF(__pyx_slice__34);
+            PyList_SET_ITEM(__pyx_t_7, __pyx_temp, __pyx_slice__34);
           }
         }
         __pyx_t_9 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_t_7); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 670, __pyx_L1_error)
@@ -25014,7 +24641,7 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
  *         else:
  */
       /*else*/ {
-        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_result, __pyx_slice__34); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 673, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_result, __pyx_slice__35); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 673, __pyx_L1_error)
       }
       __pyx_L7:;
 
@@ -25159,9 +24786,9 @@ static PyObject *_unellipsify(PyObject *__pyx_v_index, int __pyx_v_ndim) {
     __Pyx_GOTREF(__pyx_t_3);
     { Py_ssize_t __pyx_temp;
       for (__pyx_temp=0; __pyx_temp < __pyx_v_nslices; __pyx_temp++) {
-        __Pyx_INCREF(__pyx_slice__35);
-        __Pyx_GIVEREF(__pyx_slice__35);
-        PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_slice__35);
+        __Pyx_INCREF(__pyx_slice__36);
+        __Pyx_GIVEREF(__pyx_slice__36);
+        PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_slice__36);
       }
     }
     __pyx_t_9 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_t_3); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(1, 684, __pyx_L1_error)
@@ -25285,7 +24912,7 @@ static PyObject *assert_direct_dimensions(Py_ssize_t *__pyx_v_suboffsets, int __
  * 
  * 
  */
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 691, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__37, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 691, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -27456,7 +27083,7 @@ static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED 
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__37, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -27509,7 +27136,7 @@ static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUS
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -31145,8 +30772,8 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_tp_new_14chimeramate_cy_kmer_filter(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_14chimeramate_cy_kmer_filter *p;
+static PyObject *__pyx_tp_new_16chimeramate_main_kmer_filter(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_16chimeramate_main_kmer_filter *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -31154,15 +30781,15 @@ static PyObject *__pyx_tp_new_14chimeramate_cy_kmer_filter(PyTypeObject *t, CYTH
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_14chimeramate_cy_kmer_filter *)o);
+  p = ((struct __pyx_obj_16chimeramate_main_kmer_filter *)o);
   p->__dict__ = PyDict_New(); if (unlikely(!p->__dict__)) goto bad;return o;
   bad:
   Py_DECREF(o); o = 0;
   return NULL;
 }
 
-static void __pyx_tp_dealloc_14chimeramate_cy_kmer_filter(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy_kmer_filter *p = (struct __pyx_obj_14chimeramate_cy_kmer_filter *)o;
+static void __pyx_tp_dealloc_16chimeramate_main_kmer_filter(PyObject *o) {
+  struct __pyx_obj_16chimeramate_main_kmer_filter *p = (struct __pyx_obj_16chimeramate_main_kmer_filter *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -31174,26 +30801,26 @@ static void __pyx_tp_dealloc_14chimeramate_cy_kmer_filter(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_14chimeramate_cy_kmer_filter(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_16chimeramate_main_kmer_filter(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_14chimeramate_cy_kmer_filter *p = (struct __pyx_obj_14chimeramate_cy_kmer_filter *)o;
+  struct __pyx_obj_16chimeramate_main_kmer_filter *p = (struct __pyx_obj_16chimeramate_main_kmer_filter *)o;
   if (p->__dict__) {
     e = (*v)(p->__dict__, a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_14chimeramate_cy_kmer_filter(PyObject *o) {
+static int __pyx_tp_clear_16chimeramate_main_kmer_filter(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_14chimeramate_cy_kmer_filter *p = (struct __pyx_obj_14chimeramate_cy_kmer_filter *)o;
+  struct __pyx_obj_16chimeramate_main_kmer_filter *p = (struct __pyx_obj_16chimeramate_main_kmer_filter *)o;
   tmp = ((PyObject*)p->__dict__);
   p->__dict__ = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyObject *__pyx___dict__getter_14chimeramate_cy_kmer_filter(PyObject *o, CYTHON_UNUSED void *x) {
-  struct __pyx_obj_14chimeramate_cy_kmer_filter *p = (struct __pyx_obj_14chimeramate_cy_kmer_filter *)o;
+static PyObject *__pyx___dict__getter_16chimeramate_main_kmer_filter(PyObject *o, CYTHON_UNUSED void *x) {
+  struct __pyx_obj_16chimeramate_main_kmer_filter *p = (struct __pyx_obj_16chimeramate_main_kmer_filter *)o;
   if (unlikely(!p->__dict__)){
     p->__dict__ = PyDict_New();
   }
@@ -31201,26 +30828,26 @@ static PyObject *__pyx___dict__getter_14chimeramate_cy_kmer_filter(PyObject *o, 
   return p->__dict__;
 }
 
-static PyMethodDef __pyx_methods_14chimeramate_cy_kmer_filter[] = {
-  {"_make_de_bruijn_file", (PyCFunction)__pyx_pw_14chimeramate_cy_11kmer_filter_3_make_de_bruijn_file, METH_VARARGS|METH_KEYWORDS, 0},
-  {"kmer_abundance_sorting", (PyCFunction)__pyx_pw_14chimeramate_cy_11kmer_filter_5kmer_abundance_sorting, METH_VARARGS|METH_KEYWORDS, 0},
-  {"softmask", (PyCFunction)__pyx_pw_14chimeramate_cy_11kmer_filter_7softmask, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_14chimeramate_cy_11kmer_filter_9__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_14chimeramate_cy_11kmer_filter_11__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_16chimeramate_main_kmer_filter[] = {
+  {"_k_mer_counting", (PyCFunction)__pyx_pw_16chimeramate_main_11kmer_filter_3_k_mer_counting, METH_VARARGS|METH_KEYWORDS, 0},
+  {"kmer_abundance_sorting", (PyCFunction)__pyx_pw_16chimeramate_main_11kmer_filter_5kmer_abundance_sorting, METH_VARARGS|METH_KEYWORDS, 0},
+  {"softmask", (PyCFunction)__pyx_pw_16chimeramate_main_11kmer_filter_7softmask, METH_VARARGS|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_16chimeramate_main_11kmer_filter_9__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_16chimeramate_main_11kmer_filter_11__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_14chimeramate_cy_kmer_filter[] = {
-  {(char *)"__dict__", __pyx___dict__getter_14chimeramate_cy_kmer_filter, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_16chimeramate_main_kmer_filter[] = {
+  {(char *)"__dict__", __pyx___dict__getter_16chimeramate_main_kmer_filter, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_14chimeramate_cy_kmer_filter = {
+static PyTypeObject __pyx_type_16chimeramate_main_kmer_filter = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.kmer_filter", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy_kmer_filter), /*tp_basicsize*/
+  "chimeramate_main.kmer_filter", /*tp_name*/
+  sizeof(struct __pyx_obj_16chimeramate_main_kmer_filter), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy_kmer_filter, /*tp_dealloc*/
+  __pyx_tp_dealloc_16chimeramate_main_kmer_filter, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -31242,23 +30869,23 @@ static PyTypeObject __pyx_type_14chimeramate_cy_kmer_filter = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy_kmer_filter, /*tp_traverse*/
-  __pyx_tp_clear_14chimeramate_cy_kmer_filter, /*tp_clear*/
+  __pyx_tp_traverse_16chimeramate_main_kmer_filter, /*tp_traverse*/
+  __pyx_tp_clear_16chimeramate_main_kmer_filter, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_14chimeramate_cy_kmer_filter, /*tp_methods*/
+  __pyx_methods_16chimeramate_main_kmer_filter, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_14chimeramate_cy_kmer_filter, /*tp_getset*/
+  __pyx_getsets_16chimeramate_main_kmer_filter, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
-  offsetof(struct __pyx_obj_14chimeramate_cy_kmer_filter, __dict__), /*tp_dictoffset*/
-  __pyx_pw_14chimeramate_cy_11kmer_filter_1__init__, /*tp_init*/
+  offsetof(struct __pyx_obj_16chimeramate_main_kmer_filter, __dict__), /*tp_dictoffset*/
+  __pyx_pw_16chimeramate_main_11kmer_filter_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy_kmer_filter, /*tp_new*/
+  __pyx_tp_new_16chimeramate_main_kmer_filter, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -31273,8 +30900,8 @@ static PyTypeObject __pyx_type_14chimeramate_cy_kmer_filter = {
   #endif
 };
 
-static PyObject *__pyx_tp_new_14chimeramate_cy_chimera_search(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_14chimeramate_cy_chimera_search *p;
+static PyObject *__pyx_tp_new_16chimeramate_main_chimera_search(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_16chimeramate_main_chimera_search *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -31282,15 +30909,15 @@ static PyObject *__pyx_tp_new_14chimeramate_cy_chimera_search(PyTypeObject *t, C
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_14chimeramate_cy_chimera_search *)o);
+  p = ((struct __pyx_obj_16chimeramate_main_chimera_search *)o);
   p->__dict__ = PyDict_New(); if (unlikely(!p->__dict__)) goto bad;return o;
   bad:
   Py_DECREF(o); o = 0;
   return NULL;
 }
 
-static void __pyx_tp_dealloc_14chimeramate_cy_chimera_search(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy_chimera_search *p = (struct __pyx_obj_14chimeramate_cy_chimera_search *)o;
+static void __pyx_tp_dealloc_16chimeramate_main_chimera_search(PyObject *o) {
+  struct __pyx_obj_16chimeramate_main_chimera_search *p = (struct __pyx_obj_16chimeramate_main_chimera_search *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -31302,26 +30929,26 @@ static void __pyx_tp_dealloc_14chimeramate_cy_chimera_search(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_14chimeramate_cy_chimera_search(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_16chimeramate_main_chimera_search(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_14chimeramate_cy_chimera_search *p = (struct __pyx_obj_14chimeramate_cy_chimera_search *)o;
+  struct __pyx_obj_16chimeramate_main_chimera_search *p = (struct __pyx_obj_16chimeramate_main_chimera_search *)o;
   if (p->__dict__) {
     e = (*v)(p->__dict__, a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_14chimeramate_cy_chimera_search(PyObject *o) {
+static int __pyx_tp_clear_16chimeramate_main_chimera_search(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_14chimeramate_cy_chimera_search *p = (struct __pyx_obj_14chimeramate_cy_chimera_search *)o;
+  struct __pyx_obj_16chimeramate_main_chimera_search *p = (struct __pyx_obj_16chimeramate_main_chimera_search *)o;
   tmp = ((PyObject*)p->__dict__);
   p->__dict__ = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyObject *__pyx___dict__getter_14chimeramate_cy_chimera_search(PyObject *o, CYTHON_UNUSED void *x) {
-  struct __pyx_obj_14chimeramate_cy_chimera_search *p = (struct __pyx_obj_14chimeramate_cy_chimera_search *)o;
+static PyObject *__pyx___dict__getter_16chimeramate_main_chimera_search(PyObject *o, CYTHON_UNUSED void *x) {
+  struct __pyx_obj_16chimeramate_main_chimera_search *p = (struct __pyx_obj_16chimeramate_main_chimera_search *)o;
   if (unlikely(!p->__dict__)){
     p->__dict__ = PyDict_New();
   }
@@ -31329,36 +30956,35 @@ static PyObject *__pyx___dict__getter_14chimeramate_cy_chimera_search(PyObject *
   return p->__dict__;
 }
 
-static PyMethodDef __pyx_methods_14chimeramate_cy_chimera_search[] = {
-  {"_seq_dict", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_3_seq_dict, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_abu_kmer_zip", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_5_abu_kmer_zip, METH_O, 0},
-  {"_longest_common_substring", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_7_longest_common_substring, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_intersection_list", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_9_intersection_list, METH_O, 0},
-  {"create_scs_lists", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_11create_scs_lists, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_compare_sequences", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_13_compare_sequences, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_add_edge", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_15_add_edge, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_overlap_graph", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_17_overlap_graph, METH_O, 0},
-  {"_remove_low_indegree_edges", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_19_remove_low_indegree_edges, METH_VARARGS|METH_KEYWORDS, 0},
-  {"subgraphs", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_21subgraphs, METH_O, 0},
-  {"potential_chimeras", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_23potential_chimeras, METH_O, 0},
-  {"draw_subgraphs", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_25draw_subgraphs, METH_O, 0},
-  {"write_fasta", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_27write_fasta, METH_O, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_29__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_14chimeramate_cy_14chimera_search_31__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_16chimeramate_main_chimera_search[] = {
+  {"_seq_dict", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_3_seq_dict, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_abu_kmer_zip", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_5_abu_kmer_zip, METH_O, 0},
+  {"_longest_common_substring", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_7_longest_common_substring, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_kmer_sets", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_9_kmer_sets, METH_O, 0},
+  {"_intersection_list", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_11_intersection_list, METH_O, 0},
+  {"create_scs_lists", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_13create_scs_lists, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_compare_sequences", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_15_compare_sequences, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_add_edge", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_17_add_edge, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_overlap_graph", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_19_overlap_graph, METH_O, 0},
+  {"_graph_filter", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_21_graph_filter, METH_VARARGS|METH_KEYWORDS, 0},
+  {"potential_chimeras", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_23potential_chimeras, METH_O, 0},
+  {"write", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_25write, METH_VARARGS|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_27__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_16chimeramate_main_14chimera_search_29__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_14chimeramate_cy_chimera_search[] = {
-  {(char *)"__dict__", __pyx___dict__getter_14chimeramate_cy_chimera_search, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_16chimeramate_main_chimera_search[] = {
+  {(char *)"__dict__", __pyx___dict__getter_16chimeramate_main_chimera_search, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_14chimeramate_cy_chimera_search = {
+static PyTypeObject __pyx_type_16chimeramate_main_chimera_search = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.chimera_search", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy_chimera_search), /*tp_basicsize*/
+  "chimeramate_main.chimera_search", /*tp_name*/
+  sizeof(struct __pyx_obj_16chimeramate_main_chimera_search), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy_chimera_search, /*tp_dealloc*/
+  __pyx_tp_dealloc_16chimeramate_main_chimera_search, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -31380,23 +31006,23 @@ static PyTypeObject __pyx_type_14chimeramate_cy_chimera_search = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy_chimera_search, /*tp_traverse*/
-  __pyx_tp_clear_14chimeramate_cy_chimera_search, /*tp_clear*/
+  __pyx_tp_traverse_16chimeramate_main_chimera_search, /*tp_traverse*/
+  __pyx_tp_clear_16chimeramate_main_chimera_search, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_14chimeramate_cy_chimera_search, /*tp_methods*/
+  __pyx_methods_16chimeramate_main_chimera_search, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_14chimeramate_cy_chimera_search, /*tp_getset*/
+  __pyx_getsets_16chimeramate_main_chimera_search, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
-  offsetof(struct __pyx_obj_14chimeramate_cy_chimera_search, __dict__), /*tp_dictoffset*/
-  __pyx_pw_14chimeramate_cy_14chimera_search_1__init__, /*tp_init*/
+  offsetof(struct __pyx_obj_16chimeramate_main_chimera_search, __dict__), /*tp_dictoffset*/
+  __pyx_pw_16chimeramate_main_14chimera_search_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy_chimera_search, /*tp_new*/
+  __pyx_tp_new_16chimeramate_main_chimera_search, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -31411,14 +31037,14 @@ static PyTypeObject __pyx_type_14chimeramate_cy_chimera_search = {
   #endif
 };
 
-static struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *__pyx_freelist_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting[8];
-static int __pyx_freecount_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting = 0;
+static struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *__pyx_freelist_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting[8];
+static int __pyx_freecount_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting = 0;
 
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+static PyObject *__pyx_tp_new_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting)))) {
-    o = (PyObject*)__pyx_freelist_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting[--__pyx_freecount_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting];
-    memset(o, 0, sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting));
+  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting)))) {
+    o = (PyObject*)__pyx_freelist_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting[--__pyx_freecount_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting];
+    memset(o, 0, sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting));
     (void) PyObject_INIT(o, t);
     PyObject_GC_Track(o);
   } else {
@@ -31428,41 +31054,41 @@ static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct__kmer_abundanc
   return o;
 }
 
-static void __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)o;
+static void __pyx_tp_dealloc_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(PyObject *o) {
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)o;
   PyObject_GC_UnTrack(o);
   Py_CLEAR(p->__pyx_v_reads);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting)))) {
-    __pyx_freelist_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting[__pyx_freecount_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting++] = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)o);
+  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting)))) {
+    __pyx_freelist_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting[__pyx_freecount_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting++] = ((struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)o);
   } else {
     (*Py_TYPE(o)->tp_free)(o);
   }
 }
 
-static int __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)o;
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)o;
   if (p->__pyx_v_reads) {
     e = (*v)(p->__pyx_v_reads, a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting(PyObject *o) {
+static int __pyx_tp_clear_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting *)o;
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *p = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting *)o;
   tmp = ((PyObject*)p->__pyx_v_reads);
   p->__pyx_v_reads = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting = {
+static PyTypeObject __pyx_type_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.__pyx_scope_struct__kmer_abundance_sorting", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting), /*tp_basicsize*/
+  "chimeramate_main.__pyx_scope_struct__kmer_abundance_sorting", /*tp_name*/
+  sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting, /*tp_dealloc*/
+  __pyx_tp_dealloc_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -31484,8 +31110,8 @@ static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundan
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting, /*tp_traverse*/
-  __pyx_tp_clear_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting, /*tp_clear*/
+  __pyx_tp_traverse_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting, /*tp_traverse*/
+  __pyx_tp_clear_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
@@ -31500,7 +31126,7 @@ static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundan
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting, /*tp_new*/
+  __pyx_tp_new_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -31515,14 +31141,14 @@ static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundan
   #endif
 };
 
-static struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *__pyx_freelist_14chimeramate_cy___pyx_scope_struct_1_genexpr[8];
-static int __pyx_freecount_14chimeramate_cy___pyx_scope_struct_1_genexpr = 0;
+static struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *__pyx_freelist_16chimeramate_main___pyx_scope_struct_1_genexpr[8];
+static int __pyx_freecount_16chimeramate_main___pyx_scope_struct_1_genexpr = 0;
 
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+static PyObject *__pyx_tp_new_16chimeramate_main___pyx_scope_struct_1_genexpr(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_1_genexpr > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr)))) {
-    o = (PyObject*)__pyx_freelist_14chimeramate_cy___pyx_scope_struct_1_genexpr[--__pyx_freecount_14chimeramate_cy___pyx_scope_struct_1_genexpr];
-    memset(o, 0, sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr));
+  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_16chimeramate_main___pyx_scope_struct_1_genexpr > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr)))) {
+    o = (PyObject*)__pyx_freelist_16chimeramate_main___pyx_scope_struct_1_genexpr[--__pyx_freecount_16chimeramate_main___pyx_scope_struct_1_genexpr];
+    memset(o, 0, sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr));
     (void) PyObject_INIT(o, t);
     PyObject_GC_Track(o);
   } else {
@@ -31532,22 +31158,22 @@ static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyTy
   return o;
 }
 
-static void __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)o;
+static void __pyx_tp_dealloc_16chimeramate_main___pyx_scope_struct_1_genexpr(PyObject *o) {
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *p = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)o;
   PyObject_GC_UnTrack(o);
   Py_CLEAR(p->__pyx_outer_scope);
   Py_CLEAR(p->__pyx_v_read);
   Py_CLEAR(p->__pyx_t_0);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_1_genexpr < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr)))) {
-    __pyx_freelist_14chimeramate_cy___pyx_scope_struct_1_genexpr[__pyx_freecount_14chimeramate_cy___pyx_scope_struct_1_genexpr++] = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)o);
+  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_16chimeramate_main___pyx_scope_struct_1_genexpr < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr)))) {
+    __pyx_freelist_16chimeramate_main___pyx_scope_struct_1_genexpr[__pyx_freecount_16chimeramate_main___pyx_scope_struct_1_genexpr++] = ((struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)o);
   } else {
     (*Py_TYPE(o)->tp_free)(o);
   }
 }
 
-static int __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_16chimeramate_main___pyx_scope_struct_1_genexpr(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr *)o;
+  struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *p = (struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr *)o;
   if (p->__pyx_outer_scope) {
     e = (*v)(((PyObject *)p->__pyx_outer_scope), a); if (e) return e;
   }
@@ -31560,12 +31186,12 @@ static int __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_1_genexpr(PyObj
   return 0;
 }
 
-static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr = {
+static PyTypeObject __pyx_type_16chimeramate_main___pyx_scope_struct_1_genexpr = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.__pyx_scope_struct_1_genexpr", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_1_genexpr), /*tp_basicsize*/
+  "chimeramate_main.__pyx_scope_struct_1_genexpr", /*tp_name*/
+  sizeof(struct __pyx_obj_16chimeramate_main___pyx_scope_struct_1_genexpr), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_1_genexpr, /*tp_dealloc*/
+  __pyx_tp_dealloc_16chimeramate_main___pyx_scope_struct_1_genexpr, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -31587,7 +31213,7 @@ static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_1_genexpr, /*tp_traverse*/
+  __pyx_tp_traverse_16chimeramate_main___pyx_scope_struct_1_genexpr, /*tp_traverse*/
   0, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
@@ -31603,210 +31229,7 @@ static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr = {
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy___pyx_scope_struct_1_genexpr, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-};
-
-static struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *__pyx_freelist_14chimeramate_cy___pyx_scope_struct_2_subgraphs[8];
-static int __pyx_freecount_14chimeramate_cy___pyx_scope_struct_2_subgraphs = 0;
-
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_2_subgraphs(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_2_subgraphs > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs)))) {
-    o = (PyObject*)__pyx_freelist_14chimeramate_cy___pyx_scope_struct_2_subgraphs[--__pyx_freecount_14chimeramate_cy___pyx_scope_struct_2_subgraphs];
-    memset(o, 0, sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs));
-    (void) PyObject_INIT(o, t);
-    PyObject_GC_Track(o);
-  } else {
-    o = (*t->tp_alloc)(t, 0);
-    if (unlikely(!o)) return 0;
-  }
-  return o;
-}
-
-static void __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_2_subgraphs(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)o;
-  PyObject_GC_UnTrack(o);
-  Py_CLEAR(p->__pyx_v_subgraph);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_2_subgraphs < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs)))) {
-    __pyx_freelist_14chimeramate_cy___pyx_scope_struct_2_subgraphs[__pyx_freecount_14chimeramate_cy___pyx_scope_struct_2_subgraphs++] = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)o);
-  } else {
-    (*Py_TYPE(o)->tp_free)(o);
-  }
-}
-
-static int __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_2_subgraphs(PyObject *o, visitproc v, void *a) {
-  int e;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)o;
-  if (p->__pyx_v_subgraph) {
-    e = (*v)(p->__pyx_v_subgraph, a); if (e) return e;
-  }
-  return 0;
-}
-
-static int __pyx_tp_clear_14chimeramate_cy___pyx_scope_struct_2_subgraphs(PyObject *o) {
-  PyObject* tmp;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs *)o;
-  tmp = ((PyObject*)p->__pyx_v_subgraph);
-  p->__pyx_v_subgraph = Py_None; Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
-  return 0;
-}
-
-static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct_2_subgraphs = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.__pyx_scope_struct_2_subgraphs", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_2_subgraphs), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_2_subgraphs, /*tp_dealloc*/
-  0, /*tp_print*/
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  0, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_2_subgraphs, /*tp_traverse*/
-  __pyx_tp_clear_14chimeramate_cy___pyx_scope_struct_2_subgraphs, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  0, /*tp_methods*/
-  0, /*tp_members*/
-  0, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  0, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy___pyx_scope_struct_2_subgraphs, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-};
-
-static struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *__pyx_freelist_14chimeramate_cy___pyx_scope_struct_3_genexpr[8];
-static int __pyx_freecount_14chimeramate_cy___pyx_scope_struct_3_genexpr = 0;
-
-static PyObject *__pyx_tp_new_14chimeramate_cy___pyx_scope_struct_3_genexpr(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_3_genexpr > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr)))) {
-    o = (PyObject*)__pyx_freelist_14chimeramate_cy___pyx_scope_struct_3_genexpr[--__pyx_freecount_14chimeramate_cy___pyx_scope_struct_3_genexpr];
-    memset(o, 0, sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr));
-    (void) PyObject_INIT(o, t);
-    PyObject_GC_Track(o);
-  } else {
-    o = (*t->tp_alloc)(t, 0);
-    if (unlikely(!o)) return 0;
-  }
-  return o;
-}
-
-static void __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_3_genexpr(PyObject *o) {
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)o;
-  PyObject_GC_UnTrack(o);
-  Py_CLEAR(p->__pyx_outer_scope);
-  Py_CLEAR(p->__pyx_v_x);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_14chimeramate_cy___pyx_scope_struct_3_genexpr < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr)))) {
-    __pyx_freelist_14chimeramate_cy___pyx_scope_struct_3_genexpr[__pyx_freecount_14chimeramate_cy___pyx_scope_struct_3_genexpr++] = ((struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)o);
-  } else {
-    (*Py_TYPE(o)->tp_free)(o);
-  }
-}
-
-static int __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_3_genexpr(PyObject *o, visitproc v, void *a) {
-  int e;
-  struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *p = (struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr *)o;
-  if (p->__pyx_outer_scope) {
-    e = (*v)(((PyObject *)p->__pyx_outer_scope), a); if (e) return e;
-  }
-  if (p->__pyx_v_x) {
-    e = (*v)(p->__pyx_v_x, a); if (e) return e;
-  }
-  return 0;
-}
-
-static PyTypeObject __pyx_type_14chimeramate_cy___pyx_scope_struct_3_genexpr = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.__pyx_scope_struct_3_genexpr", /*tp_name*/
-  sizeof(struct __pyx_obj_14chimeramate_cy___pyx_scope_struct_3_genexpr), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_14chimeramate_cy___pyx_scope_struct_3_genexpr, /*tp_dealloc*/
-  0, /*tp_print*/
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  0, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  0, /*tp_doc*/
-  __pyx_tp_traverse_14chimeramate_cy___pyx_scope_struct_3_genexpr, /*tp_traverse*/
-  0, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  0, /*tp_methods*/
-  0, /*tp_members*/
-  0, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  0, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_14chimeramate_cy___pyx_scope_struct_3_genexpr, /*tp_new*/
+  __pyx_tp_new_16chimeramate_main___pyx_scope_struct_1_genexpr, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -31943,7 +31366,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.array", /*tp_name*/
+  "chimeramate_main.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -32051,7 +31474,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.Enum", /*tp_name*/
+  "chimeramate_main.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -32301,7 +31724,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy.memoryview", /*tp_name*/
+  "chimeramate_main.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -32428,7 +31851,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "chimeramate_cy._memoryviewslice", /*tp_name*/
+  "chimeramate_main._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -32499,17 +31922,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_chimeramate_cy(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_chimeramate_main(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_chimeramate_cy},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_chimeramate_main},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "chimeramate_cy",
+    "chimeramate_main",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -32558,9 +31981,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_View_MemoryView, __pyx_k_View_MemoryView, sizeof(__pyx_k_View_MemoryView), 0, 0, 1, 1},
-  {&__pyx_n_s__39, __pyx_k__39, sizeof(__pyx_k__39), 0, 0, 1, 1},
+  {&__pyx_n_s__40, __pyx_k__40, sizeof(__pyx_k__40), 0, 0, 1, 1},
   {&__pyx_kp_s__6, __pyx_k__6, sizeof(__pyx_k__6), 0, 0, 1, 0},
-  {&__pyx_kp_s__9, __pyx_k__9, sizeof(__pyx_k__9), 0, 0, 1, 0},
   {&__pyx_n_s_abskew, __pyx_k_abskew, sizeof(__pyx_k_abskew), 0, 0, 1, 1},
   {&__pyx_n_s_abu, __pyx_k_abu, sizeof(__pyx_k_abu), 0, 0, 1, 1},
   {&__pyx_n_s_abu1, __pyx_k_abu1, sizeof(__pyx_k_abu1), 0, 0, 1, 1},
@@ -32576,11 +31998,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_bru_dict, __pyx_k_bru_dict, sizeof(__pyx_k_bru_dict), 0, 0, 1, 1},
   {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
   {&__pyx_n_u_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 1, 0, 1},
-  {&__pyx_n_s_chimeramate_cy, __pyx_k_chimeramate_cy, sizeof(__pyx_k_chimeramate_cy), 0, 0, 1, 1},
-  {&__pyx_n_s_chimeric_subgraphs, __pyx_k_chimeric_subgraphs, sizeof(__pyx_k_chimeric_subgraphs), 0, 0, 1, 1},
+  {&__pyx_n_s_chim_k, __pyx_k_chim_k, sizeof(__pyx_k_chim_k), 0, 0, 1, 1},
+  {&__pyx_n_s_chimeramate_main, __pyx_k_chimeramate_main, sizeof(__pyx_k_chimeramate_main), 0, 0, 1, 1},
+  {&__pyx_kp_s_chimeramate_main_pyx, __pyx_k_chimeramate_main_pyx, sizeof(__pyx_k_chimeramate_main_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_chimname, __pyx_k_chimname, sizeof(__pyx_k_chimname), 0, 0, 1, 1},
+  {&__pyx_kp_s_chims_fasta, __pyx_k_chims_fasta, sizeof(__pyx_k_chims_fasta), 0, 0, 1, 0},
   {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
+  {&__pyx_n_s_col, __pyx_k_col, sizeof(__pyx_k_col), 0, 0, 1, 1},
+  {&__pyx_n_s_collections, __pyx_k_collections, sizeof(__pyx_k_collections), 0, 0, 1, 1},
   {&__pyx_n_s_combinations, __pyx_k_combinations, sizeof(__pyx_k_combinations), 0, 0, 1, 1},
   {&__pyx_n_s_compare_sequences, __pyx_k_compare_sequences, sizeof(__pyx_k_compare_sequences), 0, 0, 1, 1},
   {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
@@ -32588,16 +32015,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
   {&__pyx_n_s_create_scs_lists, __pyx_k_create_scs_lists, sizeof(__pyx_k_create_scs_lists), 0, 0, 1, 1},
   {&__pyx_n_s_cutoff, __pyx_k_cutoff, sizeof(__pyx_k_cutoff), 0, 0, 1, 1},
+  {&__pyx_n_s_d, __pyx_k_d, sizeof(__pyx_k_d), 0, 0, 1, 1},
   {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
-  {&__pyx_n_s_de_bruijn_dict, __pyx_k_de_bruijn_dict, sizeof(__pyx_k_de_bruijn_dict), 0, 0, 1, 1},
   {&__pyx_n_s_decode, __pyx_k_decode, sizeof(__pyx_k_decode), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {&__pyx_n_s_dinopy, __pyx_k_dinopy, sizeof(__pyx_k_dinopy), 0, 0, 1, 1},
   {&__pyx_n_s_direction, __pyx_k_direction, sizeof(__pyx_k_direction), 0, 0, 1, 1},
-  {&__pyx_n_s_draw, __pyx_k_draw, sizeof(__pyx_k_draw), 0, 0, 1, 1},
-  {&__pyx_n_s_draw_networkx_edge_labels, __pyx_k_draw_networkx_edge_labels, sizeof(__pyx_k_draw_networkx_edge_labels), 0, 0, 1, 1},
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
-  {&__pyx_n_s_edge_labels, __pyx_k_edge_labels, sizeof(__pyx_k_edge_labels), 0, 0, 1, 1},
   {&__pyx_n_s_edges, __pyx_k_edges, sizeof(__pyx_k_edges), 0, 0, 1, 1},
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_entries, __pyx_k_entries, sizeof(__pyx_k_entries), 0, 0, 1, 1},
@@ -32611,10 +32035,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_n_s_functools, __pyx_k_functools, sizeof(__pyx_k_functools), 0, 0, 1, 1},
   {&__pyx_n_s_genexpr, __pyx_k_genexpr, sizeof(__pyx_k_genexpr), 0, 0, 1, 1},
-  {&__pyx_n_s_get_edge_attributes, __pyx_k_get_edge_attributes, sizeof(__pyx_k_get_edge_attributes), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_graph, __pyx_k_graph, sizeof(__pyx_k_graph), 0, 0, 1, 1},
+  {&__pyx_n_s_graph_filter, __pyx_k_graph_filter, sizeof(__pyx_k_graph_filter), 0, 0, 1, 1},
   {&__pyx_n_s_high_indegree_graph, __pyx_k_high_indegree_graph, sizeof(__pyx_k_high_indegree_graph), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
@@ -32632,10 +32056,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_itertools, __pyx_k_itertools, sizeof(__pyx_k_itertools), 0, 0, 1, 1},
   {&__pyx_n_s_k, __pyx_k_k, sizeof(__pyx_k_k), 0, 0, 1, 1},
+  {&__pyx_n_s_k_mer_counting, __pyx_k_k_mer_counting, sizeof(__pyx_k_k_mer_counting), 0, 0, 1, 1},
   {&__pyx_n_s_keys, __pyx_k_keys, sizeof(__pyx_k_keys), 0, 0, 1, 1},
   {&__pyx_n_s_kmer_abundance_sorting, __pyx_k_kmer_abundance_sorting, sizeof(__pyx_k_kmer_abundance_sorting), 0, 0, 1, 1},
   {&__pyx_n_s_kmer_abundance_sorting_locals_ge, __pyx_k_kmer_abundance_sorting_locals_ge, sizeof(__pyx_k_kmer_abundance_sorting_locals_ge), 0, 0, 1, 1},
+  {&__pyx_n_s_kmer_dict, __pyx_k_kmer_dict, sizeof(__pyx_k_kmer_dict), 0, 0, 1, 1},
   {&__pyx_n_s_kmer_sets, __pyx_k_kmer_sets, sizeof(__pyx_k_kmer_sets), 0, 0, 1, 1},
+  {&__pyx_n_s_kmer_sets_2, __pyx_k_kmer_sets_2, sizeof(__pyx_k_kmer_sets_2), 0, 0, 1, 1},
   {&__pyx_n_s_kmers, __pyx_k_kmers, sizeof(__pyx_k_kmers), 0, 0, 1, 1},
   {&__pyx_n_s_length, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
   {&__pyx_n_s_line_width, __pyx_k_line_width, sizeof(__pyx_k_line_width), 0, 0, 1, 1},
@@ -32643,12 +32070,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_longest_common_substring_locals, __pyx_k_longest_common_substring_locals, sizeof(__pyx_k_longest_common_substring_locals), 0, 0, 1, 1},
   {&__pyx_n_s_lower, __pyx_k_lower, sizeof(__pyx_k_lower), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_make_de_bruijn_file, __pyx_k_make_de_bruijn_file, sizeof(__pyx_k_make_de_bruijn_file), 0, 0, 1, 1},
   {&__pyx_n_s_masked_reads, __pyx_k_masked_reads, sizeof(__pyx_k_masked_reads), 0, 0, 1, 1},
   {&__pyx_n_s_math, __pyx_k_math, sizeof(__pyx_k_math), 0, 0, 1, 1},
   {&__pyx_n_s_matplotlib_pyplot, __pyx_k_matplotlib_pyplot, sizeof(__pyx_k_matplotlib_pyplot), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
+  {&__pyx_n_s_mp, __pyx_k_mp, sizeof(__pyx_k_mp), 0, 0, 1, 1},
+  {&__pyx_n_s_multiprocessing, __pyx_k_multiprocessing, sizeof(__pyx_k_multiprocessing), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_name1, __pyx_k_name1, sizeof(__pyx_k_name1), 0, 0, 1, 1},
   {&__pyx_n_s_name2, __pyx_k_name2, sizeof(__pyx_k_name2), 0, 0, 1, 1},
@@ -32661,13 +32089,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_nodes, __pyx_k_nodes, sizeof(__pyx_k_nodes), 0, 0, 1, 1},
+  {&__pyx_n_s_nonchimname, __pyx_k_nonchimname, sizeof(__pyx_k_nonchimname), 0, 0, 1, 1},
+  {&__pyx_kp_s_nonchims_fasta, __pyx_k_nonchims_fasta, sizeof(__pyx_k_nonchims_fasta), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
   {&__pyx_n_s_nums, __pyx_k_nums, sizeof(__pyx_k_nums), 0, 0, 1, 1},
   {&__pyx_n_s_nx, __pyx_k_nx, sizeof(__pyx_k_nx), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
-  {&__pyx_n_s_order, __pyx_k_order, sizeof(__pyx_k_order), 0, 0, 1, 1},
+  {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
   {&__pyx_n_s_otu_file, __pyx_k_otu_file, sizeof(__pyx_k_otu_file), 0, 0, 1, 1},
+  {&__pyx_n_s_otus, __pyx_k_otus, sizeof(__pyx_k_otus), 0, 0, 1, 1},
   {&__pyx_n_s_output_file, __pyx_k_output_file, sizeof(__pyx_k_output_file), 0, 0, 1, 1},
   {&__pyx_n_s_overlap_graph, __pyx_k_overlap_graph, sizeof(__pyx_k_overlap_graph), 0, 0, 1, 1},
   {&__pyx_n_s_overlap_graph_2, __pyx_k_overlap_graph_2, sizeof(__pyx_k_overlap_graph_2), 0, 0, 1, 1},
@@ -32686,6 +32117,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_unpickle_chimera_search, __pyx_k_pyx_unpickle_chimera_search, sizeof(__pyx_k_pyx_unpickle_chimera_search), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_kmer_filter, __pyx_k_pyx_unpickle_kmer_filter, sizeof(__pyx_k_pyx_unpickle_kmer_filter), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
+  {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reads, __pyx_k_reads, sizeof(__pyx_k_reads), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
@@ -32693,20 +32125,22 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
   {&__pyx_n_s_remove_edge, __pyx_k_remove_edge, sizeof(__pyx_k_remove_edge), 0, 0, 1, 1},
-  {&__pyx_n_s_remove_low_indegree_edges, __pyx_k_remove_low_indegree_edges, sizeof(__pyx_k_remove_low_indegree_edges), 0, 0, 1, 1},
   {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
+  {&__pyx_n_s_run, __pyx_k_run, sizeof(__pyx_k_run), 0, 0, 1, 1},
   {&__pyx_n_s_scs, __pyx_k_scs, sizeof(__pyx_k_scs), 0, 0, 1, 1},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
   {&__pyx_n_s_seq, __pyx_k_seq, sizeof(__pyx_k_seq), 0, 0, 1, 1},
   {&__pyx_n_s_seq_dict, __pyx_k_seq_dict, sizeof(__pyx_k_seq_dict), 0, 0, 1, 1},
+  {&__pyx_n_s_sequence, __pyx_k_sequence, sizeof(__pyx_k_sequence), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
-  {&__pyx_n_s_show, __pyx_k_show, sizeof(__pyx_k_show), 0, 0, 1, 1},
   {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
+  {&__pyx_n_s_soft_k, __pyx_k_soft_k, sizeof(__pyx_k_soft_k), 0, 0, 1, 1},
+  {&__pyx_n_s_softmask, __pyx_k_softmask, sizeof(__pyx_k_softmask), 0, 0, 1, 1},
+  {&__pyx_n_s_softmask_file, __pyx_k_softmask_file, sizeof(__pyx_k_softmask_file), 0, 0, 1, 1},
+  {&__pyx_kp_s_softmasked_fasta, __pyx_k_softmasked_fasta, sizeof(__pyx_k_softmasked_fasta), 0, 0, 1, 0},
   {&__pyx_n_s_split, __pyx_k_split, sizeof(__pyx_k_split), 0, 0, 1, 1},
-  {&__pyx_n_s_spring_layout, __pyx_k_spring_layout, sizeof(__pyx_k_spring_layout), 0, 0, 1, 1},
-  {&__pyx_n_s_sqrt, __pyx_k_sqrt, sizeof(__pyx_k_sqrt), 0, 0, 1, 1},
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
   {&__pyx_n_s_step, __pyx_k_step, sizeof(__pyx_k_step), 0, 0, 1, 1},
   {&__pyx_n_s_stop, __pyx_k_stop, sizeof(__pyx_k_stop), 0, 0, 1, 1},
@@ -32715,37 +32149,33 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_strided_and_indirect, __pyx_k_strided_and_indirect, sizeof(__pyx_k_strided_and_indirect), 0, 0, 1, 0},
   {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
   {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
-  {&__pyx_n_s_subgraph, __pyx_k_subgraph, sizeof(__pyx_k_subgraph), 0, 0, 1, 1},
-  {&__pyx_n_s_subgraphs, __pyx_k_subgraphs, sizeof(__pyx_k_subgraphs), 0, 0, 1, 1},
-  {&__pyx_n_s_subgraphs_locals_genexpr, __pyx_k_subgraphs_locals_genexpr, sizeof(__pyx_k_subgraphs_locals_genexpr), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_threads, __pyx_k_threads, sizeof(__pyx_k_threads), 0, 0, 1, 1},
   {&__pyx_n_s_throw, __pyx_k_throw, sizeof(__pyx_k_throw), 0, 0, 1, 1},
   {&__pyx_kp_s_unable_to_allocate_array_data, __pyx_k_unable_to_allocate_array_data, sizeof(__pyx_k_unable_to_allocate_array_data), 0, 0, 1, 0},
   {&__pyx_kp_s_unable_to_allocate_shape_and_str, __pyx_k_unable_to_allocate_shape_and_str, sizeof(__pyx_k_unable_to_allocate_shape_and_str), 0, 0, 1, 0},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
-  {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
+  {&__pyx_n_s_upper, __pyx_k_upper, sizeof(__pyx_k_upper), 0, 0, 1, 1},
   {&__pyx_n_s_w, __pyx_k_w, sizeof(__pyx_k_w), 0, 0, 1, 1},
-  {&__pyx_n_s_weakly_connected_component_subgr, __pyx_k_weakly_connected_component_subgr, sizeof(__pyx_k_weakly_connected_component_subgr), 0, 0, 1, 1},
-  {&__pyx_n_s_weight, __pyx_k_weight, sizeof(__pyx_k_weight), 0, 0, 1, 1},
+  {&__pyx_n_s_write, __pyx_k_write, sizeof(__pyx_k_write), 0, 0, 1, 1},
   {&__pyx_n_s_write_entry, __pyx_k_write_entry, sizeof(__pyx_k_write_entry), 0, 0, 1, 1},
   {&__pyx_n_s_x, __pyx_k_x, sizeof(__pyx_k_x), 0, 0, 1, 1},
   {&__pyx_n_s_y, __pyx_k_y, sizeof(__pyx_k_y), 0, 0, 1, 1},
+  {&__pyx_n_s_yaml, __pyx_k_yaml, sizeof(__pyx_k_yaml), 0, 0, 1, 1},
   {&__pyx_n_s_zip, __pyx_k_zip, sizeof(__pyx_k_zip), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 30, __pyx_L1_error)
-  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 109, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(2, 235, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(2, 823, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 1013, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(3, 109, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 149, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_Ellipsis = __Pyx_GetBuiltinName(__pyx_n_s_Ellipsis); if (!__pyx_builtin_Ellipsis) __PYX_ERR(1, 398, __pyx_L1_error)
   __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(1, 601, __pyx_L1_error)
@@ -32759,74 +32189,96 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "chimeramate_cy.pyx":40
+  /* "chimeramate_main.pyx":44
  *                     bru_dict[node]['abu'] += 1
  *                 if not name in bru_dict[node]['name']:
  *                     bru_dict[node]['name'].append(int(name.split('=')[1][:-1]))             # <<<<<<<<<<<<<<
  *         return bru_dict
  * 
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
-  __pyx_slice__3 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_slice__3 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
 
-  /* "chimeramate_cy.pyx":58
+  /* "chimeramate_main.pyx":64
  *         cdef str seq
  *         cdef str kmer
  *         with dinopy.FastaWriter(str(output_file), line_width=1000, force_overwrite=True) as faw:             # <<<<<<<<<<<<<<
  *             for entry in reads.entries():
  *                 seq = entry.sequence.decode()
  */
-  __pyx_tuple__4 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "chimeramate_cy.pyx":99
+  /* "chimeramate_main.pyx":105
  *                             seq_dict[seq] = {}
  *                             seq_dict[seq]['kmers'] = []
  *                             seq_dict[seq]['abu'] = f.name.decode().split('=')[1][:-1]             # <<<<<<<<<<<<<<
  *                             seq_dict[seq]['name'] = f.name.decode().split(';')[0]
  *                         seq_dict[seq]['kmers'].append(node)
  */
-  __pyx_slice__5 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_slice__5 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__5);
   __Pyx_GIVEREF(__pyx_slice__5);
 
-  /* "chimeramate_cy.pyx":227
+  /* "chimeramate_main.pyx":234
  *             scs = intersec_list[i][2]
  *             if int(intersec_list[i][0][1]) > int(intersec_list[i][1][1]):
  *                 self._compare_sequences(intersec_list, t_g, i, (0, 1), scs)             # <<<<<<<<<<<<<<
  *             else:
  *                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)
  */
-  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_1); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_1); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "chimeramate_cy.pyx":229
+  /* "chimeramate_main.pyx":236
  *                 self._compare_sequences(intersec_list, t_g, i, (0, 1), scs)
  *             else:
  *                 self._compare_sequences(intersec_list, t_g, i, (1, 0), scs)             # <<<<<<<<<<<<<<
  * 
  *         return t_g
  */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_0); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_0); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "chimeramate_cy.pyx":284
- * 
- *     def write_fasta(self, str filename):
- *         with dinopy.FastaWriter(filename, 'w') as faw:             # <<<<<<<<<<<<<<
- *             for node in enumerate(self.potential_chimeras):
- *                 faw.write_entry((node[1][0].encode(),
+  /* "chimeramate_main.pyx":271
+ *             for read in msk.entries():
+ *                 seq = read.sequence.decode()
+ *                 if not read.name.decode().split(';')[0] in set(list(zip(*self.potential_chimeras))[1]):             # <<<<<<<<<<<<<<
+ *                     n_faw.write_entry((seq.upper().encode(), read.name))
+ *                 else:
  */
-  __pyx_tuple__10 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s__6); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__9);
+  __Pyx_GIVEREF(__pyx_tuple__9);
+
+  /* "chimeramate_main.pyx":266
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(             # <<<<<<<<<<<<<<
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ *             msk = dinopy.FastaReader(masked_reads, 'r')
+ */
+  __pyx_tuple__10 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
+
+  /* "chimeramate_main.pyx":265
+ * 
+ *     def write(self, masked_reads, str chimname, str nonchimname):
+ *         with dinopy.FastaWriter(chimname, 'w', force_overwrite=True,             # <<<<<<<<<<<<<<
+ *                                 line_width=1000) as c_faw, dinopy.FastaWriter(
+ *             nonchimname, 'w', force_overwrite=True, line_width=1000) as n_faw:
+ */
+  __pyx_tuple__11 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__11);
+  __Pyx_GIVEREF(__pyx_tuple__11);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":235
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
@@ -32835,9 +32287,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(2, 235, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(2, 235, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":239
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -32846,9 +32298,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(2, 239, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(2, 239, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -32857,9 +32309,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(2, 276, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(2, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":823
  * 
@@ -32868,9 +32320,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(2, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__14);
-  __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(2, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -32879,9 +32331,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(2, 827, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(2, 827, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":847
  *             t = child.type_num
@@ -32890,9 +32342,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(2, 847, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__16);
-  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(2, 847, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1013
  *         _import_array()
@@ -32901,9 +32353,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(2, 1013, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(2, 1013, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__18);
+  __Pyx_GIVEREF(__pyx_tuple__18);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1019
  *         _import_umath()
@@ -32912,18 +32364,18 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(2, 1019, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(2, 1019, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
 
   /* "../../../../anaconda2/envs/py36/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1025
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(2, 1025, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(2, 1025, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
 
   /* "View.MemoryView":131
  * 
@@ -32932,9 +32384,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if itemsize <= 0:
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_Empty_shape_tuple_for_cython_arr); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__20);
-  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_Empty_shape_tuple_for_cython_arr); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 131, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
 
   /* "View.MemoryView":134
  * 
@@ -32943,9 +32395,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if not isinstance(format, bytes):
  */
-  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_itemsize_0_for_cython_array); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 134, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_itemsize_0_for_cython_array); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 134, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
 
   /* "View.MemoryView":137
  * 
@@ -32954,9 +32406,9 @@ static int __Pyx_InitCachedConstants(void) {
  *         self._format = format  # keep a reference to the byte string
  *         self.format = self._format
  */
-  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_n_s_ASCII); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__22);
-  __Pyx_GIVEREF(__pyx_tuple__22);
+  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_n_s_ASCII); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
 
   /* "View.MemoryView":146
  * 
@@ -32965,9 +32417,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_shape_and_str); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 146, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__23);
-  __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_shape_and_str); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 146, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__24);
+  __Pyx_GIVEREF(__pyx_tuple__24);
 
   /* "View.MemoryView":174
  *             self.data = <char *>malloc(self.len)
@@ -32976,9 +32428,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if self.dtype_is_object:
  */
-  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_array_data); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 174, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__24);
-  __Pyx_GIVEREF(__pyx_tuple__24);
+  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_unable_to_allocate_array_data); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 174, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
 
   /* "View.MemoryView":190
  *             bufmode = PyBUF_F_CONTIGUOUS | PyBUF_ANY_CONTIGUOUS
@@ -32987,9 +32439,9 @@ static int __Pyx_InitCachedConstants(void) {
  *         info.buf = self.data
  *         info.len = self.len
  */
-  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_Can_only_create_a_buffer_that_is); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 190, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_Can_only_create_a_buffer_that_is); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 190, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -32997,18 +32449,18 @@ static int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__26);
-  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
 
   /* "View.MemoryView":486
  *             result = struct.unpack(self.view.format, bytesitem)
@@ -33017,9 +32469,9 @@ static int __Pyx_InitCachedConstants(void) {
  *         else:
  *             if len(self.view.format) == 1:
  */
-  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_Unable_to_convert_item_to_object); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 486, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__28);
-  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_Unable_to_convert_item_to_object); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 486, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
 
   /* "View.MemoryView":558
  *         if self.view.strides == NULL:
@@ -33028,9 +32480,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         return tuple([stride for stride in self.view.strides[:self.view.ndim]])
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_Buffer_view_does_not_expose_stri); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 558, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_Buffer_view_does_not_expose_stri); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 558, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
 
   /* "View.MemoryView":565
  *     def suboffsets(self):
@@ -33039,12 +32491,12 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         return tuple([suboffset for suboffset in self.view.suboffsets[:self.view.ndim]])
  */
-  __pyx_tuple__30 = PyTuple_New(1); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 565, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__30);
+  __pyx_tuple__31 = PyTuple_New(1); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 565, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_INCREF(__pyx_int_neg_1);
   __Pyx_GIVEREF(__pyx_int_neg_1);
-  PyTuple_SET_ITEM(__pyx_tuple__30, 0, __pyx_int_neg_1);
-  __Pyx_GIVEREF(__pyx_tuple__30);
+  PyTuple_SET_ITEM(__pyx_tuple__31, 0, __pyx_int_neg_1);
+  __Pyx_GIVEREF(__pyx_tuple__31);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -33052,18 +32504,18 @@ static int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_tuple__33 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
 
   /* "View.MemoryView":670
  *         if item is Ellipsis:
@@ -33072,9 +32524,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 seen_ellipsis = True
  *             else:
  */
-  __pyx_slice__33 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__33)) __PYX_ERR(1, 670, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__33);
-  __Pyx_GIVEREF(__pyx_slice__33);
+  __pyx_slice__34 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__34)) __PYX_ERR(1, 670, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__34);
+  __Pyx_GIVEREF(__pyx_slice__34);
 
   /* "View.MemoryView":673
  *                 seen_ellipsis = True
@@ -33083,9 +32535,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             have_slices = True
  *         else:
  */
-  __pyx_slice__34 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__34)) __PYX_ERR(1, 673, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__34);
-  __Pyx_GIVEREF(__pyx_slice__34);
+  __pyx_slice__35 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__35)) __PYX_ERR(1, 673, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__35);
+  __Pyx_GIVEREF(__pyx_slice__35);
 
   /* "View.MemoryView":684
  *     nslices = ndim - len(result)
@@ -33094,9 +32546,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *     return have_slices or nslices, tuple(result)
  */
-  __pyx_slice__35 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__35)) __PYX_ERR(1, 684, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__35);
-  __Pyx_GIVEREF(__pyx_slice__35);
+  __pyx_slice__36 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__36)) __PYX_ERR(1, 684, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__36);
+  __Pyx_GIVEREF(__pyx_slice__36);
 
   /* "View.MemoryView":691
  *     for suboffset in suboffsets[:ndim]:
@@ -33105,9 +32557,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_Indirect_dimensions_not_supporte); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 691, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_tuple__37 = PyTuple_Pack(1, __pyx_kp_s_Indirect_dimensions_not_supporte); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(1, 691, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__37);
+  __Pyx_GIVEREF(__pyx_tuple__37);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -33115,32 +32567,44 @@ static int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__37 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__37);
-  __Pyx_GIVEREF(__pyx_tuple__37);
+  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
 
   /* "(tree fragment)":4
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__39);
+  __Pyx_GIVEREF(__pyx_tuple__39);
+
+  /* "chimeramate_main.pyx":276
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))
+ * 
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):             # <<<<<<<<<<<<<<
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ */
+  __pyx_tuple__41 = PyTuple_Pack(7, __pyx_n_s_otus, __pyx_n_s_soft_k, __pyx_n_s_cutoff, __pyx_n_s_softmask_file, __pyx_n_s_chim_k, __pyx_n_s_abskew, __pyx_n_s_d); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__41);
+  __Pyx_GIVEREF(__pyx_tuple__41);
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(6, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_chimeramate_main_pyx, __pyx_n_s_run, 276, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 276, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_kmer_filter(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     if __pyx_checksum != 0xd41d8cd:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_tuple__40 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__40);
-  __Pyx_GIVEREF(__pyx_tuple__40);
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_kmer_filter, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_tuple__42 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__42);
-  __Pyx_GIVEREF(__pyx_tuple__42);
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_chimera_search, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__43 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__43);
+  __Pyx_GIVEREF(__pyx_tuple__43);
+  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_kmer_filter, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__45);
+  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_chimera_search, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "View.MemoryView":284
  *         return self.name
@@ -33149,9 +32613,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(1, 284, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__44);
-  __Pyx_GIVEREF(__pyx_tuple__44);
+  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(1, 284, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__47);
+  __Pyx_GIVEREF(__pyx_tuple__47);
 
   /* "View.MemoryView":285
  * 
@@ -33160,9 +32624,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_tuple__45 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 285, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__45);
-  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_tuple__48 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(1, 285, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__48);
+  __Pyx_GIVEREF(__pyx_tuple__48);
 
   /* "View.MemoryView":286
  * cdef generic = Enum("<strided and direct or indirect>")
@@ -33171,9 +32635,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__46 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(1, 286, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__46);
-  __Pyx_GIVEREF(__pyx_tuple__46);
+  __pyx_tuple__49 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__49);
+  __Pyx_GIVEREF(__pyx_tuple__49);
 
   /* "View.MemoryView":289
  * 
@@ -33182,9 +32646,9 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(1, 289, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__47);
-  __Pyx_GIVEREF(__pyx_tuple__47);
+  __pyx_tuple__50 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__50);
+  __Pyx_GIVEREF(__pyx_tuple__50);
 
   /* "View.MemoryView":290
  * 
@@ -33193,19 +32657,19 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__48 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(1, 290, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__48);
-  __Pyx_GIVEREF(__pyx_tuple__48);
+  __pyx_tuple__51 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__51)) __PYX_ERR(1, 290, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__51);
+  __Pyx_GIVEREF(__pyx_tuple__51);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Enum(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     if __pyx_checksum != 0xb068931:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_tuple__49 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__49);
-  __Pyx_GIVEREF(__pyx_tuple__49);
-  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__52 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__52);
+  __Pyx_GIVEREF(__pyx_tuple__52);
+  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -33217,10 +32681,13 @@ static int __Pyx_InitGlobals(void) {
   __pyx_umethod_PyDict_Type_items.type = (PyObject*)&PyDict_Type;
   __pyx_umethod_PyDict_Type_keys.type = (PyObject*)&PyDict_Type;
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_float_0_03 = PyFloat_FromDouble(0.03); if (unlikely(!__pyx_float_0_03)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_10 = PyInt_FromLong(10); if (unlikely(!__pyx_int_10)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_24 = PyInt_FromLong(24); if (unlikely(!__pyx_int_24)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_29 = PyInt_FromLong(29); if (unlikely(!__pyx_int_29)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1000 = PyInt_FromLong(1000); if (unlikely(!__pyx_int_1000)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_184977713 = PyInt_FromLong(184977713L); if (unlikely(!__pyx_int_184977713)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_222419149 = PyInt_FromLong(222419149L); if (unlikely(!__pyx_int_222419149)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -33231,11 +32698,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initchimeramate_cy(void); /*proto*/
-PyMODINIT_FUNC initchimeramate_cy(void)
+PyMODINIT_FUNC initchimeramate_main(void); /*proto*/
+PyMODINIT_FUNC initchimeramate_main(void)
 #else
-PyMODINIT_FUNC PyInit_chimeramate_cy(void); /*proto*/
-PyMODINIT_FUNC PyInit_chimeramate_cy(void)
+PyMODINIT_FUNC PyInit_chimeramate_main(void); /*proto*/
+PyMODINIT_FUNC PyInit_chimeramate_main(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -33275,7 +32742,7 @@ bad:
 }
 
 
-static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
+static int __pyx_pymod_exec_chimeramate_main(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -33297,7 +32764,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_chimeramate_cy(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_chimeramate_main(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -33333,7 +32800,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("chimeramate_cy", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("chimeramate_main", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -33352,14 +32819,14 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_chimeramate_cy) {
+  if (__pyx_module_is_main_chimeramate_main) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "chimeramate_cy")) {
-      if (unlikely(PyDict_SetItemString(modules, "chimeramate_cy", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "chimeramate_main")) {
+      if (unlikely(PyDict_SetItemString(modules, "chimeramate_main", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -33376,28 +32843,22 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy_kmer_filter) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy_kmer_filter.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "kmer_filter", (PyObject *)&__pyx_type_14chimeramate_cy_kmer_filter) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_14chimeramate_cy_kmer_filter) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
-  __pyx_ptype_14chimeramate_cy_kmer_filter = &__pyx_type_14chimeramate_cy_kmer_filter;
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy_chimera_search) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy_chimera_search.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "chimera_search", (PyObject *)&__pyx_type_14chimeramate_cy_chimera_search) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_14chimeramate_cy_chimera_search) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
-  __pyx_ptype_14chimeramate_cy_chimera_search = &__pyx_type_14chimeramate_cy_chimera_search;
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting.tp_print = 0;
-  __pyx_ptype_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting = &__pyx_type_14chimeramate_cy___pyx_scope_struct__kmer_abundance_sorting;
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr.tp_print = 0;
-  __pyx_ptype_14chimeramate_cy___pyx_scope_struct_1_genexpr = &__pyx_type_14chimeramate_cy___pyx_scope_struct_1_genexpr;
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy___pyx_scope_struct_2_subgraphs) < 0) __PYX_ERR(0, 249, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy___pyx_scope_struct_2_subgraphs.tp_print = 0;
-  __pyx_ptype_14chimeramate_cy___pyx_scope_struct_2_subgraphs = &__pyx_type_14chimeramate_cy___pyx_scope_struct_2_subgraphs;
-  if (PyType_Ready(&__pyx_type_14chimeramate_cy___pyx_scope_struct_3_genexpr) < 0) __PYX_ERR(0, 255, __pyx_L1_error)
-  __pyx_type_14chimeramate_cy___pyx_scope_struct_3_genexpr.tp_print = 0;
-  __pyx_ptype_14chimeramate_cy___pyx_scope_struct_3_genexpr = &__pyx_type_14chimeramate_cy___pyx_scope_struct_3_genexpr;
+  if (PyType_Ready(&__pyx_type_16chimeramate_main_kmer_filter) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_type_16chimeramate_main_kmer_filter.tp_print = 0;
+  if (PyObject_SetAttrString(__pyx_m, "kmer_filter", (PyObject *)&__pyx_type_16chimeramate_main_kmer_filter) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16chimeramate_main_kmer_filter) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_ptype_16chimeramate_main_kmer_filter = &__pyx_type_16chimeramate_main_kmer_filter;
+  if (PyType_Ready(&__pyx_type_16chimeramate_main_chimera_search) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_type_16chimeramate_main_chimera_search.tp_print = 0;
+  if (PyObject_SetAttrString(__pyx_m, "chimera_search", (PyObject *)&__pyx_type_16chimeramate_main_chimera_search) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16chimeramate_main_chimera_search) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_ptype_16chimeramate_main_chimera_search = &__pyx_type_16chimeramate_main_chimera_search;
+  if (PyType_Ready(&__pyx_type_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_type_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting.tp_print = 0;
+  __pyx_ptype_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting = &__pyx_type_16chimeramate_main___pyx_scope_struct__kmer_abundance_sorting;
+  if (PyType_Ready(&__pyx_type_16chimeramate_main___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_type_16chimeramate_main___pyx_scope_struct_1_genexpr.tp_print = 0;
+  __pyx_ptype_16chimeramate_main___pyx_scope_struct_1_genexpr = &__pyx_type_16chimeramate_main___pyx_scope_struct_1_genexpr;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
   if (PyType_Ready(&__pyx_type___pyx_array) < 0) __PYX_ERR(1, 103, __pyx_L1_error)
@@ -33583,90 +33044,162 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "chimeramate_cy.pyx":2
+  /* "chimeramate_main.pyx":2
  * cimport dinopy
  * import dinopy             # <<<<<<<<<<<<<<
+ * import collections as col
  * from dinopy.definitions cimport FastaEntryC
- * import matplotlib.pyplot as plt
  */
   __pyx_t_3 = __Pyx_Import(__pyx_n_s_dinopy, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_dinopy, __pyx_t_3) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":4
+  /* "chimeramate_main.pyx":3
+ * cimport dinopy
  * import dinopy
+ * import collections as col             # <<<<<<<<<<<<<<
+ * from dinopy.definitions cimport FastaEntryC
+ * import matplotlib.pyplot as plt
+ */
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_collections, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_col, __pyx_t_3) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":5
+ * import collections as col
  * from dinopy.definitions cimport FastaEntryC
  * import matplotlib.pyplot as plt             # <<<<<<<<<<<<<<
  * import networkx as nx
  * from functools import reduce
  */
-  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_INCREF(__pyx_n_s__39);
-  __Pyx_GIVEREF(__pyx_n_s__39);
-  PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s__39);
-  __pyx_t_4 = __Pyx_Import(__pyx_n_s_matplotlib_pyplot, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s__40);
+  __Pyx_GIVEREF(__pyx_n_s__40);
+  PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s__40);
+  __pyx_t_4 = __Pyx_Import(__pyx_n_s_matplotlib_pyplot, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_plt, __pyx_t_4) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_plt, __pyx_t_4) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":5
+  /* "chimeramate_main.pyx":6
  * from dinopy.definitions cimport FastaEntryC
  * import matplotlib.pyplot as plt
  * import networkx as nx             # <<<<<<<<<<<<<<
  * from functools import reduce
  * import math
  */
-  __pyx_t_4 = __Pyx_Import(__pyx_n_s_networkx, 0, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Import(__pyx_n_s_networkx, 0, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nx, __pyx_t_4) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nx, __pyx_t_4) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "chimeramate_cy.pyx":6
+  /* "chimeramate_main.pyx":7
  * import matplotlib.pyplot as plt
  * import networkx as nx
  * from functools import reduce             # <<<<<<<<<<<<<<
  * import math
  * import itertools as it
  */
-  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_n_s_reduce);
   __Pyx_GIVEREF(__pyx_n_s_reduce);
   PyList_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_reduce);
-  __pyx_t_3 = __Pyx_Import(__pyx_n_s_functools, __pyx_t_4, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_functools, __pyx_t_4, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_reduce); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_reduce); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce, __pyx_t_4) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce, __pyx_t_4) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":7
+  /* "chimeramate_main.pyx":8
  * import networkx as nx
  * from functools import reduce
  * import math             # <<<<<<<<<<<<<<
  * import itertools as it
- * 
+ * import multiprocessing as mp
  */
-  __pyx_t_3 = __Pyx_Import(__pyx_n_s_math, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_math, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_math, __pyx_t_3) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_math, __pyx_t_3) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":8
+  /* "chimeramate_main.pyx":9
  * from functools import reduce
  * import math
  * import itertools as it             # <<<<<<<<<<<<<<
+ * import multiprocessing as mp
+ * import networkx as nx
+ */
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_itertools, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_it, __pyx_t_3) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":10
+ * import math
+ * import itertools as it
+ * import multiprocessing as mp             # <<<<<<<<<<<<<<
+ * import networkx as nx
+ * import os
+ */
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_multiprocessing, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_mp, __pyx_t_3) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":11
+ * import itertools as it
+ * import multiprocessing as mp
+ * import networkx as nx             # <<<<<<<<<<<<<<
+ * import os
+ * import yaml
+ */
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_networkx, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nx, __pyx_t_3) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":12
+ * import multiprocessing as mp
+ * import networkx as nx
+ * import os             # <<<<<<<<<<<<<<
+ * import yaml
+ * 
+ */
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_os, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_3) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":13
+ * import networkx as nx
+ * import os
+ * import yaml             # <<<<<<<<<<<<<<
  * 
  * cdef class kmer_filter:
  */
-  __pyx_t_3 = __Pyx_Import(__pyx_n_s_itertools, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_yaml, 0, -1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_it, __pyx_t_3) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_yaml, __pyx_t_3) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "chimeramate_main.pyx":276
+ *                     c_faw.write_entry((seq.upper().encode(), read.name))
+ * 
+ * def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):             # <<<<<<<<<<<<<<
+ *     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
+ *     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
+ */
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_16chimeramate_main_1run, NULL, __pyx_n_s_chimeramate_main); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_run, __pyx_t_3) < 0) __PYX_ERR(0, 276, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "(tree fragment)":1
@@ -33674,7 +33207,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  *     if __pyx_checksum != 0xd41d8cd:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_14chimeramate_cy_1__pyx_unpickle_kmer_filter, NULL, __pyx_n_s_chimeramate_cy); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_16chimeramate_main_3__pyx_unpickle_kmer_filter, NULL, __pyx_n_s_chimeramate_main); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_kmer_filter, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -33686,15 +33219,15 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  *     if len(__pyx_state) > 0 and hasattr(__pyx_result, '__dict__'):
  *         __pyx_result.__dict__.update(__pyx_state[0])
  */
-  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_14chimeramate_cy_3__pyx_unpickle_chimera_search, NULL, __pyx_n_s_chimeramate_cy); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_16chimeramate_main_5__pyx_unpickle_chimera_search, NULL, __pyx_n_s_chimeramate_main); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_chimera_search, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "chimeramate_cy.pyx":1
+  /* "chimeramate_main.pyx":1
  * cimport dinopy             # <<<<<<<<<<<<<<
  * import dinopy
- * from dinopy.definitions cimport FastaEntryC
+ * import collections as col
  */
   __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -33721,7 +33254,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 284, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__47, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XGOTREF(generic);
   __Pyx_DECREF_SET(generic, __pyx_t_3);
@@ -33735,7 +33268,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__45, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 285, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__48, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XGOTREF(strided);
   __Pyx_DECREF_SET(strided, __pyx_t_3);
@@ -33749,7 +33282,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  * 
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__46, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 286, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__49, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XGOTREF(indirect);
   __Pyx_DECREF_SET(indirect, __pyx_t_3);
@@ -33763,7 +33296,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__47, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__50, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XGOTREF(contiguous);
   __Pyx_DECREF_SET(contiguous, __pyx_t_3);
@@ -33777,7 +33310,7 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
  * 
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__48, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 290, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__51, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 290, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_XGOTREF(indirect_contiguous);
   __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_3);
@@ -33864,11 +33397,11 @@ static int __pyx_pymod_exec_chimeramate_cy(PyObject *__pyx_pyinit_module)
   __Pyx_XDECREF(__pyx_t_4);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init chimeramate_cy", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init chimeramate_main", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init chimeramate_cy");
+    PyErr_SetString(PyExc_ImportError, "init chimeramate_main");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -35038,14 +34571,6 @@ static CYTHON_INLINE int __Pyx_dict_iter_next(
         *pvalue = next_item;
     }
     return 1;
-}
-
-/* None */
-  static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
-    long q = a / b;
-    long r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
 }
 
 /* SaveResetException */
@@ -36372,6 +35897,14 @@ static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value,
 /* None */
           static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
     PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
+}
+
+/* None */
+          static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
+    long q = a / b;
+    long r = a - q*b;
+    q -= ((r != 0) & ((r ^ b) < 0));
+    return q;
 }
 
 /* WriteUnraisableException */

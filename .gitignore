@@ -1,8 +1,11 @@
 build/*
 build
+backup
+backup/*
 *.so
 *.swp
 chimeramate_cy.c
 chimeramate_cy.html
 *.fasta
 *.txt
+*2.*
