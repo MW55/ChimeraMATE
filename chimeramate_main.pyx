@@ -273,7 +273,7 @@ cdef class chimera_search:
                 else:
                     c_faw.write_entry((seq.upper().encode(), read.name))
 
-def run(otus, soft_k = 24, cutoff = 10, softmask_file = 'softmasked.fasta', chim_k = 29, abskew = 0.03):
+def run(otus, soft_k, cutoff, softmask_file, chim_k, abskew):
     d = kmer_filter(otus, soft_k = 24, cutoff = 10)
     d.softmask(d.reads, d.kmer_abundance_sorting, softmask_file)
-    chimera_search(softmask_file, chim_k = 29, abskew = 0.03)
+    chimera_search(softmask_file, chim_k, abskew)
